@@ -116,6 +116,7 @@ const webpackConfig = {
   },
   plugins:[
     new CopyWebpack([
+      'src/cordova.js',
       { from: 'src/img/', to: 'img'}
     ]),
     new HtmlWebpack({

@@ -5,7 +5,29 @@ import './vue/components/GeoRun'
 import './vue/components/Calendar'
 import './vue/components/CalendarRun'
 
-const app = new Vue({
+const app = {
+  // Application Constructor
+  initialize: function() {
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+  },
+
+  // deviceready Event Handler
+  //
+  // Bind any cordova events here. Common events are:
+  // 'pause', 'resume', etc.
+  onDeviceReady: function() {
+    this.receivedEvent('deviceready');
+  },
+
+  // Update DOM on a Received Event
+  receivedEvent: function(id) {
+    console.log('Received Event: ' + id);
+  }
+};
+
+app.initialize();
+
+new Vue({
   el: '#app-slot',
   data: {
     startDate: '2018-11-11',
@@ -25,12 +47,11 @@ const app = new Vue({
           <CalendarRun :startDate="startDate" />   
         </div>
       </div>
-      +++++++++++++++++++++++++++=
+      +++++++++++++++++++++++++++
       <GeoRun />
     </div>
   `
 })
-//------------------------
 
 
 
