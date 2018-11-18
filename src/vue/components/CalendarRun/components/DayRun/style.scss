@@ -1,0 +1,23 @@
+
+.day-run {
+  font-size: 10px;
+  color: #999999;
+
+  &_mark {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+
+  &_result {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+
+  &_target {
+    position: absolute;
+    bottom: 0;
+    left: 4px;
+  }
+}

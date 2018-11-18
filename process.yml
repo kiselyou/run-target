@@ -1,0 +1,8 @@
+apps:
+  - script: ./index.js
+    name: 'telegram-web'
+    instances: 2
+    exec_mode: fork
+    exec_interpreter: ./node_modules/.bin/babel-node
+    env_production:
+      NODE_ENV: production
