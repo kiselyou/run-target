@@ -1,4 +1,4 @@
-import Point from "@vue/GeoRun/lib/Point";
+import Point from './Point'
 
 class Distance {
   /**
@@ -26,37 +26,46 @@ class Distance {
     this.points = []
 
     /**
+     * Текущее длина дистанции.
      *
      * @type {number}
      */
-    this.speed = 0
-
-    /**
-     *
-     * @type {number}
-     */
-    this.distance = 0
-
-    /**
-     *
-     * @type {number}
-     */
-    this.totalDistance = 0
+    this.pathLength = 0
   }
 
   /**
+   * Скорость объекта на момент добавления точки.
+   *
+   * @returns {number}
+   */
+  get speed() {
+    const point = this.lastPoint
+    if (point) {
+      return point.speed
+    }
+    return 0
+  }
+
+  /**
+   * Средняя скорость на протяжении дистанции.
    *
    * @returns {number}
    */
   get averageSpeed() {
-    let total = 0
+    let totalSpeed = 0
+    let totalCount = 0
     for (const point of this.points) {
-      total += point.speed
+      if (!point.prevPoint) {
+        continue
+      }
+      totalSpeed += point.speed
+      totalCount++
     }
-    return this.points.length ? total / this.points.length : 0
+    return totalCount ? totalSpeed / totalCount : 0
   }
 
   /**
+   * Последняя точка.
    *
    * @returns {Point|?}
    */
@@ -94,9 +103,7 @@ class Distance {
    * @returns {Distance}
    */
   addPoint(point) {
-    this.speed = point.speed
-    this.distance = point.distance
-    this.totalDistance += this.distance
+    this.pathLength += point.distance
     this.points.push(point)
     return this
   }

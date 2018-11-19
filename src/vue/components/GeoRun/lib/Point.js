@@ -82,7 +82,7 @@ class Point {
       this.cache.speed = getSpeed(
         { lat: this.prevPoint.lat, lng: this.prevPoint.lng, time: this.prevPoint.time },
         { lat: this.lat, lng: this.lng, time: this.time },
-        { unit: 'mph' }
+        { unit: 'kmh' }
       );
       return this.cache.speed
     }
