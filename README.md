@@ -1,3 +1,10 @@
+# DEPLOY
+========
+
+    - npm install -g cordova
+    - yarn deploy
+    - cordova requirements
+
 # Cordova
 
 ```bash

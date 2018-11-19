@@ -1,4 +1,4 @@
-import { getDistance } from 'geolib'
+import { getDistance, getSpeed } from 'geolib'
 
 class Point {
   /**
@@ -18,13 +18,19 @@ class Point {
      * @type {Point|?}
      */
     this.prevPoint = prevPoint
+
+    /**
+     *
+     * @type {{ speed: number|?, distance: number|? }}
+     */
+    this.cache = { speed: null, distance: null }
   }
 
   /**
    *
    * @returns {number}
    */
-  get latitude() {
+  get lat() {
     return this.position.coords.latitude
   }
 
@@ -32,8 +38,16 @@ class Point {
    *
    * @returns {number}
    */
-  get longitude() {
+  get lng() {
     return this.position.coords.longitude
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get time() {
+    return this.position.timestamp
   }
 
   /**
@@ -44,15 +58,33 @@ class Point {
    */
   get distance() {
     if (this.prevPoint instanceof Point) {
-      return getDistance(
-        {
-          latitude:  this.prevPoint.latitude,
-          longitude:  this.prevPoint.longitude
-        },
-        {
-          latitude:  this.latitude,
-          longitude:  this.longitude
-      })
+      if (this.cache.distance) {
+        return this.cache.distance
+      }
+      this.cache.distance = getDistance(
+        { latitude:  this.prevPoint.lat, longitude:  this.prevPoint.lng },
+        { latitude:  this.lat, longitude:  this.lng }
+      )
+      return this.cache.distance
+    }
+    return 0
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get speed() {
+    if (this.prevPoint instanceof Point) {
+      if (this.cache.speed) {
+        return this.cache.speed
+      }
+      this.cache.speed = getSpeed(
+        { lat: this.prevPoint.lat, lng: this.prevPoint.lng, time: this.prevPoint.time },
+        { lat: this.lat, lng: this.lng, time: this.time },
+        { unit: 'mph' }
+      );
+      return this.cache.speed
     }
     return 0
   }
