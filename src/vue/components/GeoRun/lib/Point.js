@@ -79,6 +79,9 @@ class Point {
       if (this.cache.speed) {
         return this.cache.speed
       }
+      if (this.prevPoint.time === this.time) {
+        return 0
+      }
       this.cache.speed = getSpeed(
         { lat: this.prevPoint.lat, lng: this.prevPoint.lng, time: this.prevPoint.time },
         { lat: this.lat, lng: this.lng, time: this.time },

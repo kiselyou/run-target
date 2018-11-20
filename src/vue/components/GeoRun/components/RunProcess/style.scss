@@ -1,0 +1,50 @@
+.run-process {
+  height: 4px;
+  width: 80%;
+  margin: auto;
+  background-color: #0035F4;
+  border-radius: 2px;
+  position: relative;
+
+  &_mark {
+    position: absolute;
+
+    &__delimiter {
+      position: absolute;
+      top: 6px;
+      width: 1px;
+      height: 4px;
+      background-color: #000;
+    }
+    &__text {
+      position: absolute;
+      width: 80px;
+      left: 0;
+      top: 8px;
+    }
+
+    &__right {
+      right: 0;
+      left: unset;
+      text-align: right;
+    }
+
+    &__top {
+      top: - 6px;
+    }
+
+    &__position {
+      position: absolute;
+      top: -24px;
+      left: -4px;
+      color: #0035F4;
+    }
+
+    &__finish {
+      position: absolute;
+      top: -18px;
+      right: -12px;
+      color: #0035F4;
+    }
+  }
+}

@@ -69,6 +69,7 @@ class Geo {
    * @returns {Geo}
    */
   addPosition(value) {
+    console.log(value)
     const distanceNumber = this.prepareDistanceNumber()
     let distance = this.getDistanceByNumber(distanceNumber)
     if (!distance) {
@@ -104,10 +105,11 @@ class Geo {
 
   /**
    *
-   * @param {Error} error
+   * @param {PositionError} error
    * @returns {void}
    */
   onError(error) {
+    console.log(error)
     this.error = error
   }
 
@@ -116,7 +118,11 @@ class Geo {
    * @returns {Geo}
    */
   start() {
-    this.watchID = navigator.geolocation.watchPosition(this.addPosition, this.onError, this.options)
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) => this.addPosition(position),
+      (error) => this.onError(error),
+      this.options
+    )
     return this
   }
 
@@ -138,14 +144,6 @@ class Geo {
     this.stop()
     this.distances.splice(0)
     return this
-  }
-
-  /**
-   *
-   * @returns {boolean}
-   */
-  isEnabled() {
-    return Boolean(this.watchID)
   }
 }
 

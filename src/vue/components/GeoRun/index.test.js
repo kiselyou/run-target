@@ -27,6 +27,14 @@ describe('GeoRun', function() {
     }
   }
 
+  const thirdPositionDouble = {
+    timestamp: 1542662435588,
+    coords: {
+      latitude: 55.456645,
+      longitude: 27.567645
+    }
+  }
+
   // secondPosition.timestamp - firstPosition.timestamp = 2557 milliseconds
   // thirdPosition.timestamp - secondPosition.timestamp = 2657 milliseconds
 
@@ -47,6 +55,15 @@ describe('GeoRun', function() {
       assert.equal(point.time, 1542662432931) // milliseconds
       assert.equal(point.speed, 49.2765) // km/h
       assert.equal(point.distance, 35) // meters
+    })
+
+    it('should create third point', function () {
+      const point = new Point(thirdPositionDouble, new Point(thirdPosition))
+      assert.equal(point.lat, 55.456645)
+      assert.equal(point.lng, 27.567645)
+      assert.equal(point.time, 1542662435588)
+      assert.equal(point.speed, 0)
+      assert.equal(point.distance, 0)
     })
   })
 
