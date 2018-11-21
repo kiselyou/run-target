@@ -1,6 +1,7 @@
 import 'bootstrap'
 import './scss/index.scss'
 import Vue from 'vue'
+import './vue/components/Header'
 import './vue/components/GeoRun'
 import './vue/components/Calendar'
 import './vue/components/CalendarRun'
@@ -41,14 +42,22 @@ new Vue({
     <div class="container-fluid">
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 p-0">
-          <CalendarRun :startDate="startDate" />   
+          <Header />   
         </div>
       </div>
+      
       <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 p-0">
           <GeoRun />   
         </div>
       </div>
+      
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 p-0">
+          <CalendarRun :startDate="startDate" />   
+        </div>
+      </div>
+      
     </div>
   `
 })

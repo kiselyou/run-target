@@ -6,18 +6,21 @@ import template from './template.vue'
 
 export default Vue.component('GeoRun', {
   props: {
-
+    disabled: {
+      type: Boolean,
+      default: true
+    }
   },
   data: function () {
     return {
-      enabled: false,
+      // 0 - выкл.
+      // 1 - бег
+      // 2 - пауза
+      status: 0,
       geo: new Geo(),
     }
   },
   methods: {
-    isEnabled: function () {
-      return this.geo.isEnabled()
-    },
     pathLength: function () {
       return this.geo.pathLength
     },
@@ -53,16 +56,20 @@ export default Vue.component('GeoRun', {
       //   // console.log(this.geo.speed, firstPosition.coords.latitude, firstPosition.coords.longitude)
       // }, 30)
 
-      this.geo.start()
-      this.enabled = true
+      // this.geo.start()
+      this.status = 1
     },
-    stop: function () {
-      this.geo.stop()
-      this.enabled = false
+    pause: function () {
+      // this.geo.stop()
+      this.status = 2
+    },
+    run: function () {
+      // this.geo.stop()
+      this.status = 1
     },
     end: function () {
-      this.geo.clear()
-      this.enabled = false
+      // this.geo.clear()
+      this.status = 0
 
     },
   },

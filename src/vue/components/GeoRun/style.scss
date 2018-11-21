@@ -1,5 +1,59 @@
 .geo-run {
   &_head {
+    overflow: auto;
+  }
 
+  &_body {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  &_btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    background: #252525;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
+
+    &__icon {
+      font-size: 20px;
+      margin: 16px 0 0 4px;
+    }
+
+    &__text {
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    &__disabled {
+      background: #666666;
+    }
+
+    &__orange {
+      background: #EB9B00;
+    }
+
+    &__green {
+      background: #2DBA00;
+    }
+
+    &__red {
+      background: #C92C00;
+    }
   }
 }
