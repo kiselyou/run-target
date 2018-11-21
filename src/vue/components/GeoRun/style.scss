@@ -42,6 +42,11 @@
 
     &__disabled {
       background: #666666;
+
+      &:hover {
+        opacity: 1;
+        cursor: not-allowed;
+      }
     }
 
     &__orange {
