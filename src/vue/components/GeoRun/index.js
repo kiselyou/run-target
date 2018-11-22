@@ -8,15 +8,12 @@ export default Vue.component('GeoRun', {
   props: {
     disabled: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: function () {
     return {
-      // 0 - выкл.
-      // 1 - бег
-      // 2 - пауза
-      status: 0,
+      status: 0, // 0 - выкл., 1 - бег, 2 - пауза
       geo: new Geo(),
     }
   },

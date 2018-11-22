@@ -31,9 +31,7 @@ export default Vue.component('RunProcess', {
     }
 
     return {
-      processMarkStyle: {
-        left: `${percent}%`
-      },
+      percent,
     }
   },
   methods: {

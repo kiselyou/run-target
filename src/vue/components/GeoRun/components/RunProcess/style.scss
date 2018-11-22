@@ -1,4 +1,5 @@
 .run-process {
+  user-select: none;
 
   &_road {
     height: 4px;
@@ -7,6 +8,12 @@
     background-color: #252525;
     border-radius: 2px;
     position: relative;
+
+    &__behind {
+      width: 100%;
+      height: 100%;
+      background: #2DBA00;
+    }
   }
 
   &_mark {

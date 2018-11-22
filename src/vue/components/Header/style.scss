@@ -1,13 +1,10 @@
 .header {
-  height: 50px;
-  color: #FFFFFF;
-  background-color: #252525;
 
-  &_logo {
-    height: inherit;
-  }
+  &_btn {
 
-  &_menu {
-    height: inherit;
+    &:focus {
+      outline: none;
+      opacity: 0.8;
+    }
   }
 }
