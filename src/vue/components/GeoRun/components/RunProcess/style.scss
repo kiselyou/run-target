@@ -14,6 +14,14 @@
       height: 100%;
       background: #2DBA00;
     }
+
+    &__label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: #2DBA00;
+      padding: 4px;
+    }
   }
 
   &_mark {
@@ -21,7 +29,7 @@
 
     &__delimiter {
       position: absolute;
-      top: 6px;
+      top: 2px;
       width: 1px;
       height: 4px;
       background-color: #252525;
@@ -30,7 +38,7 @@
       position: absolute;
       width: 80px;
       left: 0;
-      top: 8px;
+      top: 4px;
     }
 
     &__right {
@@ -40,13 +48,13 @@
     }
 
     &__top {
-      top: - 6px;
+      top: -10px;
     }
 
     &__position {
       position: absolute;
-      top: -24px;
-      left: -4px;
+      top: -26px;
+      left: -5px;
     }
 
     &__finish {

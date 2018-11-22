@@ -21,5 +21,8 @@
       <div class="run-process_mark__text run-process_mark__right">{{ finish }} {{ unit(finish) }}</div>
     </div>
 
+    <div class="run-process_road__label">
+      Цель на 90 дней
+    </div>
   </div>
 </div>
