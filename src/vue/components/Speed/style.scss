@@ -1,0 +1,30 @@
+.speed {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+
+  @media screen and (max-width: 300px) {
+    flex-direction: column;
+  }
+
+  &_cell {
+    width: call(50% / 3);
+    text-align: center;
+
+    &__value {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    &__label {
+      color: #8E8E8E;
+      font-size: 12px;
+    }
+  }
+
+  &_value {
+
+  }
+}

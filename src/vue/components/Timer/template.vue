@@ -1,0 +1,26 @@
+
+<div class="timer">
+  <div
+    class="timer_time my-3"
+   :class="{
+    'timer__disabled': disabled || status === 0,
+    'timer__pause': !disabled && status === 2}">
+    <i class="oi oi-timer timer_time__icon"></i>
+    {{ time() }}
+  </div>
+
+  <slot></slot>
+
+  <div class="timer_controls my-2" v-if="status === 0">
+    <Button :key="1" :disabled="disabled" skin="orange" mx="2" text="старт" icon="media-play" v-on:click="start" />
+  </div>
+
+  <div class="timer_controls my-2" v-if="!disabled && status === 1">
+    <Button :key="2" :disabled="disabled" skin="orange" mx="2" text="пауза" icon="media-pause" v-on:click="stop" />
+  </div>
+
+  <div class="timer_controls my-2" v-if="!disabled && status === 2">
+    <Button :key="3" :disabled="disabled" skin="red" mx="2" text="финиш" icon="media-stop" v-on:click="end" />
+    <Button :key="4" :disabled="disabled" skin="green" mx="2" text="продолжить" icon="media-step-forward" v-on:click="start" />
+  </div>
+</div>

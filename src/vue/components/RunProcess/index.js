@@ -19,6 +19,9 @@ export default Vue.component('RunProcess', {
     digits: {
       type: Number,
       default: 3
+    },
+    label: {
+      type: String,
     }
   },
   data: function () {

@@ -1,0 +1,55 @@
+.button {
+  min-width: 160px;
+  height: 40px;
+  border-radius: 2px;
+  border: none;
+  background: #252525;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  @media screen and (max-width: 359px) {
+    min-width: 120px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+
+  &__icon {
+    font-size: 20px;
+    margin: 16px 0 0 4px;
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  &__disabled {
+    background: #666666;
+
+    &:hover {
+      opacity: 1;
+      cursor: not-allowed;
+    }
+  }
+
+  &__orange {
+    background: #EB9B00;
+  }
+
+  &__green {
+    background: #2DBA00;
+  }
+
+  &__red {
+    background: #C92C00;
+  }
+}

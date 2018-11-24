@@ -1,0 +1,44 @@
+.timer {
+  color: #252525;
+  width: 100%;
+
+  &_time {
+    font-size: 26px;
+    height: 36px;
+    font-weight: bold;
+    text-align: center;
+
+    &__icon {
+      height: 34px;
+      width: 34px;
+      text-align: center;
+    }
+  }
+
+  &_controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  &__disabled {
+    color: #EBEBEB;
+  }
+
+  &__pause {
+    animation-name: Timer;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+
+    @keyframes Timer {
+      from {
+        color: #252525;
+      }
+      to {
+        color: #EBEBEB;
+      }
+    }
+  }
+}

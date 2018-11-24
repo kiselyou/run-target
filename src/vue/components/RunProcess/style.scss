@@ -1,5 +1,7 @@
 .run-process {
+  overflow: auto;
   user-select: none;
+  width: 100%;
 
   &_road {
     height: 4px;
@@ -21,6 +23,10 @@
       font-weight: bold;
       color: #2DBA00;
       padding: 4px;
+
+      @media screen and (max-width: 300px) {
+        display: none;
+      }
     }
   }
 
@@ -53,7 +59,7 @@
 
     &__position {
       position: absolute;
-      top: -26px;
+      top: -32px;
       left: -5px;
     }
 

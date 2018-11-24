@@ -1,15 +1,30 @@
 import './style.scss'
 import Vue from 'vue'
 import Geo from './lib/Geo'
-import './components/RunProcess'
 import template from './template.vue'
+
+import '@vue/RunProcess'
+import '@vue/Timer'
+import '@vue/Speed'
 
 export default Vue.component('GeoRun', {
   props: {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    positionStart: {
+      type: Number,
+      default: 0
+    },
+    positionFinish: {
+      type: Number,
+      required: true
+    },
+    positionCurrent: {
+      type: Number,
+      default: 0
+    },
   },
   data: function () {
     return {
