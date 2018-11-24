@@ -5,6 +5,7 @@ const CopyWebpack = require('copy-webpack-plugin');
 const HtmlWebpack = require('html-webpack-plugin');
 const ExtractText = require('extract-text-webpack-plugin');
 const SpeedPlugin = require("speed-measure-webpack-plugin");
+const CleanPlugin = require('clean-webpack-plugin')
 const webpack = require('webpack');
 
 const smp = new SpeedPlugin();
@@ -37,7 +38,6 @@ const config = {
           loader: "file-loader",
           options: {
             name: "[name].[ext]",
-            outputPath: "/css/fonts/"
           }
         }
       },
@@ -56,11 +56,12 @@ const config = {
     extensions: ['.js'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@vue': path.join(__dirname, '../src/vue/components'),
-      '@page': path.join(__dirname, '../src/vue/pages')
+      '@vue': path.join(__dirname, 'src/vue/components'),
+      '@page': path.join(__dirname, 'src/vue/pages')
     },
   },
   plugins:[
+    new CleanPlugin(path.join(__dirname, 'www')),
     new CopyWebpack([
       'src/cordova.js',
       { from: 'src/img/', to: 'img'}
@@ -68,6 +69,11 @@ const config = {
     new HtmlWebpack({ template: `./src/index.html` }),
     new webpack.HashedModuleIdsPlugin()
   ],
+  devServer: {
+    contentBase: path.join(__dirname, 'www'),
+    port: 3000,
+    open: 'Chrome',
+  }
 };
 
 module.exports = smp.wrap(config)
