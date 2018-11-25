@@ -25,11 +25,6 @@ export default Vue.component('App', {
       routes: this.$router.options.routes
     }
   },
-  methods: {
-    log: (data) => {
-      console.log(data)
-    },
-  },
   template: `
     <div>
       <Menu :routes="routes" />

@@ -12,9 +12,11 @@ export default Vue.component('DayRun', {
     },
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
+    onClick: function () {
+      if (this.day.enabled) {
+        this.$emit('onClick', this.day)
+      }
+    }
   },
   template: template
 })

@@ -14,17 +14,25 @@ export default Vue.component('GeoRun', {
       type: Boolean,
       default: false
     },
-    finishDistance: {
-      type: Number,
-      required: true
-    },
   },
   data: function () {
     return {
-      geo: new EmulatorGeo(),
+      startDate: '2018-11-11',
+      geo: new EmulatorGeo(), // Дата с которой начинается цель тренировки в календаре
+      day: null,
     }
   },
   methods: {
+    setCurrentDay: function (day) {
+      this.day = day
+    },
+    finishDistance: function () {
+      let distance
+      if (this.day) {
+        distance = this.day.getOption('distance')
+      }
+      return (distance || 0) * 1000
+    },
     path: function () {
       return this.geo.pathLength
     },

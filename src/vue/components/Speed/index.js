@@ -30,20 +30,14 @@ export default Vue.component('Speed', {
     return {}
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     speedValue: function () {
       return (this.speed).toFixed(2)
-      // return this.speed > 0 ? (this.speed).toFixed(2) : 0
     },
     tempoValue: function () {
       return (this.tempo).toFixed(2)
-      // return this.tempo > 0 ? (this.tempo).toFixed(2) : 0
     },
     distanceValue: function () {
       return (this.distance / 1000).toFixed(3)
-      // return this.distance > 0 ? (this.distance / 1000).toFixed(3) : 0
     }
   },
   template: template

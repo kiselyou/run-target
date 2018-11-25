@@ -1,5 +1,5 @@
 
-<Day :day="day">
+<Day :day="day" @onClick="onClick">
   <template slot="body">
     <div class="day-run day-run_mark" v-if="day.hasOption('distance') && day.isNow">
       <i class="oi oi-timer" v-if="day.getOption('result') === 0"></i>

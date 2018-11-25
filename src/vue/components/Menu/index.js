@@ -10,9 +10,6 @@ export default Vue.component('Menu', {
     }
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     isActive(route) {
       return route['active']
     }

@@ -15,6 +15,36 @@ class Calendar {
      * @type {Array.<Month>}
      */
     this.months = []
+
+    /**
+     *
+     * @type {Day|?}
+     */
+    this.currentDay = null
+
+    /**
+     *
+     * @type {Day|?}
+     */
+    this.selectedtDay = null
+  }
+
+  /**
+   *
+   * @param {Day} value
+   */
+  setCurrentDay(value) {
+    this.currentDay = value
+    return this
+  }
+
+  /**
+   *
+   * @param {Day} value
+   */
+  setSelectedDay(value) {
+    this.selectedDay = value
+    return this
   }
 
   /**
@@ -92,6 +122,7 @@ class Calendar {
 
   /**
    * @param {Day} day
+   * @param {boolean} isNow
    * @callback eachDayCallback
    */
 
@@ -126,8 +157,14 @@ class Calendar {
 
       enabled = disabled ? false : enabled
       const dayOptions = new Day(date, enabled)
+
+      let isNow = false
+      if (dayOptions.isNow) {
+        isNow = true
+        this.currentDay = dayOptions
+      }
       if (callback) {
-        callback(dayOptions)
+        callback(dayOptions, isNow)
       }
       week.addDay(dayOptions)
     }

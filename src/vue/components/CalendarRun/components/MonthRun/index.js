@@ -20,14 +20,14 @@ export default Vue.component('MonthRun', {
     },
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     next: function (date) {
       this.$emit('nextMonth', date)
     },
     prev: function (date) {
       this.$emit('prevMonth', date)
+    },
+    selectDay: function (day) {
+      this.$emit('selectDay', day)
     }
   },
   template: template

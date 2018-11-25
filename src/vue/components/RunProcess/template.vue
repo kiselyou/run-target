@@ -8,7 +8,7 @@
       <div class="run-process_mark__text">{{ unit(start) }}</div>
     </div>
 
-    <div class="run-process_mark" :style="{ left: `${percent()}%` }">
+    <div class="run-process_mark" :style="{ left: `${percent()}%` }" v-if="finishDistance > 0">
       <div class="run-process_mark__delimiter run-process_mark__top"></div>
       <div class="run-process_mark__text run-process_mark__position">
         <i class="oi oi-map-marker"></i>

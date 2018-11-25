@@ -23,10 +23,10 @@ export default Vue.component('CalendarRun', {
       selectedDate: new Date(this.startDate)
     }
   },
+  mounted: function () {
+    this.$emit('onMounted', this.calendar.currentDay)
+  },
   methods: {
-    log: function (data) {
-      console.log(data)
-    },
     month: function () {
       return this.calendar.getMonth(this.selectedDate)
     },
@@ -37,6 +37,10 @@ export default Vue.component('CalendarRun', {
     prev: function (month) {
       this.selectedDate = new Date(month.firstDay)
       this.selectedDate.setDate(this.selectedDate.getDate() - 1)
+    },
+    selectDay: function (day) {
+      this.calendar.setSelectedDay(day)
+      this.$emit('onActiveDay', this.calendar.selectedDay)
     }
   },
   template: template

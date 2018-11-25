@@ -24,9 +24,6 @@ export default Vue.component('Calendar', {
     }
   },
   methods: {
-    log: function (data) {
-      console.log(data)
-    },
     selectedMonth: function () {
       return this.calendar.getMonth(this.selectedDate)
     },
@@ -37,6 +34,10 @@ export default Vue.component('Calendar', {
     prev: function (month) {
       this.selectedDate = new Date(month.firstDay)
       this.selectedDate.setDate(this.selectedDate.getDate() - 1)
+    },
+    selectDay: function (day) {
+      this.calendar.setSelectedDay(day)
+      this.$emit('selectDay', day)
     }
   },
   template: template

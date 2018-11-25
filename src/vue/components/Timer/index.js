@@ -19,9 +19,6 @@ export default Vue.component('Timer', {
     }
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     time() {
       return this.timer.toStringHours()
     },

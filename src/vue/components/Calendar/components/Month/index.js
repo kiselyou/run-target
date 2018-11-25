@@ -19,14 +19,14 @@ export default Vue.component('Month', {
     },
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     next: function (currentMonth) {
       this.$emit('nextMonth', currentMonth)
     },
     prev: function (currentMonth) {
       this.$emit('prevMonth', currentMonth)
+    },
+    selectDay: function (day) {
+      this.$emit('selectDay', day)
     }
   },
   template: template

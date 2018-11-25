@@ -1,2 +1,2 @@
 
-<MonthRun :month="month()" :locale="locale" :showArrow="true" @nextMonth="next"  @prevMonth="prev" />
+<MonthRun :month="month()" :locale="locale" :showArrow="true" @nextMonth="next"  @prevMonth="prev" @selectDay="selectDay" />

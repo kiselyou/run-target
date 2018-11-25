@@ -28,6 +28,9 @@ export default Vue.component('RunProcess', {
        */
       default: function () {
         const remainder = this.finishDistance - this.currentDistance
+        if (this.finishDistance === 0) {
+          return `Цель не установлена`
+        }
         if (remainder === 0) {
           return `Цель выполнена ${this.unit(remainder)}`
         }

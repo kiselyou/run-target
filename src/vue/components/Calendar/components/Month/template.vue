@@ -23,7 +23,7 @@
     <div class="month_week">
       <slot name="week">
         <template v-for="weeks of month.weeks">
-          <Day :key="day.id" :day="day" v-for="day of weeks.days">
+          <Day :key="day.id" :day="day" v-for="day of weeks.days" @onClick="selectDay">
             <template slot="body">{{ day.number }}</template>
           </Day>
         </template>

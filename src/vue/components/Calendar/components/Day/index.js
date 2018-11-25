@@ -15,9 +15,6 @@ export default Vue.component('Day', {
     }
   },
   methods: {
-    log: (data) => {
-      console.log(data)
-    },
     htmlClass: function () {
       if (this.head) {
         return {}
@@ -27,6 +24,11 @@ export default Vue.component('Day', {
         'day__hover': this.day.enabled,
         'day__bordered': this.day.enabled,
         'day__disabled': !this.day.enabled,
+      }
+    },
+    click: function () {
+      if (this.day.enabled) {
+        this.$emit('onClick', this.day)
       }
     }
   },
