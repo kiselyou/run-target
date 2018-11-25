@@ -8,11 +8,11 @@ export default Vue.component('RunProcess', {
       type: Number,
       default: 0
     },
-    finish: {
+    finishDistance: {
       type: Number,
       required: true
     },
-    value: {
+    currentDistance: {
       type: Number,
       required: true
     },
@@ -21,25 +21,62 @@ export default Vue.component('RunProcess', {
       default: 3
     },
     label: {
-      type: String,
+      type: [Function, null],
+      /**
+       *
+       * @returns {string}
+       */
+      default: function () {
+        const remainder = this.finishDistance - this.currentDistance
+        if (remainder === 0) {
+          return `Цель выполнена ${this.unit(remainder)}`
+        }
+        if (remainder < 0) {
+          return `Цель выполнена ${this.unit(this.finishDistance)}`
+        }
+        return `Осталось ${this.unit(remainder)}`
+      }
     }
   },
   data: function () {
-    let percent = 0
-    if (this.finish > 0) {
-      percent = Number(this.value / this.finish * 100).toFixed(this.digits)
-    }
-    if (percent > 100) {
-      percent = 100
-    }
-
     return {
-      percent,
+
     }
   },
   methods: {
+    /**
+     *
+     * @param {number} value
+     * @returns {string}
+     */
     unit: function (value) {
-      return value < 1000 ? 'м' : 'км'
+      if (value === 0) {
+        return '0'
+      }
+      return `${(value / 1000).toFixed(3)} км`
+    },
+
+    /**
+     *
+     * @returns {number}
+     */
+    percent() {
+      let percent = 0
+      if (this.finishDistance > 0) {
+        percent = Number(this.currentDistance / this.finishDistance * 100).toFixed(this.digits)
+      }
+      if (percent > 100) {
+        percent = 100
+      }
+      return percent
+    },
+
+    /**
+     *
+     * @returns {number}
+     */
+    remainder() {
+      return this.finishDistance - this.currentDistance
     }
   },
   template: template

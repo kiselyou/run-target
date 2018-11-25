@@ -1,4 +1,4 @@
 <div>
-  <GeoRun :positionFinish="1450" :positionCurrent="0.356" />
+  <GeoRun :finishDistance="1450" />
   <CalendarRun :startDate="startDate" class="mt-3" />
 </div>

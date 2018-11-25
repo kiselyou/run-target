@@ -1,6 +1,7 @@
 import './style.scss'
 import Vue from 'vue'
 import Geo from './lib/Geo'
+import EmulatorGeo from './lib/EmulatorGeo'
 import template from './template.vue'
 
 import '@vue/RunProcess'
@@ -13,75 +14,34 @@ export default Vue.component('GeoRun', {
       type: Boolean,
       default: false
     },
-    positionStart: {
-      type: Number,
-      default: 0
-    },
-    positionFinish: {
+    finishDistance: {
       type: Number,
       required: true
-    },
-    positionCurrent: {
-      type: Number,
-      default: 0
     },
   },
   data: function () {
     return {
-      status: 0, // 0 - выкл., 1 - бег, 2 - пауза
-      geo: new Geo(),
+      geo: new EmulatorGeo(),
     }
   },
   methods: {
-    pathLength: function () {
+    path: function () {
       return this.geo.pathLength
     },
     speed: function () {
       return this.geo.speed
     },
+    tempo: function () {
+      return this.geo.tempo
+    },
     start: function () {
-      //
-      // const def = {
-      //   timestamp: 1542662430374,
-      //   coords: {
-      //     latitude: 55.456000,
-      //     longitude: 27.567000
-      //   }
-      // }
-      //
-      // setInterval(() => {
-      //
-      //   def.coords.latitude += 0.0000545
-      //   def.coords.longitude += 0.00005567
-      //
-      //   const position = {
-      //     timestamp: 1542662430374,
-      //     coords: {
-      //       latitude: 55.456000,
-      //       longitude: 27.567000
-      //     }
-      //   }
-      //   position.timestamp = Date.now()
-      //   position.coords.latitude = def.coords.latitude
-      //   position.coords.longitude = def.coords.longitude
-      //   this.geo.addPosition(position)
-      //   // console.log(this.geo.speed, firstPosition.coords.latitude, firstPosition.coords.longitude)
-      // }, 30)
-
-      // this.geo.start()
-      this.status = 1
+      this.geo.start()
     },
-    pause: function () {
-      // this.geo.stop()
-      this.status = 2
-    },
-    run: function () {
-      // this.geo.stop()
-      this.status = 1
+    stop: function () {
+      this.geo.stop()
     },
     end: function () {
-      // this.geo.clear()
-      this.status = 0
+      this.geo.end()
 
     },
   },

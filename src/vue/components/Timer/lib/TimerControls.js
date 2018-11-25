@@ -30,6 +30,8 @@ class TimerControls {
   }
 
   /**
+   * @param {string} timeStr
+   * @param {number} time - Time in seconds
    * @callback tickCallback
    */
 
@@ -93,29 +95,18 @@ class TimerControls {
    * @returns {{days: number, hours: number, minutes: number, seconds: number}}
    */
   getTimeObject() {
-    let days = 0
-    if (this.time >= DAY) {
-      days = Math.round(this.time / DAY)
-    }
-
-    const remainingDays = Math.round(this.time - (days * DAY))
-
-    let hours = Math.round(remainingDays / HOUR)
+    let days = Math.floor(this.time / DAY)
+    const remainingDays = this.time - (days * DAY)
+    let hours =  Math.floor(remainingDays / HOUR)
     if (hours >= 24) {
       hours = 23
     }
-
-    const remainingHours = Math.round(remainingDays - (hours * HOUR))
-
-    let minutes = Math.round(remainingHours / 60)
+    const remainingHours = remainingDays - (hours * HOUR)
+    let minutes = Math.floor(remainingHours / 60)
     if (minutes >= 60) {
       minutes = 59
     }
-
-    const remainingMinutes = Math.round(remainingHours - (minutes * 60))
-    let seconds = Math.round(remainingMinutes / 60)
-
-    console.log(remainingMinutes, seconds)
+    const seconds = Math.floor(remainingHours - (minutes * 60))
     return { days, hours, minutes, seconds }
   }
 
@@ -125,11 +116,32 @@ class TimerControls {
    */
   toStringHours() {
     const time = this.getTimeObject()
-    const d = ('0' + time.hours).slice(-2)
-    const h = ('0' + time.hours).slice(-2)
-    const m = ('0' + time.minutes).slice(-2)
-    const s = ('0' + time.seconds).slice(-2)
+    const h = this.numberToString(time.hours)
+    const m = this.numberToString(time.minutes)
+    const s = this.numberToString(time.seconds)
+    return `${h}:${m}:${s}`
+  }
+
+  /**
+   *
+   * @returns {string}
+   */
+  toStringDays() {
+    const time = this.getTimeObject()
+    const d = this.numberToString(time.days)
+    const h = this.numberToString(time.hours)
+    const m = this.numberToString(time.minutes)
+    const s = this.numberToString(time.seconds)
     return `${d}:${h}:${m}:${s}`
+  }
+
+  /**
+   *
+   * @param {Number} value
+   * @returns {string}
+   */
+  numberToString(value) {
+    return ('0' + value).slice(-2)
   }
 }
 

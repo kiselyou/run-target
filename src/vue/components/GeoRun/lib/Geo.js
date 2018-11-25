@@ -41,6 +41,16 @@ class Geo {
   }
 
   /**
+   * Текущий темп.
+   *
+   * @returns {number}
+   */
+  get tempo() {
+    const speed = this.speed
+    return speed ? 60 / speed : 0
+  }
+
+  /**
    * Длина всей дистанции.
    *
    * @returns {number}
@@ -69,7 +79,6 @@ class Geo {
    * @returns {Geo}
    */
   addPosition(value) {
-    console.log(value)
     const distanceNumber = this.prepareDistanceNumber()
     let distance = this.getDistanceByNumber(distanceNumber)
     if (!distance) {
@@ -109,7 +118,6 @@ class Geo {
    * @returns {void}
    */
   onError(error) {
-    console.log(error)
     this.error = error
   }
 
@@ -140,7 +148,7 @@ class Geo {
    *
    * @returns {Geo}
    */
-  clear() {
+  end() {
     this.stop()
     this.distances.splice(0)
     return this

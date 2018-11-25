@@ -2,7 +2,7 @@
 <div class="speed">
   <div class="speed_cell">
     <div class="speed_cell__value">
-      <span>{{ tempoValue }}</span>
+      <span>{{ tempoValue() }}</span>
     </div>
     <div class="speed_cell__label">
       <span>{{ tempoLabel }}</span>
@@ -10,7 +10,7 @@
   </div>
   <div class="speed_cell">
     <div class="speed_cell__value">
-      <span>{{ distanceValue }}</span>
+      <span>{{ distanceValue() }}</span>
     </div>
     <div class="speed_cell__label">
       <span>{{ distanceLabel }}</span>
@@ -18,7 +18,7 @@
   </div>
   <div class="speed_cell">
     <div class="speed_cell__value">
-      <span>{{ speedValue }}</span>
+      <span>{{ speedValue() }}</span>
     </div>
     <div class="speed_cell__label">
       <span>{{ speedLabel }}</span>
