@@ -8,6 +8,8 @@ import '@vue/RunProcess'
 import '@vue/Timer'
 import '@vue/Speed'
 
+const debug = false
+
 export default Vue.component('GeoRun', {
   props: {
     disabled: {
@@ -17,9 +19,10 @@ export default Vue.component('GeoRun', {
   },
   data: function () {
     return {
-      startDate: '2018-11-11',
-      geo: new EmulatorGeo(), // Дата с которой начинается цель тренировки в календаре
-      day: null,
+      geoErrorMessage: null,
+      startDate: '2018-11-11', // Дата с которой начинается цель тренировки в календаре
+      geo: debug ? new EmulatorGeo() : new Geo(),
+      day: null, // Текущий день календаря. (содержит информацию о текущей цели)
     }
   },
   methods: {
@@ -42,15 +45,19 @@ export default Vue.component('GeoRun', {
     tempo: function () {
       return this.geo.tempo
     },
-    start: function () {
-      this.geo.start()
+    start: function (actionStartTimer) {
+      this.geo.start(actionStartTimer, (error) => {
+        this.geoErrorMessage = error.message
+        this.geo.stop()
+      })
     },
-    stop: function () {
+    stop: function (actionStopTimer) {
+      actionStopTimer()
       this.geo.stop()
     },
-    end: function () {
+    end: function (actionEndTimer) {
+      actionEndTimer()
       this.geo.end()
-
     },
   },
   template: template

@@ -23,19 +23,22 @@ export default Vue.component('Timer', {
       return this.timer.toStringHours()
     },
     start: function () {
-      this.status = 1
-      this.timer.start()
-      this.$emit('onStart', this.timer)
+      this.$emit('onStart', () => {
+        this.status = 1
+        this.timer.start()
+      })
     },
     stop: function () {
-      this.status = 2
-      this.timer.stop()
-      this.$emit('onStop', this.timer)
+      this.$emit('onStop', () => {
+        this.status = 2
+        this.timer.stop()
+      })
     },
     end: function () {
-      this.status = 0
-      this.timer.end()
-      this.$emit('onEnd', this.timer)
+      this.$emit('onEnd', () => {
+        this.status = 0
+        this.timer.end()
+      })
     },
   },
   template: template

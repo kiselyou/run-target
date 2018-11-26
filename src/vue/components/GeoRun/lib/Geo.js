@@ -16,15 +16,9 @@ class Geo {
 
     /**
      *
-     * @type {Error|?}
-     */
-    this.error = null
-
-    /**
-     *
      * @type {{enableHighAccuracy: boolean, maximumAge: number, timeout: number}}
      */
-    this.options = { enableHighAccuracy: true, maximumAge: 3000, timeout: 30000 }
+    this.options = { enableHighAccuracy: true, maximumAge: 3000, timeout: 1500 }
   }
 
   /**
@@ -113,22 +107,34 @@ class Geo {
   }
 
   /**
-   *
    * @param {PositionError} error
-   * @returns {void}
+   * @callback onErrorCallback
    */
-  onError(error) {
-    this.error = error
-  }
+
+  /**
+   * @callback onSuccessCallback
+   */
 
   /**
    *
+   * @param {onSuccessCallback} onSuccess
+   * @param {onErrorCallback} onError
    * @returns {Geo}
    */
-  start() {
+  start(onSuccess, onError) {
+    if (this.watchID) {
+      return this
+    }
+    let isSuccess = false
     this.watchID = navigator.geolocation.watchPosition(
-      (position) => this.addPosition(position),
-      (error) => this.onError(error),
+      (position) => {
+        if (!isSuccess) {
+          onSuccess()
+          isSuccess = true
+        }
+        this.addPosition(position)
+      },
+      (error) => onError(error),
       this.options
     )
     return this
