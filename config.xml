@@ -8,7 +8,7 @@
         Apache Cordova Team
     </author>
     <content src="index.html" />
-    <preference name="Orientation" value="landscape" />
+    <preference name="Orientation" value="portrait" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -25,5 +25,5 @@
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <engine name="android" spec="~7.1.2" />
+    <engine name="android" spec="^7.1.4" />
 </widget>

@@ -5,10 +5,10 @@
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js",
-    "build:prod": "NODE_ENV='production' webpack --mode production --env.patch",
-    "start:prod": "yarn build:prod && node_modules/.bin/pm2 start process.yml",
-    "deploy": "yarn && yarn build:prod && cordova platform add android"
+    "start": "NODE_ENV='development' webpack-dev-server --config webpack.config.dev.js",
+    "build": "webpack --config webpack.config.prod.js --mode production --env.patch",
+    "deploy": "yarn build && cordova platform add android",
+    "android": "yarn build && cordova run android"
   },
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
@@ -24,7 +24,7 @@
     "connect-redis": "^3.3.3",
     "cookie-parser": "^1.4.3",
     "copy-webpack-plugin": "^4.5.4",
-    "cordova-android": "^7.1.2",
+    "cordova-android": "^7.1.4",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
     "css-loader": "^1.0.0",
@@ -61,6 +61,7 @@
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0",
     "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "uuid": "^3.2.1",
     "vue": "^2.5.17",
     "vue-loader": "^15.4.2",
@@ -81,6 +82,7 @@
     ]
   },
   "devDependencies": {
-    "speed-measure-webpack-plugin": "^1.2.3"
+    "speed-measure-webpack-plugin": "^1.2.3",
+    "webpack-clean": "^1.2.3"
   }
 }

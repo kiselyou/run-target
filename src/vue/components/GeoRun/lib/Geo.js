@@ -16,9 +16,9 @@ class Geo {
 
     /**
      *
-     * @type {{enableHighAccuracy: boolean, maximumAge: number, timeout: number}}
+     * @type {{enableHighAccuracy: boolean, timeout: number}}
      */
-    this.options = { enableHighAccuracy: true, maximumAge: 3000, timeout: 1500 }
+    this.options = { enableHighAccuracy: true, timeout: 30000 }
   }
 
   /**

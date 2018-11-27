@@ -66,8 +66,11 @@ const config = {
   plugins:[
     new CleanPlugin(path.join(__dirname, 'www')),
     new CopyWebpack([
+      'src/favicon.ico',
       'src/cordova.js',
-      { from: 'src/img/', to: 'img'}
+      { from: 'src/img/', to: 'img'},
+      { from: 'node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css', to: 'css'},
+      { from: 'node_modules/open-iconic/font/fonts/**', to: 'fonts/[name].[ext]'},
     ]),
     new HtmlWebpack({ template: `./src/index.html` }),
     new webpack.HashedModuleIdsPlugin()
