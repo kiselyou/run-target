@@ -8,7 +8,9 @@
     "start": "NODE_ENV='development' webpack-dev-server --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.prod.js --mode production --env.patch",
     "deploy": "yarn build && cordova platform add android",
-    "android": "yarn build && cordova run android"
+    "android": "yarn build && cordova run android",
+    "serve:prod": "node_modules/.bin/pm2 start process.yml",
+    "serve:develop": "nodemon ./api/index.js --exec babel-node --presets es2015"
   },
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
@@ -28,6 +30,7 @@
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
     "css-loader": "^1.0.0",
+    "db-migrate": "^0.11.4",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -56,6 +59,7 @@
     "popper.js": "^1.14.4",
     "postcss-loader": "^3.0.0",
     "precss": "^3.1.2",
+    "promise-mysql": "^3.3.1",
     "qs": "^6.5.1",
     "sass-loader": "^7.1.0",
     "socket.io": "^2.1.0",
