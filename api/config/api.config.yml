@@ -7,10 +7,10 @@ db:
     host: localhost
     user: root
     password: admin
-    database: target
+    database: run
     connectionLimit: 10
 server:
   host: localhost
-  port: 3000
+  port: 5000
 accessControl:
   - http://localhost:8080
