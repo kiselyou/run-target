@@ -6,6 +6,7 @@ const HtmlWebpack = require('html-webpack-plugin');
 const ExtractText = require('extract-text-webpack-plugin');
 const SpeedPlugin = require("speed-measure-webpack-plugin");
 const CleanPlugin = require('clean-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require('webpack');
 
 const smp = new SpeedPlugin();
@@ -49,9 +50,17 @@ const config = {
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
-        test: /\.(html|vue)$/,
+        test: /\.(html)$/,
         exclude: /node_modules/,
         loader: "html-loader",
+      },
+      {
+        test: /\.(vue)$/,
+        loader: [
+          'vue-loader',
+          'vue-style-loader',
+          'css-loader'
+        ],
       },
     ]
   },
@@ -60,10 +69,12 @@ const config = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@vue': path.join(__dirname, 'src/vue/components'),
-      '@page': path.join(__dirname, 'src/vue/pages')
+      '@page': path.join(__dirname, 'src/vue/pages'),
+      '@module': path.join(__dirname, 'src/vue/modules')
     },
   },
   plugins:[
+    new VueLoaderPlugin(),
     new CleanPlugin(path.join(__dirname, 'www')),
     new CopyWebpack([
       'src/favicon.ico',

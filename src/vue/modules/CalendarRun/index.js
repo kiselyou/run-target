@@ -1,10 +1,10 @@
 import './style.scss'
 import Vue from 'vue'
-import './Month'
-import Calendar from './api/Calendar'
+import CalendarRun from './api/CalendarRun'
+import './MonthRun'
 import template from './template.html'
 
-export default Vue.component('Calendar', {
+export default Vue.component('CalendarRun', {
   props: {
     startDate: {
       type: [String, Date],
@@ -19,12 +19,15 @@ export default Vue.component('Calendar', {
   },
   data: function () {
     return {
-      calendar: new Calendar().setStartDate(this.startDate).generate(),
+      calendar: new CalendarRun().setStartDate(this.startDate).generate(),
       selectedDate: new Date(this.startDate)
     }
   },
+  mounted: function () {
+    this.$emit('onMounted', this.calendar.currentDay)
+  },
   methods: {
-    selectedMonth: function () {
+    month: function () {
       return this.calendar.getMonth(this.selectedDate)
     },
     next: function (month) {
@@ -37,7 +40,7 @@ export default Vue.component('Calendar', {
     },
     selectDay: function (day) {
       this.calendar.setSelectedDay(day)
-      this.$emit('selectDay', day)
+      this.$emit('onActiveDay', this.calendar.selectedDay)
     }
   },
   template: template

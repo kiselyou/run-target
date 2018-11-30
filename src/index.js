@@ -11,6 +11,8 @@ const renderView = () => {
   })
 }
 
+const DEVICE_KEY = 1
+
 const app = {
   // Application Constructor
   initialize: function() {

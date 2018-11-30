@@ -12,5 +12,30 @@
 ```
     
 
-# Socket
-========
+# VUE directories:
+#1. src/vue/components
+==========
+
+**Consists of:**
+- components inside current component
+
+#2. src/vue/modules
+==========
+
+**Consists of:**
+- components
+
+#3. src/vue/pages
+==========
+
+**Consists of:**
+- components
+- modules
+
+#4. src/vue/layouts
+==========
+
+**Consists of:**
+- components
+- modules
+- pages
