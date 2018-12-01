@@ -5,7 +5,7 @@ import redisStore from 'connect-redis'
 import { defaultHeaders } from './middleware/headers'
 import * as core from './core'
 import bodyParser from 'body-parser'
-import routes from './routes'
+import routes from './actions/routes'
 import { eachRout } from './lib/init-routes'
 
 const app = express()
@@ -32,12 +32,12 @@ eachRout(routes, (route) => {
   switch (method) {
     case 'GET':
       app[method](route.path, (req, res) => {
-        route.action({ req, res, core })
+        route.action(Object.assign({ req, res }, core))
       })
       break
     default:
       app[method](route.path, multer().array(), (req, res) => {
-        route.action({ req, res, core })
+        route.action(Object.assign({ req, res }, core))
       })
   }
 })

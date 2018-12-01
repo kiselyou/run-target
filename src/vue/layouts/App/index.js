@@ -1,7 +1,7 @@
 import './style.scss'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Target from '@page/Target'
+import GeoRun from '@module/GeoRun'
 import '@module/Menu'
 
 Vue.use(VueRouter)
@@ -15,7 +15,7 @@ export default Vue.component('App', {
         path: '/',
         name: 'target',
         text: 'Цель',
-        component: Target
+        component: GeoRun
       },
     ]
   }),

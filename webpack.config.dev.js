@@ -70,7 +70,9 @@ const config = {
       'vue$': 'vue/dist/vue.esm.js',
       '@vue': path.join(__dirname, 'src/vue/components'),
       '@page': path.join(__dirname, 'src/vue/pages'),
-      '@module': path.join(__dirname, 'src/vue/modules')
+      '@module': path.join(__dirname, 'src/vue/modules'),
+      '@lib': path.join(__dirname, 'src/libs'),
+      '@config': path.join(__dirname, 'src/config')
     },
   },
   plugins:[

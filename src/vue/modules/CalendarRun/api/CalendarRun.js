@@ -1,3 +1,4 @@
+import objectPath from 'object-path'
 import Calendar from '@vue/Calendar/api/Calendar'
 
 class CalendarRun extends Calendar {
@@ -150,30 +151,87 @@ class CalendarRun extends Calendar {
    * @returns {CalendarRun|Calendar}
    */
   generate() {
-    let index = 0, day = 0
+    const months = this.renderTargetMonth()
+    this.setMonth(months)
+    return this
+  }
+
+  /**
+   * @param {Day} day
+   * @param {number} index
+   * @callback targetDayCallback
+   */
+
+  /**
+   *
+   * @param {targetDayCallback} [callback]
+   * @returns {Array<Month>}
+   */
+  renderTargetMonth(callback) {
+    let index = 0, dayNumber = 0, rubDayNumber = 0
     const trainingMap = this.generateTrainingMap()
     const startTime = this.startDate.getTime()
-    const months = this.monthBetween(this.startDate, this.endDateRun(trainingMap), (dayOptions) => {
+    return this.monthBetween(this.startDate, this.endDateRun(trainingMap), (day) => {
       if (!trainingMap[index]) {
         return
       }
 
-      if (!dayOptions.enabled) {
+      if (!day.enabled) {
         return
       }
 
-      if (dayOptions.date.getTime() < startTime) {
+      if (day.date.getTime() < startTime) {
         return
       }
 
-      if (this.isDayRun(day)) {
-        dayOptions.setOption('distance', trainingMap[index])
-        dayOptions.setOption('result', 0)
-        dayOptions.setOption('unit', this.unit)
+      day.setOption({ resultDistance: 0, expectDistance: 0, rubDayNumber })
+      if (this.isDayRun(dayNumber)) {
+        day.addOption('expectDistance', trainingMap[index])
         index++
       }
 
-      day = day < 6 ? day + 1 : 0
+      if (callback) {
+        callback(day, rubDayNumber)
+      }
+      rubDayNumber++
+      dayNumber = dayNumber < 6 ? dayNumber + 1 : 0
+    })
+  }
+
+  /**
+   *
+   * @returns {Array.<Day>}
+   */
+  getTargetRunDays() {
+    const days = this.getDays()
+    return days.filter(day => day.hasOption('expectDistance'))
+  }
+
+  /**
+   *
+   * @returns {{options: Object, startKm: number, targetKm: number, startDate: Date, targetDays: Array<Day>}}
+   */
+  serialize() {
+    return {
+      options: this.options,
+      startKm: this.startKm,
+      targetKm: this.targetKm,
+      startDate: this.startDate,
+      targetDays: this.getTargetRunDays(),
+    }
+  }
+
+  /**
+   *
+   * @param {Object|{options: Object, startKm: number, targetKm: number, startDate: Date, targetDays: Array<Day|Object>}} data
+   */
+  deserialize(data) {
+    this.startKm = data.startKm
+    this.targetKm = data.targetKm
+    this.options = Array.from(data.options)
+    this.startDate = new Date(data.startDate)
+    const months = this.renderTargetMonth((day, index) => {
+      day['options'] = objectPath.get(data.targetDays, [index, 'options'], {})
     })
     this.setMonth(months)
     return this

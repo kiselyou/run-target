@@ -10,7 +10,7 @@ export default Vue.component('PulseLoader', {
     },
     color: {
       type: String,
-      default: '#252525'
+      default: '#5dc596'
     },
     size: {
       type: String,
@@ -38,7 +38,7 @@ export default Vue.component('PulseLoader', {
         borderRadius: this.radius,
         display: 'inline-block',
         animationName: 'v-pulseStretchDelay',
-        animationDuration: '0.50s',
+        animationDuration: '0.75s',
         animationIterationCount: 'infinite',
         animationTimingFunction: 'cubic-bezier(.2,.68,.18,1.08)',
         animationFillMode: 'both'

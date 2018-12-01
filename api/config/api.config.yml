@@ -13,4 +13,4 @@ server:
   host: localhost
   port: 5000
 accessControl:
-  - http://localhost:8080
+  - http://localhost:3000

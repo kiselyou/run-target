@@ -1,11 +1,10 @@
 import { _lang, DEFAULT_LOCALE } from './_lang'
 import objectPath from 'object-path'
-import uuid from 'uuid/v4'
 
 const startDateTime = new Date()
-startDateTime.setHours(0, 0, 0)
+startDateTime.setHours(0, 0, 0, 0)
 const endDateTime = new Date()
-endDateTime.setHours(23, 59, 59)
+endDateTime.setHours(23, 59, 59, 999)
 
 class Day {
   /**
@@ -15,9 +14,9 @@ class Day {
    */
   constructor(date, enabled) {
     /**
-     * @type {string}
+     * @type {number|?}
      */
-    this.id = uuid()
+    this.id = null
 
     /**
      *
@@ -41,6 +40,25 @@ class Day {
 
   /**
    *
+   * @param {Day|Object} day
+   * @returns {Day}
+   */
+  copy(day) {
+    for (const property in day) {
+      if (!day.hasOwnProperty(property) || !this.hasOwnProperty(property)) {
+        continue
+      }
+      if (typeof this[property] === 'object') {
+        this[property] = Object.assign({}, day[property])
+      } else {
+        this[property] = day[property]
+      }
+    }
+    return this
+  }
+
+  /**
+   *
    * @param {string} key
    * @returns {boolean}
    */
@@ -50,11 +68,21 @@ class Day {
 
   /**
    *
+   * @param {Object} value
+   * @returns {Day}
+   */
+  setOption(value) {
+    this.options = value
+    return this
+  }
+
+  /**
+   *
    * @param {string} key
    * @param {*} value
    * @returns {Day}
    */
-  setOption(key, value) {
+  addOption(key, value) {
     this.options[key] = value
     return this
   }

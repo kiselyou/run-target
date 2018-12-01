@@ -10,7 +10,7 @@ export default Vue.component('RingLoader', {
     },
     color: {
       type: String,
-      default: '#252525'
+      default: '#5dc596'
     },
     size: {
       type: String,

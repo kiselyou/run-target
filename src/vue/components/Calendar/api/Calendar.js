@@ -21,12 +21,6 @@ class Calendar {
      * @type {Day|?}
      */
     this.currentDay = null
-
-    /**
-     *
-     * @type {Day|?}
-     */
-    this.selectedtDay = null
   }
 
   /**
@@ -239,6 +233,41 @@ class Calendar {
    */
   generate() {
     this.setMonth(this.month(this.startDate))
+    return this
+  }
+
+  /**
+   *
+   * @returns {Array.<Day>}
+   */
+  getDays() {
+    const days = []
+    for (const month of this.months) {
+      const monthDays = month.getDays()
+      for (const day of monthDays) {
+        days.push(day)
+      }
+    }
+    return days
+  }
+
+  /**
+   *
+   * @returns {Object}
+   */
+  serialize() {
+    return {
+      startDate: this.startDate,
+    }
+  }
+
+  /**
+   *
+   * @param {Object} data
+   */
+  deserialize(data) {
+    this.startDate = new Date(data.startDate)
+    this.generate()
     return this
   }
 

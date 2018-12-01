@@ -65,6 +65,23 @@ class Month {
 
   /**
    *
+   * @returns {Array.<Day>}
+   */
+  getDays() {
+    const days = []
+    for (const week of this.weeks) {
+      for (const day of week.days) {
+        if (!day.enabled) {
+          continue
+        }
+        days.push(day)
+      }
+    }
+    return days
+  }
+
+  /**
+   *
    * @returns {Array}
    */
   get weekDays() {

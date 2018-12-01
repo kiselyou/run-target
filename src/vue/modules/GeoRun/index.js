@@ -21,13 +21,13 @@ export default Vue.component('GeoRun', {
   data: function () {
     return {
       geoErrorMessage: null,
-      startDate: '2018-11-11', // Дата с которой начинается цель тренировки в календаре
+      targetId: 32,
       geo: debug ? new EmulatorGeo() : new Geo(),
-      day: null, // Текущий день календаря. (содержит информацию о текущей цели)
+      day: null, // Выбранные день календаря. (содержит информацию о текущей цели)
     }
   },
   methods: {
-    setCurrentDay: function (day) {
+    changeDay: function (day) {
       this.day = day
     },
     finishDistance: function () {

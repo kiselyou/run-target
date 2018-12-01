@@ -25,17 +25,9 @@
 **Consists of:**
 - components
 
-#3. src/vue/pages
+#3. src/vue/layouts
 ==========
 
 **Consists of:**
 - components
 - modules
-
-#4. src/vue/layouts
-==========
-
-**Consists of:**
-- components
-- modules
-- pages
