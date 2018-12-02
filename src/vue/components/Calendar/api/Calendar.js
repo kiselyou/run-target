@@ -115,6 +115,38 @@ class Calendar {
   }
 
   /**
+   * It can be overridden.
+   *
+   * @param {Date} date
+   * @param {boolean} enabled
+   * @returns {Day}
+   */
+  createDayInstance(date, enabled) {
+    return new Day(date, enabled)
+  }
+
+  /**
+   * It can be overridden.
+   *
+   * @returns {Week}
+   */
+  createWeekInstance() {
+    return new Week()
+  }
+
+  /**
+   * It can be overridden.
+   *
+   * @param {Array.<Week>} weeks
+   * @param {Date} firstDay
+   * @param {Date} lastDay
+   * @returns {Month}
+   */
+  createMonthInstance(weeks, firstDay, lastDay) {
+    return new Month(weeks, firstDay, lastDay)
+  }
+
+  /**
    * @param {Day} day
    * @param {boolean} isNow
    * @callback eachDayCallback
@@ -129,7 +161,7 @@ class Calendar {
    */
   week(dateFrom, disabled = false, callback) {
     const from = new Date(dateFrom)
-    const week = new Week()
+    const week = this.createWeekInstance()
     for (let day = 1; day <= 7; day++) {
       let date, enabled
       if (from.getDay() === day) {
@@ -150,17 +182,17 @@ class Calendar {
       }
 
       enabled = disabled ? false : enabled
-      const dayOptions = new Day(date, enabled)
+      const calendarDay = this.createDayInstance(date, enabled)
 
       let isNow = false
-      if (dayOptions.isNow) {
+      if (calendarDay.isNow) {
         isNow = true
-        this.currentDay = dayOptions
+        this.currentDay = calendarDay
       }
       if (callback) {
-        callback(dayOptions, isNow)
+        callback(calendarDay, isNow)
       }
-      week.addDay(dayOptions)
+      week.addDay(calendarDay)
     }
     return week
   }
@@ -196,7 +228,7 @@ class Calendar {
       prevWeek = week
     }
 
-    return new Month(weeks, firstDay, lastDay)
+    return this.createMonthInstance(weeks, firstDay, lastDay)
   }
 
   /**

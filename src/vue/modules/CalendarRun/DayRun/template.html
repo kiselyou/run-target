@@ -13,7 +13,7 @@
       <i class="oi oi-check" v-if="resultDistance > 0 && resultDistance < expectDistance"></i>
     </div>
 
-    <div class="day-run day-run_result" v-if="hasDistance && day.isBeforeNow">
+    <div class="day-run day-run_result" v-if="hasDistance && resultDistance > 0">
       {{ resultDistance }} {{ unit }}
     </div>
 

@@ -1,4 +1,5 @@
 import { getDistance, getSpeed } from 'geolib'
+import uuid from 'uuid/v4'
 
 class Point {
   /**
@@ -7,6 +8,17 @@ class Point {
    * @param {Point|?} [prevPoint]
    */
   constructor(position, prevPoint = null) {
+    /**
+     *
+     * @type {number|?}
+     */
+    this.id = null
+
+    /**
+     * @type {string}
+     */
+    this.uKey = uuid()
+
     /**
      *
      * @type {Object}
@@ -24,6 +36,19 @@ class Point {
      * @type {{ speed: number|?, distance: number|? }}
      */
     this.cache = { speed: null, distance: null }
+  }
+
+  /**
+   *
+   * @returns {Object}
+   */
+  serialize() {
+    return {
+      id: this.id,
+      uKey: this.uKey,
+      position: this.position,
+      prevPointUKey: this.prevPoint ? this.prevPoint.uKey : null,
+    }
   }
 
   /**

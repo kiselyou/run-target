@@ -1,19 +1,24 @@
-import { saveAction, updateAction, viewAction } from '../action-target-run'
+import { saveCalendarAction, updatePointsAction, updateDayAction, viewCalendarAction } from '../action-target-run'
 
 export default [
   {
     method: 'post',
-    path: '/target/run/save',
-    action: saveAction
+    path: '/run/save/calendar',
+    action: saveCalendarAction
   },
   {
     method: 'post',
-    path: '/target/run/update',
-    action: updateAction
+    path: '/run/update/points/:targetId',
+    action: updatePointsAction
+  },
+  {
+    method: 'post',
+    path: '/run/update/day/:dayId',
+    action: updateDayAction
   },
   {
     method: 'get',
-    path: '/target/run/:targetId',
-    action: viewAction
+    path: '/run/view/calendar/:targetId',
+    action: viewCalendarAction
   },
 ]

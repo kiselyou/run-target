@@ -1,10 +1,10 @@
 import './style.scss'
 import Vue from 'vue'
-import CalendarRun from './api/CalendarRun'
 import './MonthRun'
 import '@module/Spinner'
-import template from './template.html'
 import Ajax from '@lib/Ajax'
+import template from './template.html'
+import CalendarRun from './api/CalendarRun'
 
 export default Vue.component('CalendarRun', {
   props: {
@@ -21,16 +21,14 @@ export default Vue.component('CalendarRun', {
     return {
       calendar: new CalendarRun(),
       selectedDate: new Date(),
-      loading: true
     }
   },
   beforeMount: function () {
-    Ajax.get(`/target/run/${this.targetId}`)
+    Ajax.get(`/run/view/calendar/${this.targetId}`)
       .then((calendarOptions) => {
         this.calendar.deserialize(calendarOptions)
-        this.loading = false
+        this.$emit('onChangeDay', this.calendar.currentDay)
       })
-
   },
   mounted: function () {
     this.$emit('onChangeDay', this.calendar.currentDay)

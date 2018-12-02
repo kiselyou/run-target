@@ -154,10 +154,23 @@ class Geo {
    *
    * @returns {Geo}
    */
-  end() {
-    this.stop()
+  clear() {
     this.distances.splice(0)
     return this
+  }
+
+  /**
+   *
+   * @returns {Object}
+   */
+  serialize() {
+    const distances = []
+    for (const distance of this.distances) {
+      distances.push(distance.serialize())
+    }
+    return {
+      distances: distances
+    }
   }
 }
 

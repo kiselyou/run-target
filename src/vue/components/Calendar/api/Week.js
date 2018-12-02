@@ -3,14 +3,14 @@ class Week {
   constructor() {
     /**
      *
-     * @type {Array.<Day>}
+     * @type {Array.<DayRun>}
      */
     this.days = []
   }
 
   /**
    *
-   * @param {Day} day
+   * @param {DayRun} day
    * @returns {Week}
    */
   addDay(day) {

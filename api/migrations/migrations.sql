@@ -1,11 +1,15 @@
 
+/*
 CREATE DATABASE run CHARACTER SET utf8 COLLATE utf8_general_ci;
+*/
 
 /*
-DROP TABLE calendar;
-DROP TABLE target;
-DROP TABLE device;
-DROP TABLE user;
+DROP TABLE IF EXISTS calendar;
+DROP TABLE IF EXISTS point;
+DROP TABLE IF EXISTS distance;
+DROP TABLE IF EXISTS target;
+DROP TABLE IF EXISTS device;
+DROP TABLE IF EXISTS user;
 */
 
 CREATE TABLE user
@@ -49,3 +53,47 @@ CREATE TABLE calendar
 );
 CREATE UNIQUE INDEX calendar_id_uindex ON calendar (id);
 ALTER TABLE calendar ADD CONSTRAINT calendar_target_id_fk FOREIGN KEY (targetId) REFERENCES target (id);
+
+CREATE TABLE distance
+(
+    id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    targetId INT NOT NULL,
+    uKey VARCHAR(50) NULL,
+    distanceNumber SMALLINT,
+    prevDistanceUKey VARCHAR(50),
+    pathLength INT
+);
+CREATE UNIQUE INDEX distance_id_uindex ON distance (id);
+ALTER TABLE distance ADD CONSTRAINT distance_target_id_fk FOREIGN KEY (targetId) REFERENCES target (id);
+
+CREATE TABLE point
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    distanceId INT NOT NULL,
+    uKey VARCHAR(50) NULL,
+    position JSON,
+    prevPointUKey VARCHAR(50)
+);
+CREATE UNIQUE INDEX point_id_uindex ON point (id);
+
+ALTER TABLE point ADD CONSTRAINT point_distance_id_fk FOREIGN KEY (distanceId) REFERENCES distance (id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

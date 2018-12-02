@@ -65,7 +65,7 @@ class Month {
 
   /**
    *
-   * @returns {Array.<Day>}
+   * @returns {Array.<DayRun>}
    */
   getDays() {
     const days = []

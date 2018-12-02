@@ -1,6 +1,10 @@
 import objectPath from 'object-path'
 import Calendar from '@vue/Calendar/api/Calendar'
 
+/**
+ * resultDistance растояние в км
+ * expectDistance растояние в км
+ */
 class CalendarRun extends Calendar {
   constructor() {
     super()
@@ -168,7 +172,7 @@ class CalendarRun extends Calendar {
    * @returns {Array<Month>}
    */
   renderTargetMonth(callback) {
-    let index = 0, dayNumber = 0, rubDayNumber = 0
+    let index = 0, dayNumber = 0, runDayNumber = 0
     const trainingMap = this.generateTrainingMap()
     const startTime = this.startDate.getTime()
     return this.monthBetween(this.startDate, this.endDateRun(trainingMap), (day) => {
@@ -184,16 +188,37 @@ class CalendarRun extends Calendar {
         return
       }
 
-      day.setOption({ resultDistance: 0, expectDistance: 0, rubDayNumber })
+      day.setOption({
+        /**
+         * Растояние в км
+         *
+         * @type {number}
+         */
+        resultDistance: 0,
+        /**
+         * Растояние в км
+         *
+         * @type {number}
+         */
+        expectDistance: 0,
+        /**
+         * Растояние в км
+         * Тренировка может состоять из нескольких отдельно сохраненных кусков.
+         * Здесь массив значений рузультатов каждой дистанции
+         *
+         * @type {number}
+         */
+        piecesDistance: []
+      })
       if (this.isDayRun(dayNumber)) {
         day.addOption('expectDistance', trainingMap[index])
         index++
       }
 
       if (callback) {
-        callback(day, rubDayNumber)
+        callback(day, runDayNumber)
       }
-      rubDayNumber++
+      runDayNumber++
       dayNumber = dayNumber < 6 ? dayNumber + 1 : 0
     })
   }
@@ -231,7 +256,11 @@ class CalendarRun extends Calendar {
     this.options = Array.from(data.options)
     this.startDate = new Date(data.startDate)
     const months = this.renderTargetMonth((day, index) => {
-      day['options'] = objectPath.get(data.targetDays, [index, 'options'], {})
+      const targetDay = objectPath.get(data.targetDays, [ index ], {})
+      if (targetDay) {
+        day.id = targetDay.id
+        day.options = targetDay.options
+      }
     })
     this.setMonth(months)
     return this

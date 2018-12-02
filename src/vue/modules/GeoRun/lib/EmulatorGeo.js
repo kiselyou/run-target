@@ -52,20 +52,14 @@ class EmulatorGeo extends Geo {
 
   /**
    *
+   * @param {onSuccessCallback} onSuccess
+   * @param {onErrorCallback} onError
    * @returns {EmulatorGeo}
    */
-  clear() {
+  start(onSuccess, onError) {
     clearInterval(this.intervalId)
-    return this
-  }
-
-  /**
-   *
-   * @returns {EmulatorGeo}
-   */
-  start() {
-    this.clear()
     this.intervalId = setInterval(() => this.tick(), this.timeInterval)
+    onSuccess()
     return this
   }
 
@@ -74,17 +68,7 @@ class EmulatorGeo extends Geo {
    * @returns {EmulatorGeo}
    */
   stop() {
-    this.clear()
-    return this
-  }
-
-  /**
-   *
-   * @returns {EmulatorGeo}
-   */
-  end() {
-    this.clear()
-    this.distances.splice(0)
+    clearInterval(this.intervalId)
     return this
   }
 }

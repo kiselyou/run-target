@@ -40,6 +40,16 @@ class Day {
 
   /**
    *
+   * @param {number} value
+   * @returns {Day}
+   */
+  setId(value) {
+    this.id = value
+    return this
+  }
+
+  /**
+   *
    * @param {Day|Object} day
    * @returns {Day}
    */
@@ -90,10 +100,36 @@ class Day {
   /**
    *
    * @param {string} key
+   * @param {*} value
+   * @returns {Day}
+   */
+  pushOption(key, value) {
+    const option = (this.options[key] || [])
+    if (Array.isArray(option)) {
+      option.push(value)
+      this.addOption(key, option)
+    } else {
+      throw Error('Method "pushOption" work only with array type option.')
+    }
+    return this
+  }
+
+  /**
+   *
+   * @param {string} key
    * @returns {*|null}
    */
   getOption(key) {
     return this.options[key] !== undefined ? this.options[key] : null
+  }
+
+  /**
+   *
+   * @param {string} key
+   * @returns {number}
+   */
+  getNumberOption(key) {
+    return this.options[key] ? this.options[key] : 0
   }
 
   /**

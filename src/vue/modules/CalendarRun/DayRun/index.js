@@ -16,16 +16,15 @@ export default Vue.component('DayRun', {
     }
   },
   computed: {
-    hasDistance () {
-      const distance = this.day.getOption('expectDistance')
-      return distance && distance > 0
+    hasDistance() {
+      return this.day.getNumberOption('expectDistance') > 0
     },
-    resultDistance () {
-      return this.day.getOption('resultDistance')
+    resultDistance() {
+      return this.day.getNumberOption('resultDistance').toFixed(3)
     },
-    expectDistance () {
-      return this.day.getOption('expectDistance')
-    }
+    expectDistance() {
+      return this.day.getNumberOption('expectDistance').toFixed(3)
+    },
   },
   methods: {
     onClick () {
