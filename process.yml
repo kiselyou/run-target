@@ -1,6 +1,6 @@
 apps:
-  - script: ./index.js
-    name: 'telegram-web'
+  - script: ./api/index.js
+    name: 'run-target'
     instances: 2
     exec_mode: fork
     exec_interpreter: ./node_modules/.bin/babel-node

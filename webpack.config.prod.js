@@ -3,7 +3,7 @@
 const path = require('path');
 const CopyWebpack = require('copy-webpack-plugin');
 const HtmlWebpack = require('html-webpack-plugin');
-const UglifyJs = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ExtractText = require('extract-text-webpack-plugin');
 const WebpackClean = require('webpack-clean');
 
@@ -14,10 +14,11 @@ const config = {
     path: path.resolve('www'),
     filename: 'js/index.min.js',
   },
-  devtool: 'inline-source-map',
-  // optimization: {
-  //   minimizer: [new UglifyJs()]
-  // },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      sourceMap: true
+    })]
+  },
   module: {
     rules: [
       {
@@ -61,9 +62,17 @@ const config = {
         })
       },
       {
-        test: /\.(html|vue)$/,
+        test: /\.(html)$/,
         exclude: /node_modules/,
         loader: "html-loader",
+      },
+      {
+        test: /\.(vue)$/,
+        loader: [
+          'vue-loader',
+          'vue-style-loader',
+          'css-loader'
+        ],
       },
     ]
   },
@@ -72,7 +81,10 @@ const config = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@vue': path.join(__dirname, 'src/vue/components'),
-      '@page': path.join(__dirname, 'src/vue/pages')
+      '@page': path.join(__dirname, 'src/vue/pages'),
+      '@module': path.join(__dirname, 'src/vue/modules'),
+      '@lib': path.join(__dirname, 'src/libs'),
+      '@config': path.join(__dirname, 'src/config')
     },
   },
   plugins:[
