@@ -17,7 +17,7 @@ export default Vue.component('DayRun', {
   },
   computed: {
     hasDistance() {
-      return this.day.getNumberOption('expectDistance') > 0
+      return this.day.hasOption('expectDistance')
     },
     resultDistance() {
       return this.day.getNumberOption('resultDistance').toFixed(3)

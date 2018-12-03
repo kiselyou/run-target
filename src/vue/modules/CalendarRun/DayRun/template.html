@@ -1,13 +1,13 @@
 
 <Day :day="day" @onClick="onClick">
   <template slot="body">
-    <div class="day-run day-run_mark" v-if="hasDistance && day.isNow">
+    <div class="day-run day-run_mark" v-if="hasDistance && expectDistance > 0 && day.isNow">
       <i class="oi oi-timer" v-if="resultDistance === 0"></i>
       <i class="oi oi-thumb-up" v-if="resultDistance >= expectDistance"></i>
       <i class="oi oi-check" v-if="resultDistance > 0 && resultDistance < expectDistance"></i>
     </div>
 
-    <div class="day-run day-run_mark" v-if="hasDistance && day.isBeforeNow">
+    <div class="day-run day-run_mark" v-if="hasDistance && expectDistance > 0 && day.isBeforeNow">
       <i class="oi oi-thumb-down" v-if="resultDistance === 0"></i>
       <i class="oi oi-thumb-up" v-if="resultDistance >= expectDistance"></i>
       <i class="oi oi-check" v-if="resultDistance > 0 && resultDistance < expectDistance"></i>
@@ -19,7 +19,7 @@
 
     <span>{{ day.number }}</span>
 
-    <div class="day-run day-run_target" v-if="hasDistance">
+    <div class="day-run day-run_target" v-if="hasDistance && expectDistance > 0">
       {{ expectDistance }} {{ unit }}
     </div>
   </template>
