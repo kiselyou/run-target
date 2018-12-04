@@ -11,7 +11,7 @@ import '@module/CalendarRun'
 
 import Ajax from '@lib/Ajax'
 
-const debug = true
+const debug = false
 
 export default Vue.component('GeoRun', {
   props: {

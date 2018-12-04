@@ -1,4 +1,5 @@
 import { getDistance, getSpeed } from 'geolib'
+import PointPosition from './PointPosition'
 import uuid from 'uuid/v4'
 
 class Point {
@@ -21,9 +22,9 @@ class Point {
 
     /**
      *
-     * @type {Object}
+     * @type {PointPosition}
      */
-    this.position = position
+    this.position = new PointPosition(position)
 
     /**
      *
