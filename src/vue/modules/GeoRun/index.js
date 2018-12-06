@@ -9,7 +9,7 @@ import '@vue/RunProcess'
 import '@module/Timer'
 import '@module/CalendarRun'
 
-const debug = false
+const debug = true
 
 export default Vue.component('GeoRun', {
   props: {

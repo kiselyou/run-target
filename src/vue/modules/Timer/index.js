@@ -18,6 +18,14 @@ export default Vue.component('Timer', {
       timer: new TimerControls(),
     }
   },
+  computed: {
+    htmlClass() {
+      return {
+        'timer__disabled': this.disabled || this.status === 0,
+        'timer__pause': !this.disabled && this.status === 2
+      }
+    }
+  },
   methods: {
     time() {
       return this.timer.toStringHours()

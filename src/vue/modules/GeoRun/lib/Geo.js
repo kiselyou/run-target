@@ -1,4 +1,5 @@
 import Distance from './Distance'
+import objectPath from 'object-path'
 
 class Geo {
   constructor() {
@@ -150,9 +151,11 @@ class Geo {
           onSuccess()
           isSuccess = true
         }
+
         this.addPosition({
-          lat: position.latitude,
-          lng: position.longitude,
+          lat: position['coords']['latitude'],
+          lng: position['coords']['longitude'],
+          speed: position['coords']['speed'],
           time: Date.now()
         })
       },

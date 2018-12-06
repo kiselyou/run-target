@@ -1,7 +1,7 @@
 import { getDistance } from 'geolib'
 import PointPosition from './PointPosition'
 import objectPath from 'object-path'
-import uuid from 'uuid/v4'
+let uKey = 0
 
 class Point {
   /**
@@ -17,19 +17,15 @@ class Point {
     this.id = null
 
     /**
-     * @type {string}
+     * @type {number}
      */
-    this.uKey = uuid()
+    this.uKey = ++uKey
 
     /**
      *
      * @type {PointPosition}
      */
-    this.position = new PointPosition(
-      objectPath.get(position, 'lat', 0),
-      objectPath.get(position, 'lng', 0),
-      objectPath.get(position, 'time', null)
-    )
+    this.position = new PointPosition(position)
 
     /**
      *

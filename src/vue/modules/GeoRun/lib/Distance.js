@@ -1,5 +1,5 @@
 import Point from './Point'
-import uuid from 'uuid/v4'
+let uKey = 0
 
 class Distance {
   /**
@@ -15,9 +15,9 @@ class Distance {
     this.id = null
 
     /**
-     * @type {string}
+     * @type {number}
      */
-    this.uKey = uuid()
+    this.uKey = ++uKey
 
     /**
      *

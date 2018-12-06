@@ -1,26 +1,31 @@
+import objectPath from "object-path";
+
 class PointPosition {
   /**
    *
-   * @param {number} lat
-   * @param {number} lng
-   * @param {number|?} [time] - Default is Date.now()
+   * @param {{lat: number, lng: number, [time]: number}} position
    */
-  constructor(lat, lng, time = null) {
+  constructor(position) {
     /**
      * @type {number}
      */
-    this.lat = lat
+    this.lat = Number(objectPath.get(position, 'lat', 0))
 
     /**
      * @type {number}
      */
-    this.lng = lng
+    this.lng = Number(objectPath.get(position, 'lng', 0))
+
+    /**
+     * @type number
+     */
+    this.speed = objectPath.get(position, 'speed', 0)
 
     /**
      *
      * @type {number}
      */
-    this.time = time || Date.now()
+    this.time = objectPath.get(position, 'time', Date.now())
   }
 
   /**

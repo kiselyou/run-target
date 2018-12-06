@@ -1,10 +1,6 @@
 
 <div class="timer">
-  <div
-    class="timer_time my-3"
-   :class="{
-    'timer__disabled': disabled || status === 0,
-    'timer__pause': !disabled && status === 2}">
+  <div class="timer_time my-3" :class="htmlClass">
     <i class="oi oi-timer timer_time__icon"></i>
     {{ time() }}
   </div>
