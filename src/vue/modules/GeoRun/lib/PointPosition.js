@@ -1,4 +1,3 @@
-import objectPath from "object-path";
 
 class PointPosition {
   /**
@@ -9,23 +8,18 @@ class PointPosition {
     /**
      * @type {number}
      */
-    this.lat = Number(objectPath.get(position, 'lat', 0))
+    this.lat = position.lat || 0
 
     /**
      * @type {number}
      */
-    this.lng = Number(objectPath.get(position, 'lng', 0))
-
-    /**
-     * @type number
-     */
-    this.speed = objectPath.get(position, 'speed', 0)
+    this.lng = position.lng || 0
 
     /**
      *
      * @type {number}
      */
-    this.time = objectPath.get(position, 'time', Date.now())
+    this.time = position.time || Date.now()
   }
 
   /**
