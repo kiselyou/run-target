@@ -22,16 +22,24 @@ class Geo {
   }
 
   /**
-   * Текущая скорость.
+   * Скорость объекта на момент добавления точки.
+   * Расчитывается между текущей точкой и предыдущей.
    *
    * @returns {number}
    */
   get speed() {
-    const distance = this.lastDistance
-    if (distance) {
-      return distance.speed
-    }
-    return 0
+    const distance = this.getCurrentDistance()
+    return distance ? distance.speed : 0
+  }
+
+  /**
+   * Скорость объекта. Расчет по последним 10 точкам
+   *
+   * @returns {number}
+   */
+  getAvgSpeed() {
+    const distance = this.getCurrentDistance()
+    return distance ? distance.getAvgSpeed(10) : 0
   }
 
   /**
@@ -39,17 +47,17 @@ class Geo {
    *
    * @returns {number}
    */
-  get tempo() {
-    const speed = this.speed
+  getTempo() {
+    const speed = this.getAvgSpeed()
     return speed ? 60 / speed : 0
   }
 
   /**
-   * Длина всей дистанции.
+   * Длина (сумма длин всех) всех дистанций.
    *
    * @returns {number}
    */
-  get pathLength() {
+  getPathLengthFull() {
     let pathLength = 0
     for (const distance of this.distances) {
       pathLength += distance.pathLength
@@ -58,25 +66,35 @@ class Geo {
   }
 
   /**
-   * Дистанция это объект который содеожит информацию за один километр.
+   * Длина текущей дистанции (текущего километра).
+   *
+   * @returns {number}
+   */
+  getPathLengthCurrent() {
+    const distance = this.getCurrentDistance()
+    return distance ? distance.pathLength : 0
+  }
+
+  /**
+   * Текущая дистанция.
    *
    * @returns {Distance|?}
    */
-  get lastDistance() {
+  getCurrentDistance() {
     return this.distances.length > 0 ? this.distances[this.distances.length - 1] : null
   }
 
   /**
    * Добавление точки.
    *
-   * @param {Object} value
+   * @param {{lat: number, lng: number, [time]: number}} value
    * @returns {Geo}
    */
   addPosition(value) {
-    const distanceNumber = this.prepareDistanceNumber()
+    const distanceNumber = this.getDistanceNumber()
     let distance = this.getDistanceByNumber(distanceNumber)
     if (!distance) {
-      distance = new Distance(distanceNumber, this.lastDistance)
+      distance = new Distance(distanceNumber, this.getCurrentDistance())
       this.distances.push(distance)
     }
     distance.addPosition(value)
@@ -102,8 +120,8 @@ class Geo {
    *
    * @returns {number}
    */
-  prepareDistanceNumber() {
-    return Math.floor(this.pathLength / 1000)
+  getDistanceNumber() {
+    return Math.floor(this.getPathLengthFull() / 1000)
   }
 
   /**
@@ -132,7 +150,11 @@ class Geo {
           onSuccess()
           isSuccess = true
         }
-        this.addPosition(position)
+        this.addPosition({
+          lat: position.latitude,
+          lng: position.longitude,
+          time: Date.now()
+        })
       },
       (error) => onError(error),
       this.options

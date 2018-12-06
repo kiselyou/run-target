@@ -1,11 +1,12 @@
-import { getDistance, getSpeed } from 'geolib'
+import { getDistance } from 'geolib'
 import PointPosition from './PointPosition'
+import objectPath from 'object-path'
 import uuid from 'uuid/v4'
 
 class Point {
   /**
    *
-   * @param {Object} position
+   * @param {{lat: number, lng: number, [time]: number}} position
    * @param {Point|?} [prevPoint]
    */
   constructor(position, prevPoint = null) {
@@ -24,7 +25,11 @@ class Point {
      *
      * @type {PointPosition}
      */
-    this.position = new PointPosition(position)
+    this.position = new PointPosition(
+      objectPath.get(position, 'lat', 0),
+      objectPath.get(position, 'lng', 0),
+      objectPath.get(position, 'time', null)
+    )
 
     /**
      *
@@ -53,30 +58,6 @@ class Point {
   }
 
   /**
-   *
-   * @returns {number}
-   */
-  get lat() {
-    return this.position.coords.latitude
-  }
-
-  /**
-   *
-   * @returns {number}
-   */
-  get lng() {
-    return this.position.coords.longitude
-  }
-
-  /**
-   *
-   * @returns {number}
-   */
-  get time() {
-    return this.position.timestamp
-  }
-
-  /**
    * Calculates the distance between current and previous geo coordinates.
    * Return value is always float and represents the distance in meters.
    *
@@ -87,10 +68,7 @@ class Point {
       if (this.cache.distance) {
         return this.cache.distance
       }
-      this.cache.distance = getDistance(
-        { latitude:  this.prevPoint.lat, longitude:  this.prevPoint.lng },
-        { latitude:  this.lat, longitude:  this.lng }
-      )
+      this.cache.distance = getDistance(this.prevPoint.position, this.position, 6, 6)
       return this.cache.distance
     }
     return 0
@@ -105,14 +83,10 @@ class Point {
       if (this.cache.speed) {
         return this.cache.speed
       }
-      if (this.prevPoint.time === this.time) {
-        return 0
-      }
-      this.cache.speed = getSpeed(
-        { lat: this.prevPoint.lat, lng: this.prevPoint.lng, time: this.prevPoint.time },
-        { lat: this.lat, lng: this.lng, time: this.time },
-        { unit: 'kmh' }
-      );
+      const measures = 0.001
+      const time = (this.position.time / 1000) - (this.prevPoint.position.time / 1000)
+      const mPerHr = (this.distance / time) * 3600
+      this.cache.speed = Math.round(mPerHr * measures * 10000) / 10000
       return this.cache.speed
     }
     return 0

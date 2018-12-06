@@ -22,15 +22,9 @@ class EmulatorGeo extends Geo {
 
     /**
      *
-     * @type {{timestamp: number, coords: {latitude: number, longitude: number}}}
+     * @type {{lat: number, lng: number}}
      */
-    this.startOptions = {
-      timestamp: 1542662430374,
-      coords: {
-        latitude: 55.456000,
-        longitude: 27.567000
-      }
-    }
+    this.startOptions = { lat: 55.456000, lng: 27.567000 }
   }
 
   /**
@@ -38,14 +32,11 @@ class EmulatorGeo extends Geo {
    * @returns {EmulatorGeo}
    */
   tick() {
-    this.startOptions.coords.latitude += 0.0000195
-    this.startOptions.coords.longitude += 0.0000217
+    this.startOptions.lat += 0.0000195
+    this.startOptions.lng += 0.0000217
     this.addPosition({
-      timestamp: Date.now(),
-      coords: {
-        latitude: this.startOptions.coords.latitude,
-        longitude: this.startOptions.coords.longitude
-      }
+      lat: this.startOptions.lat,
+      lng: this.startOptions.lng
     })
     return this
   }

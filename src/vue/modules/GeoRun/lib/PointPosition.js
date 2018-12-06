@@ -1,19 +1,42 @@
-
 class PointPosition {
-  constructor(position) {
+  /**
+   *
+   * @param {number} lat
+   * @param {number} lng
+   * @param {number|?} [time] - Default is Date.now()
+   */
+  constructor(lat, lng, time = null) {
     /**
-     *
-     * @type {{latitude: number, longitude: number}}
+     * @type {number}
      */
-    this.coords = {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    }
+    this.lat = lat
 
     /**
      * @type {number}
      */
-    this.timestamp = position.timestamp
+    this.lng = lng
+
+    /**
+     *
+     * @type {number}
+     */
+    this.time = time || Date.now()
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get latitude() {
+    return this.lat
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get longitude() {
+    return this.lng
   }
 }
 

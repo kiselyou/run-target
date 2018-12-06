@@ -3,13 +3,11 @@ import Vue from 'vue'
 import Geo from './lib/Geo'
 import EmulatorGeo from './lib/EmulatorGeo'
 import template from './template.html'
-
+import Ajax from '@lib/Ajax'
 import '@vue/Speed'
 import '@vue/RunProcess'
 import '@module/Timer'
 import '@module/CalendarRun'
-
-import Ajax from '@lib/Ajax'
 
 const debug = false
 
@@ -52,13 +50,13 @@ export default Vue.component('GeoRun', {
       return (distance || 0) * 1000
     },
     path: function () {
-      return this.geo.pathLength
+      return this.geo.getPathLengthFull()
     },
     speed: function () {
-      return this.geo.speed
+      return this.geo.getAvgSpeed()
     },
     tempo: function () {
-      return this.geo.tempo
+      return this.geo.getTempo()
     },
 
     /**
@@ -66,6 +64,7 @@ export default Vue.component('GeoRun', {
      * @param {Function} startTimer - Функция которая запускает таймер. (modules/Timer)
      */
     start: function (startTimer) {
+      startTimer()
       this.geo.start(startTimer, (error) => {
         this.geoErrorMessage = error.message
         this.geo.stop()
@@ -89,7 +88,7 @@ export default Vue.component('GeoRun', {
       endTimer()
       this.geo.stop()
 
-      const pathLength = this.geo.pathLength / 1000
+      const pathLength = this.geo.getPathLengthFull() / 1000
       const oldResultDistance = this.day.getNumberOption('resultDistance')
       this.day.addOption('resultDistance', oldResultDistance + pathLength)
       this.day.pushOption('piecesDistance', pathLength)

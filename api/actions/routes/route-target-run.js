@@ -1,4 +1,4 @@
-import { saveCalendarAction, updatePointsAction, updateDayAction, viewCalendarAction } from '../action-target-run'
+import { saveCalendarAction, updatePointsAction, updateDayAction, viewCalendarAction, viewPointsAction } from '../action-target-run'
 
 export default [
   {
@@ -20,5 +20,10 @@ export default [
     method: 'get',
     path: '/run/view/calendar/:targetId',
     action: viewCalendarAction
+  },
+  {
+    method: 'get',
+    path: '/run/view/points/:distanceId',
+    action: viewPointsAction
   },
 ]

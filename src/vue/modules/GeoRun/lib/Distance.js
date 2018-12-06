@@ -47,6 +47,7 @@ class Distance {
 
   /**
    * Скорость объекта на момент добавления точки.
+   * Расчитывается между текущей точкой и предыдущей.
    *
    * @returns {number}
    */
@@ -59,21 +60,31 @@ class Distance {
   }
 
   /**
+   * Средняя скорость объекта за последние (n) точек.
+   *
+   * @param {number} interval - Количество последних точек для расета средней скорости.
+   */
+  getAvgSpeed(interval) {
+    const avg = { speed: 0, count: 0 }
+    const index = this.points.length >= interval ? this.points.length - interval : 0
+    for (let i = index; i < this.points.length; i++) {
+      const speed = this.points[i]['speed']
+      if (speed === 0) {
+        continue
+      }
+      avg.speed += speed
+      avg.count++
+    }
+    return avg.count > 0 ? avg.speed / avg.count : 0
+  }
+
+  /**
    * Средняя скорость на протяжении дистанции.
    *
    * @returns {number}
    */
-  get averageSpeed() {
-    let totalSpeed = 0
-    let totalCount = 0
-    for (const point of this.points) {
-      if (!point.prevPoint) {
-        continue
-      }
-      totalSpeed += point.speed
-      totalCount++
-    }
-    return totalCount ? totalSpeed / totalCount : 0
+  getAvgSpeedFull() {
+    return this.getAvgSpeed(this.points.length)
   }
 
   /**
@@ -100,7 +111,7 @@ class Distance {
 
   /**
    *
-   * @param {Object} value
+   * @param {{lat: number, lng: number, [time]: number}} value
    * @param {afterPointAdded} [callback]
    * @returns {Distance}
    */

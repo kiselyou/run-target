@@ -4,7 +4,7 @@ import { saveTarget, getTargetById } from './../repositories/target'
 import { saveCalendarDays, getCalendarDaysByTargetId, getCalendarDayById, updateCalendarDayById } from './../repositories/calendar'
 
 import { saveDistance } from './../repositories/distance'
-import { savePoints } from './../repositories/point'
+import { savePoints, getPoints } from './../repositories/point'
 
 /**
  * Create new calendar.
@@ -38,11 +38,6 @@ export async function saveCalendarAction({ req, res, db }) {
  */
 export async function updateDayAction({ req, res, db }) {
   const dayId = objectPath.get(req, ['params', 'dayId'], null)
-
-  console.log(
-    objectPath.get(req, ['body', 'day', 'options'], null)
-  )
-
   await updateCalendarDayById(db, dayId, {
     options: objectPath.get(req, ['body', 'day', 'options'], null)
   })
@@ -73,6 +68,12 @@ export async function updatePointsAction({ req, res, db }) {
     await savePoints(db, distanceId, points)
   }
   return res.send({ status: true, action: 'points' })
+}
+
+export async function viewPointsAction({ req, res, db }) {
+  const distanceId = objectPath.get(req, [ 'params', 'distanceId' ], [])
+  const points = await getPoints(db, distanceId)
+  return res.send(points)
 }
 
 /**
