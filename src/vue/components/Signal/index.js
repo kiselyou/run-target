@@ -17,13 +17,6 @@ export default Vue.component('Signal', {
       default: 'GPS'
     },
   },
-  computed: {
-    danger: function () {
-      return {
-        'signal_label__danger': (this.value / 20) <= 2
-      }
-    }
-  },
   methods: {
     barClass(index) {
       return {
