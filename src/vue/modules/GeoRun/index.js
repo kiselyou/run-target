@@ -5,7 +5,9 @@ import EmulatorGeo from './lib/EmulatorGeo'
 import template from './template.html'
 import Ajax from '@lib/Ajax'
 import '@vue/Speed'
+import '@vue/Signal'
 import '@vue/RunProcess'
+import '@vue/Countdown'
 import '@module/Timer'
 import '@module/CalendarRun'
 
@@ -39,7 +41,19 @@ export default Vue.component('GeoRun', {
        * @type {DayRun|?}
        */
       day: null, // Выбранный день календаря. (содержит информацию о текущей цели)
+
+      /**
+       * @type {number}
+       */
+      geoSignalLevel: 0,
+
+      enabledCountdown: false
     }
+  },
+  mounted() {
+    this.geo.listenSignalLevel((signal) => {
+      this.geoSignalLevel = signal.value
+    })
   },
   methods: {
     changeDay: function (day) {
@@ -59,16 +73,20 @@ export default Vue.component('GeoRun', {
       return this.geo.getTempo()
     },
 
+    startRun: function () {
+      this.enabledCountdown = false
+    },
+
     /**
      *
      * @param {Function} startTimer - Функция которая запускает таймер. (modules/Timer)
      */
     start: function (startTimer) {
-      startTimer()
-      this.geo.start(startTimer, (error) => {
-        this.geoErrorMessage = error.message
-        this.geo.stop()
-      })
+      this.enabledCountdown = true
+      // this.geo.start(startTimer, (error) => {
+      //   this.geoErrorMessage = error.message
+      //   this.geo.stop()
+      // })
     },
 
     /**

@@ -1,0 +1,26 @@
+.signal {
+  width: 24px;
+  padding: 4px;
+
+  &_bar {
+    stroke: #EBEBEB;
+
+    &__active {
+      stroke: #2DBA00;
+    }
+  }
+
+  &_label {
+    font-size: 8px;
+    text-transform: uppercase;
+    text-align: center;
+
+    &__disabled {
+      color: #EBEBEB;
+    }
+
+    &__danger {
+      color: #FF0000;
+    }
+  }
+}

@@ -20,6 +20,61 @@ class Geo {
      * @type {{enableHighAccuracy: boolean, timeout: number}}
      */
     this.options = { enableHighAccuracy: true, timeout: 30000 }
+
+    /**
+     *
+     * @type {boolean}
+     */
+    this.signalLevelPause = false
+  }
+
+  /**
+   * @typedef Layer
+   * @property {number} value
+   * @property {number} code
+   * @property {string} message
+   */
+
+  /**
+   *
+   * @returns {Promise<Layer>}
+   */
+  detectSignalLevel() {
+    let time = Date.now()
+    const timeout = 3000
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        () => {
+          const timeDiff = Date.now() - time
+          const value = 100 - (timeDiff * 100 / timeout)
+          resolve({ value, code: 0, message: 'Success' })
+        },
+        (error) => {
+          resolve({ value: 0, code: error.code, message: error.message })
+        },
+        { enableHighAccuracy: true, timeout }
+      );
+    })
+  }
+
+  /**
+   * @param {Layer} signal
+   * @callback signalLevelCallback
+   */
+
+  /**
+   *
+   * @param callback
+   */
+  listenSignalLevel(callback) {
+    if (this.signalLevelPause) {
+      setTimeout(() => this.listenSignalLevel(callback), 2000)
+      return
+    }
+    this.detectSignalLevel().then((signal) => {
+      callback(signal)
+      setTimeout(() => this.listenSignalLevel(callback), 2000)
+    })
   }
 
   /**

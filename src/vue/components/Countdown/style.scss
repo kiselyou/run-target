@@ -1,0 +1,39 @@
+.start-timer {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #252525;
+  color: #FFFFFF;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+
+  &_counter {
+    width: 120px;
+    height: 120px;
+    font-size: 42px;
+    border-radius: 50%;
+    border: solid 2px #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px #FFFFFF inset;
+    animation-name: counter;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-direction: reverse;
+    animation-timing-function: ease-in;
+  }
+
+  @keyframes counter {
+    from {
+      transform: scale(1)
+    }
+    to {
+      transform: scale(0)
+    }
+  }
+}

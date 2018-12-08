@@ -1,5 +1,9 @@
 <div class="geo-run">
 
+  <Countdown :enabled="enabledCountdown" :onRun="startRun"/>
+
+  <Signal :value="geoSignalLevel"/>
+
   <div class="geo-run_body my-2">
 
     <Timer :disabled="disabled" @onStart="start" @onStop="stop" @onEnd="end">
