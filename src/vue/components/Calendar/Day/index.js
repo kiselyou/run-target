@@ -21,6 +21,7 @@ export default Vue.component('Day', {
       }
       return {
         'day__today': this.day.isNow,
+        'day__active': this.day.active,
         'day__hover': this.day.enabled,
         'day__bordered': this.day.enabled,
         'day__disabled': !this.day.enabled,

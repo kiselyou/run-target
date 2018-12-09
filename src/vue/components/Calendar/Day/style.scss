@@ -38,4 +38,11 @@
     background: #333333;
     border: solid 1px #555555;
   }
+
+  &__active {
+    border: solid 1px #FFFFFF;
+    &:hover {
+      border: solid 1px #FFFFFF;
+    }
+  }
 }

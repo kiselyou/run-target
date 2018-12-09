@@ -63,21 +63,45 @@ class Month {
       objectPath.get(_lang, [DEFAULT_LOCALE, 'monthNamesShort', this.month], null)
   }
 
+  eachEnabledDay(callback) {
+    for (const week of this.weeks) {
+      for (const day of week.days) {
+        if (!day.enabled) {
+          continue
+        }
+        callback(day, week)
+      }
+    }
+  }
+
   /**
    *
    * @returns {Array.<DayRun>}
    */
   getDays() {
     const days = []
-    for (const week of this.weeks) {
-      for (const day of week.days) {
-        if (!day.enabled) {
-          continue
-        }
-        days.push(day)
+    this.eachEnabledDay((day) => {
+      if (!day.enabled) {
+        return
       }
-    }
+      days.push(day)
+    })
     return days
+  }
+
+  /**
+   *
+   * @param {Day} activeDay
+   * @returns {Month}
+   */
+  setActiveDay(activeDay) {
+    this.eachEnabledDay((day) => {
+      if (!day.enabled) {
+        return
+      }
+      day.setActive(activeDay.date === day.date)
+    })
+    return this
   }
 
   /**

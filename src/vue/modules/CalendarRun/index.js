@@ -28,12 +28,12 @@ export default Vue.component('CalendarRun', {
       .then((calendarOptions) => {
         if (Object.keys(calendarOptions).length > 0) {
           this.calendar.deserialize(calendarOptions)
-          this.$emit('onChangeDay', this.calendar.currentDay)
+          this.$emit('activeDay', this.calendar.currentDay)
         }
       })
   },
   mounted: function () {
-    this.$emit('onChangeDay', this.calendar.currentDay)
+    this.$emit('activeDay', this.calendar.currentDay)
   },
   methods: {
     month: function () {
@@ -49,7 +49,7 @@ export default Vue.component('CalendarRun', {
     },
     selectDay: function (day) {
       this.calendar.setSelectedDay(day)
-      this.$emit('onActiveDay', this.calendar.selectedDay)
+      this.$emit('selectDay', day)
     }
   },
   template: template

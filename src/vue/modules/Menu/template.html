@@ -7,7 +7,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbar" data-toggle="collapse" data-target="#navbar">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" :class="{active: isActive(route)}" v-for="route of routes">
+      <li class="nav-item" :class="{active: isActive(route)}" :key="index" v-for="(route, index) of routes">
         <router-link  class="nav-link" :to="route.path">{{ route.text }}</router-link>
       </li>
     </ul>

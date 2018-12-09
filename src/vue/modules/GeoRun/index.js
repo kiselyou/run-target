@@ -6,10 +6,10 @@ import template from './template.html'
 import Ajax from '@lib/Ajax'
 import '@vue/Speed'
 import '@vue/Signal'
-import '@vue/Confirm'
 import '@vue/RunProcess'
 import '@vue/Countdown'
 import '@module/Timer'
+import '@module/Confirm'
 import '@module/CalendarRun'
 
 const debug = true
@@ -39,7 +39,7 @@ export default Vue.component('GeoRun', {
       geo: debug ? new EmulatorGeo() : new Geo(),
 
       /**
-       * Выбранный день календаря. (содержит информацию о текущей цели)
+       * Выбранный или активный день календаря. (содержит информацию о текущей цели)
        *
        * @type {DayRun|?}
        */
@@ -92,11 +92,21 @@ export default Vue.component('GeoRun', {
   methods: {
     /**
      * CalendarRun.
-     * Изменение дня в календаре.
+     * Метод дня устоновки текущего дня в календаре.
      *
      * @param day
      */
-    changeDay: function (day) {
+    activeDay: function (day) {
+      this.day = day
+    },
+
+    /**
+     * CalendarRun.
+     * Метод дня устоновки выбранного дня в календаре.
+     *
+     * @param day
+     */
+    selectDay: function (day) {
       this.day = day
     },
 

@@ -21,6 +21,12 @@ class Calendar {
      * @type {Day|?}
      */
     this.currentDay = null
+
+    /**
+     *
+     * @type {null}
+     */
+    this.selectedDay = null
   }
 
   /**
@@ -37,7 +43,11 @@ class Calendar {
    * @param {Day} value
    */
   setSelectedDay(value) {
+    if (this.selectedDay) {
+      this.selectedDay.setActive(false)
+    }
     this.selectedDay = value
+    this.selectedDay.setActive(true)
     return this
   }
 

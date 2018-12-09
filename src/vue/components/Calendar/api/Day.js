@@ -31,6 +31,12 @@ class Day {
     this.enabled = enabled
 
     /**
+     *
+     * @type {boolean}
+     */
+    this.active = false
+
+    /**
      * Custom options.
      *
      * @type {Object}
@@ -45,6 +51,16 @@ class Day {
    */
   setId(value) {
     this.id = value
+    return this
+  }
+
+  /**
+   *
+   * @param {boolean} value
+   * @returns {Day}
+   */
+  setActive(value) {
+    this.active = value
     return this
   }
 
