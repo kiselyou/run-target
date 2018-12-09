@@ -39,22 +39,34 @@ export default Vue.component('GeoRun', {
       geo: debug ? new EmulatorGeo() : new Geo(),
 
       /**
+       * Выбранный день календаря. (содержит информацию о текущей цели)
+       *
        * @type {DayRun|?}
        */
-      day: null, // Выбранный день календаря. (содержит информацию о текущей цели)
+      day: null,
 
       /**
-       * @type {number}
+       * TRUE - Запустить обратный отсчет.
+       *
+       * @type {boolean}
        */
-      geoSignalLevel: 0,
+      showCountdown: false,
 
-      enabledCountdown: false
+      /**
+       * TRUE - показать предложение, включить GPS модуль.
+       *
+       * @type {boolean}
+       */
+      showConfirmGPS: false,
+
+      /**
+       * @type {Function}
+       */
+      beforeStartGeo: null
     }
   },
   mounted() {
-    this.geo.listenSignalLevel((signal) => {
-      this.geoSignalLevel = signal.value
-    })
+    this.geo.signal.listen()
   },
   computed: {
     finishDistance: function () {
@@ -70,29 +82,74 @@ export default Vue.component('GeoRun', {
     tempo: function () {
       return this.geo.getTempo()
     },
+    geoSignalValue: function () {
+      return this.geo.signal.value
+    },
+    geoIsDisabled: function () {
+      return this.geo.signal.isGeoDisabled
+    }
   },
   methods: {
+    /**
+     * CalendarRun.
+     * Изменение дня в календаре.
+     *
+     * @param day
+     */
     changeDay: function (day) {
       this.day = day
     },
 
-    startRun: function () {
-      this.enabledCountdown = false
+    /**
+     * Confirm.
+     * Кнопка включить GPS модуль.
+     */
+    enableGPS() {
+      this.showConfirmGPS = false
+      // TODO: включить модуль GPS
+      this.showCountdown = true // TODO: временно
     },
 
     /**
+     * Confirm.
+     * Кнопка отмена.
+     */
+    cancelEnableGPS() {
+      this.showConfirmGPS = false
+    },
+
+    /**
+     * Countdown.
+     * Срабатывает после того как закончится обратный отсчет.
+     */
+    start: function () {
+      this.showCountdown = false
+      if (this.beforeStartGeo) {
+        this.beforeStartGeo()
+      }
+      this.geo.start((error) => {
+        this.geoErrorMessage = error.message
+      })
+    },
+
+    /**
+     * Timer.
+     * Кнопка старт.
      *
      * @param {Function} startTimer - Функция которая запускает таймер. (modules/Timer)
      */
-    start: function (startTimer) {
-      this.enabledCountdown = true
-      // this.geo.start(startTimer, (error) => {
-      //   this.geoErrorMessage = error.message
-      //   this.geo.stop()
-      // })
+    beforeStar: function (startTimer) {
+      this.beforeStartGeo = startTimer
+      if (this.geo.signal.isGeoDisabled) {
+        this.showConfirmGPS = true
+      } else {
+        this.showCountdown = true
+      }
     },
 
     /**
+     * Timer.
+     * Кнопка стоп.
      *
      * @param {Function} stopTimer - Функция которая запускает таймер. (modules/Timer)
      */
@@ -102,6 +159,21 @@ export default Vue.component('GeoRun', {
     },
 
     /**
+     * Timer.
+     * Кнопка стоп.
+     *
+     * @param {Function} stopTimer - Функция которая запускает таймер. (modules/Timer)
+     */
+    next: function (stopTimer) {
+      stopTimer()
+      this.geo.start((error) => {
+        this.geoErrorMessage = error.message
+      })
+    },
+
+    /**
+     * Timer.
+     * Кнопка закончить.
      *
      * @param {Function} endTimer - Функция которая запускает таймер. (modules/Timer)
      */

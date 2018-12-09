@@ -1,5 +1,5 @@
 import Distance from './Distance'
-import objectPath from 'object-path'
+import Signal from './Signal'
 
 class Geo {
   constructor() {
@@ -23,58 +23,9 @@ class Geo {
 
     /**
      *
-     * @type {boolean}
+     * @type {Signal}
      */
-    this.signalLevelPause = false
-  }
-
-  /**
-   * @typedef Layer
-   * @property {number} value
-   * @property {number} code
-   * @property {string} message
-   */
-
-  /**
-   *
-   * @returns {Promise<Layer>}
-   */
-  detectSignalLevel() {
-    let time = Date.now()
-    const timeout = 3000
-    return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        () => {
-          const timeDiff = Date.now() - time
-          const value = 100 - (timeDiff * 100 / timeout)
-          resolve({ value, code: 0, message: 'Success' })
-        },
-        (error) => {
-          resolve({ value: 0, code: error.code, message: error.message })
-        },
-        { enableHighAccuracy: true, timeout }
-      );
-    })
-  }
-
-  /**
-   * @param {Layer} signal
-   * @callback signalLevelCallback
-   */
-
-  /**
-   *
-   * @param callback
-   */
-  listenSignalLevel(callback) {
-    if (this.signalLevelPause) {
-      setTimeout(() => this.listenSignalLevel(callback), 2000)
-      return
-    }
-    this.detectSignalLevel().then((signal) => {
-      callback(signal)
-      setTimeout(() => this.listenSignalLevel(callback), 2000)
-    })
+    this.signal = new Signal()
   }
 
   /**
@@ -191,22 +142,15 @@ class Geo {
 
   /**
    *
-   * @param {onSuccessCallback} onSuccess
-   * @param {onErrorCallback} onError
+   * @param {onErrorCallback} [onError]
    * @returns {Geo}
    */
-  start(onSuccess, onError) {
+  start(onError) {
     if (this.watchID) {
       return this
     }
-    let isSuccess = false
     this.watchID = navigator.geolocation.watchPosition(
       (position) => {
-        if (!isSuccess) {
-          onSuccess()
-          isSuccess = true
-        }
-
         this.addPosition({
           lat: position['coords']['latitude'],
           lng: position['coords']['longitude'],
@@ -214,7 +158,12 @@ class Geo {
           time: Date.now()
         })
       },
-      (error) => onError(error),
+      (error) => {
+        this.stop()
+        if (error) {
+          onError(error)
+        }
+      },
       this.options
     )
     return this

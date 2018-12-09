@@ -10,6 +10,12 @@ class EmulatorGeo extends Geo {
 
     /**
      *
+     * @type {boolean}
+     */
+    this.emulator = true
+
+    /**
+     *
      * @type {number}
      */
     this.timeInterval = timeInterval
@@ -65,14 +71,12 @@ class EmulatorGeo extends Geo {
 
   /**
    *
-   * @param {onSuccessCallback} onSuccess
    * @param {onErrorCallback} onError
    * @returns {EmulatorGeo}
    */
-  start(onSuccess, onError) {
+  start(onError) {
     clearInterval(this.intervalId)
     this.intervalId = setInterval(() => this.tick(), this.timeInterval)
-    onSuccess()
     return this
   }
 

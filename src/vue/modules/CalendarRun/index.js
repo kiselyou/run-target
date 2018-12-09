@@ -26,8 +26,10 @@ export default Vue.component('CalendarRun', {
   beforeMount: function () {
     Ajax.get(`/run/view/calendar/${this.targetId}`)
       .then((calendarOptions) => {
-        this.calendar.deserialize(calendarOptions)
-        this.$emit('onChangeDay', this.calendar.currentDay)
+        if (Object.keys(calendarOptions).length > 0) {
+          this.calendar.deserialize(calendarOptions)
+          this.$emit('onChangeDay', this.calendar.currentDay)
+        }
       })
   },
   mounted: function () {

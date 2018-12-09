@@ -42,6 +42,12 @@ export default Vue.component('Timer', {
         this.timer.stop()
       })
     },
+    next: function () {
+      this.$emit('onNext', () => {
+        this.status = 1
+        this.timer.start()
+      })
+    },
     end: function () {
       this.$emit('onEnd', () => {
         this.status = 0

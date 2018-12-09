@@ -1,6 +1,7 @@
 .signal {
   width: 24px;
   padding: 4px;
+  color: #2DBA00;
 
   &_bar {
     stroke: #EBEBEB;
@@ -14,12 +15,13 @@
     font-size: 8px;
     text-transform: uppercase;
     text-align: center;
+    text-decoration: underline overline;
 
     &__disabled {
-      color: #EBEBEB;
+      color: #252525;
     }
 
-    &__danger {
+    &__off {
       color: #FF0000;
     }
   }

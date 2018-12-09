@@ -1,12 +1,22 @@
 <div class="geo-run">
 
-  <Countdown :enabled="enabledCountdown" :onRun="startRun"/>
+  <Countdown :show="showCountdown" @start="start"/>
 
-  <Signal :value="geoSignalLevel"/>
+  <div class="geo-run_panel">
+    <div class="m-2">
+      <div class="text-warning" v-if="geo.emulator">
+        <i class="oi oi-audio"></i>
+        <span class="">эмулятор</span>
+      </div>
+    </div>
+    <div class="m-2">
+      <Signal :value="geoSignalValue" :off="geoIsDisabled"/>
+    </div>
+  </div>
 
   <div class="geo-run_body my-2">
 
-    <Timer :disabled="disabled" @onStart="start" @onStop="stop" @onEnd="end">
+    <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
       <Speed :tempo="tempo" :distance="path" :speed="speed" class="my-3"/>
       <RunProcess :finishDistance="finishDistance" :currentDistance="path" class="my-3"/>
       <div class="row mx-3">
@@ -17,6 +27,13 @@
   </div>
 
   <CalendarRun :targetId="targetId" class="mt-3" @onChangeDay="changeDay" />
-  <Confirm text="Включить GPS?" />
+
+  <Confirm
+    btnYes="Включить"
+    text="Включите GPS и повторите."
+    :show="showConfirmGPS"
+    @clickNo="cancelEnableGPS"
+    @clickYes="enableGPS"
+  />
 
 </div>

@@ -12,12 +12,8 @@ export default Vue.component('Countdown', {
       type: Boolean,
       default: true
     },
-    enabled: {
+    show: {
       type: Boolean,
-      required: true
-    },
-    onRun: {
-      type: Function,
       required: true
     },
   },
@@ -36,7 +32,7 @@ export default Vue.component('Countdown', {
     }
   },
   updated: function() {
-    if (!this.enabled || this.number > 1) {
+    if (!this.show || this.number > 1) {
       return
     }
 
@@ -45,7 +41,7 @@ export default Vue.component('Countdown', {
       if (this.number >= this.time) {
         clearInterval(this.timerId)
         this.number = 1
-        this.onRun()
+        this.$emit('start')
         return
       }
       this.number++

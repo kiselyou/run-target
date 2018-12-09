@@ -1,4 +1,19 @@
 .geo-run {
+  position: relative;
+
+  &_panel {
+    position: absolute;
+    width: 100%;
+    top: -8px;
+    display: flex;
+    justify-content: space-between;
+
+    & > div {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   &_head {
     overflow: auto;
   }

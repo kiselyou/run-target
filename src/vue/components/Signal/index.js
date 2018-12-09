@@ -16,6 +16,18 @@ export default Vue.component('Signal', {
       type: String,
       default: 'GPS'
     },
+    off: {
+      type: Boolean,
+      default: false
+    },
+  },
+  computed: {
+    htmlClassLabel: function () {
+      return {
+        'signal_label__disabled': this.value < 50,
+        'signal_label__off': this.off
+      }
+    }
   },
   methods: {
     barClass(index) {
