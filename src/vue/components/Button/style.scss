@@ -33,23 +33,42 @@
   }
 
   &__disabled {
-    background: #666666;
+    opacity: 0.5 !important;
+    background: #EFEFEF !important;
+    color: #D2D2D2 !important;
 
     &:hover {
-      opacity: 1;
       cursor: not-allowed;
+    }
+  }
+
+  &__white {
+    background: #FFFFFF;
+    border: solid 1px #999999;
+    color: #252525;
+
+    &:hover {
+      background: #F8F8FF;
     }
   }
 
   &__orange {
     background: #EB9B00;
+    border: solid 1px #EB9B00;
   }
 
   &__green {
     background: #2DBA00;
+    border: solid 1px #2DBA00;
   }
 
   &__red {
     background: #C92C00;
+    border: solid 1px #C92C00;
+  }
+
+  &__blue {
+    background: #1E6EBE;
+    border: solid 1px #1E6EBE;
   }
 }

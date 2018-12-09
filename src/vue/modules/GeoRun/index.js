@@ -56,10 +56,7 @@ export default Vue.component('GeoRun', {
       this.geoSignalLevel = signal.value
     })
   },
-  methods: {
-    changeDay: function (day) {
-      this.day = day
-    },
+  computed: {
     finishDistance: function () {
       const distance = this.day ? this.day.getOption('expectDistance') : 0
       return (distance || 0) * 1000
@@ -72,6 +69,11 @@ export default Vue.component('GeoRun', {
     },
     tempo: function () {
       return this.geo.getTempo()
+    },
+  },
+  methods: {
+    changeDay: function (day) {
+      this.day = day
     },
 
     startRun: function () {

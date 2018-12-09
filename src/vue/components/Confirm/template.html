@@ -1,16 +1,21 @@
-<div class="confirm">
+<div class="confirm" v-if="enabled">
 
   <div class="confirm_body">
     <slot>
-      <div class="confirm_body__icon">
-        <i class="oi oi-warning"></i>
+      <div class="confirm_body__icon" v-if="iconName">
+        <i :class="iconName"></i>
       </div>
-      <div class="confirm_body__text">Вы уверены?</div>
+      <div class="confirm_body__text">{{ text }}</div>
     </slot>
   </div>
+
   <div class="confirm_foot">
-    <div class="confirm_btn">Отмена</div>
-    <div class="confirm_btn confirm_btn__disabled">Продолжить</div>
+    <div class="confirm_btn">
+      <Button :text="btnNo" width="100%" :skin="btnNoSkin" :disabled="btnNoDisabled" @click="eventNo"/>
+    </div>
+    <div class="confirm_btn">
+      <Button :text="btnYes" width="100%" :skin="btnNoSkin" :disabled="btnYesDisabled" @click="eventYes"/>
+    </div>
   </div>
 
 </div>
