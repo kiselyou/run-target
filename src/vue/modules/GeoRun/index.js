@@ -4,6 +4,7 @@ import Geo from './lib/Geo'
 import EmulatorGeo from './lib/EmulatorGeo'
 import template from './template.html'
 import Ajax from '@lib/Ajax'
+import '@vue/Tab'
 import '@vue/Speed'
 import '@vue/Signal'
 import '@vue/RunProcess'
@@ -12,14 +13,14 @@ import '@module/Timer'
 import '@module/Confirm'
 import '@module/CalendarRun'
 
+import TabItems from '@vue/Tab/api/TabItems'
+import TabItem from '@vue/Tab/api/TabItem'
+
 const debug = true
 
 export default Vue.component('GeoRun', {
   props: {
-    disabled: {
-      type: Boolean,
-      default: false
-    },
+
   },
   data: function () {
     return {
@@ -62,7 +63,16 @@ export default Vue.component('GeoRun', {
       /**
        * @type {Function}
        */
-      beforeStartGeo: null
+      beforeStartGeo: null,
+
+      /**
+       * @type {boolean}
+       */
+      disabled: true,
+
+      tabItems: new TabItems()
+        .pushItem(new TabItem('Активность', true))
+        .pushItem(new TabItem('Подробно', false))
     }
   },
   mounted() {
@@ -70,11 +80,11 @@ export default Vue.component('GeoRun', {
   },
   computed: {
     finishDistance: function () {
-      const distance = this.day ? this.day.getOption('expectDistance') : 0
-      return (distance || 0) * 1000
+      return this.day ? (this.day.getNumberOption('expectDistance') * 1000): 0
     },
     path: function () {
-      return this.geo.getPathLengthFull()
+      const resultDistance = this.day ? (this.day.getNumberOption('resultDistance') * 1000) : 0
+      return resultDistance + this.geo.getPathLengthFull()
     },
     speed: function () {
       return this.geo.getAvgSpeed()
@@ -98,6 +108,7 @@ export default Vue.component('GeoRun', {
      */
     activeDay: function (day) {
       this.day = day
+      this.disabled = false
     },
 
     /**
@@ -108,6 +119,7 @@ export default Vue.component('GeoRun', {
      */
     selectDay: function (day) {
       this.day = day
+      this.disabled = !this.day.isNow
     },
 
     /**

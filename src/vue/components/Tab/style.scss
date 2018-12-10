@@ -1,0 +1,40 @@
+.tab {
+  display: flex;
+
+  &_panel {
+    width: 100%;
+    margin: 0 6px;
+    display: flex;
+    justify-content: space-between;
+
+    &__block {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &_item {
+    height: 32px;
+    padding: 0 10px;
+    margin: 0 1px;
+    display: flex;
+    align-items: center;
+    border-bottom: solid 3px transparent;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: solid 3px #0000FF;
+    }
+
+    &__active {
+      border-bottom: solid 3px #EB9B00 !important;
+      color: #252525;
+      pointer-events: none;
+    }
+
+    &__disabled {
+      border-bottom: solid 3px #EBEBEB !important;
+      pointer-events: none;
+    }
+  }
+}

@@ -1,25 +1,31 @@
 <div class="geo-run">
 
+  <Tab :items="tabItems">
+    <template slot="icon">
+      <Signal :value="geoSignalValue" :off="geoIsDisabled"/>
+    </template>
+  </Tab>
+
   <Countdown :show="showCountdown" @start="start"/>
 
-  <div class="geo-run_panel">
+  <!--<div class="geo-run_panel">
     <div class="m-2">
-      <div class="text-warning" v-if="geo.emulator">
+      &lt;!&ndash;<div class="text-warning" v-if="geo.emulator">
         <i class="oi oi-audio"></i>
         <span class="">эмулятор</span>
-      </div>
+      </div>&ndash;&gt;
     </div>
     <div class="m-2">
       <Signal :value="geoSignalValue" :off="geoIsDisabled"/>
     </div>
-  </div>
+  </div>-->
 
   <div class="geo-run_body my-2">
 
     <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
       <Speed :tempo="tempo" :distance="path" :speed="speed" class="my-3"/>
       <RunProcess :finishDistance="finishDistance" :currentDistance="path" class="my-3"/>
-      <div class="row mx-3">
+      <div class="row mx-3" v-if="this.geoErrorMessage">
         <div class="col-12 text-center text-danger">{{ this.geoErrorMessage }}</div>
       </div>
     </Timer>

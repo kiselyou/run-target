@@ -33,8 +33,9 @@
   }
 
   &__disabled {
-    opacity: 0.5 !important;
-    background: #EFEFEF !important;
+    opacity: 0.6 !important;
+    background: #252525 !important;
+    border: solid 1px #252525 !important;
     color: #D2D2D2 !important;
 
     &:hover {

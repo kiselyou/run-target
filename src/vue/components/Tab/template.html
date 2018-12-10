@@ -1,0 +1,14 @@
+
+<div class="tab">
+  <div class="tab_panel">
+    <div class="tab_panel__block">
+      <div class="tab_item" :class="itemHtmlClass(tabItem)" @click="onClick(tabItem)" v-for="tabItem in items">
+        <div>{{ tabItem.name }}</div>
+      </div>
+    </div>
+
+    <div class="tab_panel__block">
+      <slot name="icon"></slot>
+    </div>
+  </div>
+</div>
