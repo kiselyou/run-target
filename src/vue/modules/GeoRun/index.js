@@ -71,8 +71,8 @@ export default Vue.component('GeoRun', {
       disabled: true,
 
       tabItems: new TabItems()
-        .pushItem(new TabItem('Активность', true))
-        .pushItem(new TabItem('Подробно', false))
+        .pushItem(new TabItem('content-activity', 'Активность', true))
+        .pushItem(new TabItem('content-details', 'Подробно', false))
     }
   },
   mounted() {

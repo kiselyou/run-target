@@ -8,7 +8,12 @@
     </div>
 
     <div class="tab_panel__block">
-      <slot name="icon"></slot>
+      <slot name="panel-icon" />
     </div>
   </div>
+
+  <div class="tab_content">
+    <slot :name="tabItem.slotName" v-if="tabItem.isActive" v-for="tabItem in items"/>
+  </div>
+
 </div>

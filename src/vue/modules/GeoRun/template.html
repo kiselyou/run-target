@@ -1,45 +1,46 @@
 <div class="geo-run">
 
   <Tab :items="tabItems">
-    <template slot="icon">
+
+    <template slot="panel-icon">
+
+      <div class="text-danger" v-if="geo.emulator">
+        <i class="oi oi-audio"></i>
+        <span>эмулятор</span>
+      </div>
+
       <Signal :value="geoSignalValue" :off="geoIsDisabled"/>
+    </template>
+
+    <template slot="content-activity">
+      <div class="geo-run_body">
+
+        <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
+          <Speed :tempo="tempo" :distance="path" :speed="speed" class="my-3"/>
+          <RunProcess :finishDistance="finishDistance" :currentDistance="path" class="my-3"/>
+          <div class="row mx-3" v-if="this.geoErrorMessage">
+            <div class="col-12 text-center text-danger">{{ this.geoErrorMessage }}</div>
+          </div>
+        </Timer>
+
+      </div>
+
+      <Confirm
+        btnYes="Включить"
+        text="Включите GPS и повторите."
+        :show="showConfirmGPS"
+        @clickNo="cancelEnableGPS"
+        @clickYes="enableGPS"
+      />
+
+    </template>
+
+    <template slot="content-details">
+      content-details
     </template>
   </Tab>
 
   <Countdown :show="showCountdown" @start="start"/>
-
-  <!--<div class="geo-run_panel">
-    <div class="m-2">
-      &lt;!&ndash;<div class="text-warning" v-if="geo.emulator">
-        <i class="oi oi-audio"></i>
-        <span class="">эмулятор</span>
-      </div>&ndash;&gt;
-    </div>
-    <div class="m-2">
-      <Signal :value="geoSignalValue" :off="geoIsDisabled"/>
-    </div>
-  </div>-->
-
-  <div class="geo-run_body my-2">
-
-    <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
-      <Speed :tempo="tempo" :distance="path" :speed="speed" class="my-3"/>
-      <RunProcess :finishDistance="finishDistance" :currentDistance="path" class="my-3"/>
-      <div class="row mx-3" v-if="this.geoErrorMessage">
-        <div class="col-12 text-center text-danger">{{ this.geoErrorMessage }}</div>
-      </div>
-    </Timer>
-
-  </div>
-
-  <CalendarRun :targetId="targetId" class="mt-3" @activeDay="activeDay" @selectDay="selectDay" />
-
-  <Confirm
-    btnYes="Включить"
-    text="Включите GPS и повторите."
-    :show="showConfirmGPS"
-    @clickNo="cancelEnableGPS"
-    @clickYes="enableGPS"
-  />
+  <CalendarRun :targetId="targetId" @activeDay="activeDay" @selectDay="selectDay" />
 
 </div>

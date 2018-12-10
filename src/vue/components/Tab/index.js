@@ -22,7 +22,7 @@ export default Vue.component('Tab', {
     },
     onClick(tabItem) {
       for (const item of this.items) {
-        item.active(item.key === tabItem.key)
+        item.active(item.slotName === tabItem.slotName)
       }
       this.$emit('onClick', tabItem)
     }
