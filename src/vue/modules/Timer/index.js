@@ -24,12 +24,12 @@ export default Vue.component('Timer', {
         'timer__disabled': this.disabled || this.status === 0,
         'timer__pause': !this.disabled && this.status === 2
       }
-    }
-  },
-  methods: {
+    },
     time() {
       return this.timer.toStringHours()
     },
+  },
+  methods: {
     start: function () {
       this.$emit('onStart', () => {
         this.status = 1

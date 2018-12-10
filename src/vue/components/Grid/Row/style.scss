@@ -1,0 +1,11 @@
+.grid-row {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+
+  @media screen and (max-width: 300px) {
+    flex-direction: column;
+  }
+}

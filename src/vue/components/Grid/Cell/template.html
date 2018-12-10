@@ -1,0 +1,9 @@
+
+<div class="grid-cell">
+  <div class="grid-cell_value" :class="htmlClass">
+    <slot>{{ value }}</slot>
+  </div>
+  <div class="grid-cell_label" v-if="label">
+    <span>{{ label }}</span>
+  </div>
+</div>

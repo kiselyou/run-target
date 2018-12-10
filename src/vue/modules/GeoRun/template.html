@@ -16,8 +16,7 @@
       <div class="geo-run_body">
 
         <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
-          <Speed :tempo="tempo" :distance="path" :speed="speed" class="my-3"/>
-          <RunProcess :finishDistance="finishDistance" :currentDistance="path" class="my-3"/>
+          <Activity :tempo="tempo" :path="path" :speed="speed" :target="targetDistance" class="my-3"/>
           <div class="row mx-3" v-if="this.geoErrorMessage">
             <div class="col-12 text-center text-danger">{{ this.geoErrorMessage }}</div>
           </div>
@@ -36,7 +35,15 @@
     </template>
 
     <template slot="content-details">
-      content-details
+      <Details/>
+    </template>
+
+    <template slot="content-tempo">
+      <Tempo/>
+    </template>
+
+    <template slot="content-graph">
+      content-graph
     </template>
   </Tab>
 

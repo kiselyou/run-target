@@ -5,13 +5,14 @@ import EmulatorGeo from './lib/EmulatorGeo'
 import template from './template.html'
 import Ajax from '@lib/Ajax'
 import '@vue/Tab'
-import '@vue/Speed'
 import '@vue/Signal'
-import '@vue/RunProcess'
 import '@vue/Countdown'
 import '@module/Timer'
 import '@module/Confirm'
 import '@module/CalendarRun'
+import '@module/Tempo'
+import '@module/Details'
+import '@module/Activity'
 
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
@@ -70,16 +71,23 @@ export default Vue.component('GeoRun', {
        */
       disabled: true,
 
+      /**
+       * Табы.
+       *
+       * @type {TabItems}
+       */
       tabItems: new TabItems()
-        .pushItem(new TabItem('content-activity', 'Активность', true))
-        .pushItem(new TabItem('content-details', 'Подробно', false))
+        .pushItem(new TabItem('content-activity', 'Активность'))
+        .pushItem(new TabItem('content-details', 'Подробности').disable(true))
+        .pushItem(new TabItem('content-tempo', 'Темп', true))
+        .pushItem(new TabItem('content-graph', 'График').disable(true))
     }
   },
   mounted() {
     this.geo.signal.listen()
   },
   computed: {
-    finishDistance: function () {
+    targetDistance: function () {
       return this.day ? (this.day.getNumberOption('expectDistance') * 1000): 0
     },
     path: function () {
@@ -97,7 +105,7 @@ export default Vue.component('GeoRun', {
     },
     geoIsDisabled: function () {
       return this.geo.signal.isGeoDisabled
-    }
+    },
   },
   methods: {
     /**

@@ -1,0 +1,10 @@
+
+<div class="activity">
+  <Row>
+    <Cell :label="tempoLabel" :value="tempoValue" />
+    <Cell :label="pathLabel" :value="pathValue" />
+    <Cell :label="speedLabel" :value="speedValue" />
+  </Row>
+
+  <RunProcess :target="target" :value="path" :label="processLabel(target, path)" class="my-3" />
+</div>

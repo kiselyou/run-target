@@ -1,0 +1,32 @@
+.grid-cell {
+  width: 100%;
+  text-align: center;
+
+  &_value {
+
+    &__xs {
+      font-size: 12px;
+    }
+
+    &__sm {
+      font-size: 16px;
+    }
+
+    &__md {
+      font-size: 20px;
+    }
+
+    &__lg {
+      font-size: 26px;
+    }
+
+    &__bold {
+      font-weight: bold;
+    }
+  }
+
+  &_label {
+    color: #8E8E8E;
+    font-size: 12px;
+  }
+}

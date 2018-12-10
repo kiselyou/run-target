@@ -8,11 +8,11 @@ export default Vue.component('RunProcess', {
       type: Number,
       default: 0
     },
-    finishDistance: {
+    target: {
       type: Number,
       required: true
     },
-    currentDistance: {
+    value: {
       type: Number,
       required: true
     },
@@ -20,30 +20,33 @@ export default Vue.component('RunProcess', {
       type: Number,
       default: 3
     },
+    unitName: {
+      type: String,
+      default: 'км'
+    },
+    unitValue: {
+      type: Number,
+      default: 1000
+    },
     label: {
-      type: [Function, null],
-      /**
-       *
-       * @returns {string}
-       */
-      default: function () {
-        const remainder = this.finishDistance - this.currentDistance
-        if (this.finishDistance === 0) {
-          return `Цель не установлена`
-        }
-        if (remainder === 0) {
-          return `Цель выполнена ${this.unit(remainder)}`
-        }
-        if (remainder < 0) {
-          return `Цель выполнена ${this.unit(this.finishDistance)}`
-        }
-        return `Осталось ${this.unit(remainder)}`
-      }
+      type: String
     }
   },
-  data: function () {
-    return {
+  computed: {
+    percent: function () {
+      let percent = 0
+      if (this.target > 0) {
+        const target = this.target - this.start
+        const value = this.value - this.start
+        console.log(target, value)
+        percent = Number(value / target * 100).toFixed(this.digits)
+      }
+      // console.log(percent, this.target, this.value, this.start)
+      if (percent > 100) {
+        percent = 100
+      }
 
+      return percent
     }
   },
   methods: {
@@ -53,34 +56,9 @@ export default Vue.component('RunProcess', {
      * @returns {string}
      */
     unit: function (value) {
-      if (value === 0) {
-        return '0'
-      }
-      return `${(value / 1000).toFixed(3)} км`
+      const unitValue = this.unitValue < 1 ? 1 : this.unitValue
+      return value === 0 ? '0' : `${(value / unitValue).toFixed(this.digits)} ${this.unitName}`
     },
-
-    /**
-     *
-     * @returns {number}
-     */
-    percent() {
-      let percent = 0
-      if (this.finishDistance > 0) {
-        percent = Number(this.currentDistance / this.finishDistance * 100).toFixed(this.digits)
-      }
-      if (percent > 100) {
-        percent = 100
-      }
-      return percent
-    },
-
-    /**
-     *
-     * @returns {number}
-     */
-    remainder() {
-      return this.finishDistance - this.currentDistance
-    }
   },
   template: template
 })
