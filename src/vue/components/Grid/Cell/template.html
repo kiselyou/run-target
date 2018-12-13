@@ -1,9 +1,18 @@
 
-<div class="grid-cell">
-  <div class="grid-cell_value" :class="htmlClass">
-    <slot>{{ value }}</slot>
-  </div>
-  <div class="grid-cell_label" v-if="label">
-    <span>{{ label }}</span>
+<div class="grid-cell" :class="htmlClass" :style="htmlStyle">
+  <div class="grid-cell_container" :class="htmlClassContainer" :style="htmlStyleContainer" @click="click">
+    <slot name="before-content">
+      <div class="grid-cell_before" v-if="beforeContent">
+        <span>{{ beforeContent }}</span>
+      </div>
+    </slot>
+    <div class="grid-cell_content" :class="htmlClassContent">
+      <slot name="content">{{ content }}</slot>
+    </div>
+    <slot name="after-content">
+      <div class="grid-cell_after" v-if="afterContent">
+        <span>{{ afterContent }}</span>
+      </div>
+    </slot>
   </div>
 </div>

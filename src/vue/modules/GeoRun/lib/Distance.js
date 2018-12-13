@@ -105,17 +105,11 @@ class Distance {
   }
 
   /**
-   * @param {Point} point
-   * @callback afterPointAdded
-   */
-
-  /**
    *
    * @param {{lat: number, lng: number, [time]: number}} value
-   * @param {afterPointAdded} [callback]
    * @returns {Distance}
    */
-  addPosition(value, callback) {
+  addPosition(value) {
     this.addPoint(new Point(value, this.lastPoint))
     return this
   }

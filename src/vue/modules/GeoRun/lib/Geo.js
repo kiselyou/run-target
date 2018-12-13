@@ -26,6 +26,18 @@ class Geo {
      * @type {Signal}
      */
     this.signal = new Signal()
+
+    /**
+     *
+     * @type {number}
+     */
+    this.dateTimeStart = 0
+
+    /**
+     *
+     * @type {number}
+     */
+    this.dateTimeStop = 0
   }
 
   /**
@@ -98,6 +110,10 @@ class Geo {
    * @returns {Geo}
    */
   addPosition(value) {
+    if (this.distances.length === 0) {
+      this.dateTimeStart = Date.now()
+    }
+    this.dateTimeStop = Date.now()
     const distanceNumber = this.getDistanceNumber()
     let distance = this.getDistanceByNumber(distanceNumber)
     if (!distance) {
@@ -198,7 +214,9 @@ class Geo {
       distances.push(distance.serialize())
     }
     return {
-      distances: distances
+      dateTimeStart: this.dateTimeStart,
+      dateTimeStop: this.dateTimeStop,
+      distances: distances,
     }
   }
 }

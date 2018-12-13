@@ -1,10 +1,11 @@
 import objectPath from 'object-path'
 import { getDevice } from './../repositories/device'
+import { saveActivity, getActivities } from './../repositories/activity'
 import { saveTarget, getTargetById } from './../repositories/target'
-import { saveCalendarDays, getCalendarDaysByTargetId, getCalendarDayById, updateCalendarDayById } from './../repositories/calendar'
-
-import { saveDistance } from './../repositories/distance'
+import { saveCalendarDays, getCalendarDaysByTargetId, updateCalendarDayById } from './../repositories/calendar'
+import { saveDistance, getDistances } from './../repositories/distance'
 import { savePoints, getPoints } from './../repositories/point'
+import moment from 'moment'
 
 /**
  * Create new calendar.
@@ -29,47 +30,75 @@ export async function saveCalendarAction({ req, res, db }) {
 }
 
 /**
- * Update day in calendar.
+ * Update day activity.
  *
  * @param {Object} req
  * @param {Object} res
  * @param {MySQL} db
  * @returns {Promise<void>}
  */
-export async function updateDayAction({ req, res, db }) {
-  const dayId = objectPath.get(req, ['params', 'dayId'], null)
-  await updateCalendarDayById(db, dayId, {
+export async function saveActivityAction({ req, res, db }) {
+  const calendarId = objectPath.get(req, ['params', 'dayId'], null)
+  // обновляем информацию в календаре
+  await updateCalendarDayById(db, calendarId, {
     options: objectPath.get(req, ['body', 'day', 'options'], null)
   })
 
-  return res.send({ status: true, action: 'day' })
-}
+  // сохраняем активность пользователя.
+  const dateTimeStart = objectPath.get(req, ['body', 'geo', 'dateTimeStart'], null)
+  const dateTimeStop = objectPath.get(req, ['body', 'geo', 'dateTimeStop'], null)
+  const activityId = await saveActivity(db, calendarId, dateTimeStart, dateTimeStop)
 
-/**
- * Update points in calendar.
- *
- * @param {Object} req
- * @param {Object} res
- * @param {MySQL} db
- * @returns {Object}
- */
-export async function updatePointsAction({ req, res, db }) {
-  const distances = objectPath.get(req, [ 'body', 'distances' ], [])
-  const targetId = objectPath.get(req, [ 'params', 'targetId' ], null)
-
+  // сохраняем дистанцию (отрезки по 1-км).
+  const distances = objectPath.get(req, [ 'body', 'geo', 'distances' ], [])
   for (const distance of distances) {
-    const distanceId = await saveDistance(db, targetId, {
+    const points = objectPath.get(distance, 'points', [])
+
+    const distanceId = await saveDistance(db, activityId, {
       uKey: distance.uKey,
+      minutes: 0,//extractDistanceTime(distance),
       pathLength: distance.pathLength,
       distanceNumber: distance.distanceNumber,
       prevDistanceUKey: distance.prevDistanceUKey,
     })
-    const points = objectPath.get(distance, 'points', [])
+    // сохраняем навигационные точки на отрезке.
+
     await savePoints(db, distanceId, points)
   }
-  return res.send({ status: true, action: 'points' })
 }
 
+function extractDistanceTime(distance) {
+  const points = objectPath.get(distance, 'points', [])
+  const firstPointTime = objectPath.get(points, [0, 'time'], null)
+  const lastPointTime = objectPath.get(points, [points.length, 'time'], null)
+  const ms = moment(firstPointTime).diff(moment(lastPointTime))
+  const d = moment.duration(ms)
+  const s = d.format('hh:mm:ss')
+}
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Promise<void>}
+ */
+export async function viewActivitiesAction({ req, res, db }) {
+  const calendarId = objectPath.get(req, ['params', 'dayId'], null)
+  const activities = await getActivities(db, calendarId)
+  for (const activity of activities) {
+    activity['distances'] = await getDistances(db, activity.id)
+  }
+  return res.send(activities)
+}
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Promise<void>}
+ */
 export async function viewPointsAction({ req, res, db }) {
   const distanceId = objectPath.get(req, [ 'params', 'distanceId' ], [])
   const points = await getPoints(db, distanceId)

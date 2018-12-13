@@ -1,5 +1,6 @@
 .button {
   min-width: 160px;
+  padding: 0 20px;
   height: 40px;
   border-radius: 2px;
   border: none;
@@ -24,7 +25,7 @@
 
   &__icon {
     font-size: 20px;
-    margin: 16px 0 0 4px;
+    margin: 0 10px;
   }
 
   &__text {

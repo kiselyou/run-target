@@ -10,7 +10,7 @@ export default Vue.component('Spinner', {
   props: {
     name: {
       type: String,
-      default: 'DotLoader'
+      default: 'PulseLoader'
     },
     loading: {
       type: Boolean,

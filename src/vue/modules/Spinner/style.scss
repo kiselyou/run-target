@@ -1,17 +1,18 @@
 .target-spinner {
   display: flex;
+  align-items: center;
   justify-content: center;
   z-index: 1001;
-  position: fixed;
+  position: absolute;
   width: 100%;
-  margin-top: 15%;
+  height: 100%;
 
   &_bg {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     background: #FFFFFF;
-    opacity: 0.1;
+    opacity: 0.3;
     z-index: 1000;
     top: 0;
   }

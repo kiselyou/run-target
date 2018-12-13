@@ -10,8 +10,13 @@ export default Vue.component('Tab', {
       required: true
     },
   },
-  data: function () {
-    return {}
+  beforeMount: function () {
+    for (const tabItem of this.items) {
+      if (tabItem.isActive) {
+        this.$emit('onTabOpen', tabItem)
+        return
+      }
+    }
   },
   methods: {
     itemHtmlClass: function (tabItem) {
@@ -24,7 +29,7 @@ export default Vue.component('Tab', {
       for (const item of this.items) {
         item.active(item.slotName === tabItem.slotName)
       }
-      this.$emit('onClick', tabItem)
+      this.$emit('onTabOpen', tabItem)
     }
   },
   template: template

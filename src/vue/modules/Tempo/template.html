@@ -1,10 +1,43 @@
 
 <div class="tempo">
 
-  <Row>
-    <Cell :label="avgLabel" :value="avgValue" />
-    <Cell :label="upperLabel" :value="upperValue" />
-    <Cell :label="lowerLabel" :value="lowerValue" />
-  </Row>
+  <Spinner :loading="loading"/>
+
+  <div v-if="selectedActivity">
+    <Row>
+      <Cell afterContent="Средний темп" :content="avgValue" align="center" :bold="true" size="lg" />
+      <Cell afterContent="Самый быстрый" :content="upperValue" align="center" :bold="true" size="lg" />
+      <Cell afterContent="Самый медленный" :content="lowerValue" align="center" :bold="true" size="lg" />
+    </Row>
+
+    <div class="my-4">
+      <Rate :before="distanceNumber(distance)" :after="distanceTime(distance)" :value="distanceValue(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="1000" class="my-3" />
+    </div>
+
+    <Row class="mt-4">
+      <Cell :align="true">
+        <template slot="content">
+          <Button text="Список астивностей" @click="closeActivity" />
+        </template>
+      </Cell>
+    </Row>
+  </div>
+
+  <div v-if="!selectedActivity">
+    <div class="activities" :key="indexActivity" v-for="(activity, indexActivity) of activities">
+      <Row>
+        <Cell @click="openActivity(activity)" :afterContent="activityPathLength(activity)" :align="true" :hover="true" :underline="true" padding="md">
+          <template slot="content">
+            {{ activityName(activity) }}
+          </template>
+        </Cell>
+      </Row>
+    </div>
+    <div v-if="activities.length === 0 && !loading">
+      <Row>
+        <Cell content="Нет активностей" :beforeContent="activityEmpty()" :align="true" />
+      </Row>
+    </div>
+  </div>
 
 </div>

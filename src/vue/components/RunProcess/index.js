@@ -38,10 +38,8 @@ export default Vue.component('RunProcess', {
       if (this.target > 0) {
         const target = this.target - this.start
         const value = this.value - this.start
-        console.log(target, value)
         percent = Number(value / target * 100).toFixed(this.digits)
       }
-      // console.log(percent, this.target, this.value, this.start)
       if (percent > 100) {
         percent = 100
       }

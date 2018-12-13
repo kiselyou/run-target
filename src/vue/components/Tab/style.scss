@@ -1,12 +1,12 @@
 .tab {
   display: flex;
   flex-direction: column;
-  margin: 6px;
 
   &_panel {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: 0 4px;
 
     &__block {
       display: flex;
@@ -15,7 +15,8 @@
   }
 
   &_content {
-
+    position: relative;
+    min-height: 100px;
   }
 
   &_item {

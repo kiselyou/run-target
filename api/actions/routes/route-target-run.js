@@ -1,4 +1,10 @@
-import { saveCalendarAction, updatePointsAction, updateDayAction, viewCalendarAction, viewPointsAction } from '../action-target-run'
+import {
+  saveCalendarAction,
+  viewCalendarAction,
+  viewPointsAction,
+  saveActivityAction,
+  viewActivitiesAction
+} from '../action-target-run'
 
 export default [
   {
@@ -8,13 +14,13 @@ export default [
   },
   {
     method: 'post',
-    path: '/run/update/points/:targetId',
-    action: updatePointsAction
+    path: '/run/save/activity/:dayId',
+    action: saveActivityAction
   },
   {
-    method: 'post',
-    path: '/run/update/day/:dayId',
-    action: updateDayAction
+    method: 'get',
+    path: '/run/view/activity/:dayId',
+    action: viewActivitiesAction
   },
   {
     method: 'get',

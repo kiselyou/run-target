@@ -1,3 +1,43 @@
 .tempo {
+  margin: 10px 0;
+  position: relative;
+  min-height: 100px;
 
+  &_item {
+    width: calc(100% - 20px);
+    margin: 6px 10px;
+    height: 30px;
+    border-radius: 2px;
+    border: solid 1px #252525;
+    background: #ebebeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__active {
+      background: #2DBA00;
+      color: #FFFFFF;
+    }
+  }
+
+  &_cell {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_number {
+    width: 80px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  &_tempo {
+    width: calc(100% - 160px);
+  }
+
+  &_time {
+    width: 80px;
+    border-radius: 0 2px 2px 0;
+  }
 }

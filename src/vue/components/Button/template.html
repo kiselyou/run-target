@@ -1,7 +1,7 @@
 
 <button :class="htmlClass" :style="htmlWidth" class="button" v-if="show" @click="clickEvent">
   <slot>
-    <i :class="iconName" v-if="iconName"></i>
+    <i class="button__icon" :class="iconName" v-if="iconName"></i>
     <span class="button__text" v-if="text">{{ text }}</span>
   </slot>
 </button>

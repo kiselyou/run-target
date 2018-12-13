@@ -3,7 +3,6 @@
   <Tab :items="tabItems">
 
     <template slot="panel-icon">
-
       <div class="text-danger" v-if="geo.emulator">
         <i class="oi oi-audio"></i>
         <span>эмулятор</span>
@@ -39,7 +38,7 @@
     </template>
 
     <template slot="content-tempo">
-      <Tempo/>
+      <Tempo :day="day" :key="dayId" v-if="day"/>
     </template>
 
     <template slot="content-graph">

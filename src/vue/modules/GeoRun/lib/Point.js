@@ -23,6 +23,12 @@ class Point {
 
     /**
      *
+     * @type {number}
+     */
+    this.time = position.time || Date.now()
+
+    /**
+     *
      * @type {PointPosition}
      */
     this.position = new PointPosition(position)
@@ -80,7 +86,7 @@ class Point {
         return this.cache.speed
       }
       const measures = 0.001
-      const time = (this.position.time / 1000) - (this.prevPoint.position.time / 1000)
+      const time = (this.time / 1000) - (this.prevPoint.time / 1000)
       const mPerHr = (this.distance / time) * 3600
       this.cache.speed = Math.round(mPerHr * measures * 10000) / 10000
       return this.cache.speed

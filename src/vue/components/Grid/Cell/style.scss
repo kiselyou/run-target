@@ -1,8 +1,51 @@
 .grid-cell {
   width: 100%;
-  text-align: center;
 
-  &_value {
+  &__left {
+    text-align: left;
+  }
+
+  &__right {
+    text-align: right;
+  }
+
+  &__center {
+    text-align: center;
+  }
+
+  &_container {
+    border-radius: 2px;
+    display: inline-block;
+
+    &__pxs {
+      padding: 2px 4px;
+    }
+
+    &__psm {
+      padding: 4px 8px;
+    }
+
+    &__pmd {
+      padding: 6px 12px;
+    }
+
+    &__plg {
+      padding: 8px 16px;
+    }
+
+    &__hover {
+      &:hover {
+        cursor: pointer;
+        background: #F8F8FF;
+      }
+    }
+  }
+
+  &_content {
+
+    &__underline {
+      border-bottom: solid 3px #EB9B00;
+    }
 
     &__xs {
       font-size: 12px;
@@ -25,7 +68,12 @@
     }
   }
 
-  &_label {
+  &_after {
+    color: #8E8E8E;
+    font-size: 12px;
+  }
+
+  &_before {
     color: #8E8E8E;
     font-size: 12px;
   }

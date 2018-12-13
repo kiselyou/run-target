@@ -1,9 +1,9 @@
 
 <div class="activity">
   <Row>
-    <Cell :label="tempoLabel" :value="tempoValue" />
-    <Cell :label="pathLabel" :value="pathValue" />
-    <Cell :label="speedLabel" :value="speedValue" />
+    <Cell :content="tempoValue" :afterContent="tempoLabel" :bold="true" :align="true" size="lg" />
+    <Cell :content="pathValue" :afterContent="pathLabel" :bold="true" :align="true" size="lg" />
+    <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="lg" />
   </Row>
 
   <RunProcess :target="target" :value="path" :label="processLabel(target, path)" class="my-3" />
