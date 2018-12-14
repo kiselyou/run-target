@@ -18,7 +18,7 @@ import '@module/Activity'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
-const debug = true
+const debug = false
 
 export default Vue.component('GeoRun', {
   props: {
@@ -78,10 +78,9 @@ export default Vue.component('GeoRun', {
        * @type {TabItems}
        */
       tabItems: new TabItems()
-        .pushItem(new TabItem('content-activity', 'Активность'))
+        .pushItem(new TabItem('content-activity', 'Активность', true))
         .pushItem(new TabItem('content-details', 'Подробности').disable(true))
-        .pushItem(new TabItem('content-tempo', 'Темп', true)),
-        // .pushItem(new TabItem('content-graph', 'График').disable(true)),
+        .pushItem(new TabItem('content-tempo', 'Темп')),
     }
   },
   mounted() {

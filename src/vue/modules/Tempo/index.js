@@ -178,7 +178,7 @@ export default Vue.component('Tempo', {
           len += distance.pathLength
         }
       }
-      return `${(len / 1000).toFixed(3)} км.`
+      return (len / 1000).toFixed(3)
     },
     /**
      * Открыть подробную информацию об активности.

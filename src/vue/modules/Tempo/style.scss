@@ -2,4 +2,22 @@
   margin: 10px 0;
   position: relative;
   min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &_content {
+    width: 100%;
+  }
+
+  &_label {
+    font-size: 10px;
+    color: #8E8E8E;
+  }
+
+  &_distance {
+    color: #8E8E8E;
+    font-size: 12px;
+    font-weight: normal;
+  }
 }

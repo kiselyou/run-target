@@ -3,15 +3,21 @@
 
   <Spinner :loading="loading"/>
 
-  <div v-if="selectedActivity">
+  <div v-if="selectedActivity" class="tempo_content">
+
+    <Row>
+      <Cell align="center" :bold="true" size="xlg">
+        <template slot="content">
+          <span>{{ activityPathLength(selectedActivity) }}</span>
+          <span class="tempo_distance">км</span>
+        </template>
+      </Cell>
+    </Row>
+
     <Row>
       <Cell afterContent="Средний темп" :content="avgTempo" align="center" :bold="true" size="lg" />
       <Cell afterContent="Самый быстрый" :content="upperTempo" align="center" :bold="true" size="lg" />
       <Cell afterContent="Самый медленный" :content="lowerTempo" align="center" :bold="true" size="lg" />
-    </Row>
-
-    <Row>
-      <Cell :afterContent="activityPathLength(selectedActivity)" align="center" :bold="true" size="lg" />
     </Row>
 
     <div class="my-4">
@@ -32,11 +38,14 @@
   </div>
 
   <div v-if="!selectedActivity">
-    <div class="activities" :key="indexActivity" v-for="(activity, indexActivity) of activities">
+    <div :key="indexActivity" v-for="(activity, indexActivity) of activities">
       <Row>
-        <Cell @click="openActivity(activity)" :afterContent="activityPathLength(activity)" :align="true" :hover="true" :underline="true" padding="md">
+        <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
           <template slot="content">
             {{ activityName(activity) }}
+          </template>
+          <template slot="after-content">
+            <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
           </template>
         </Cell>
       </Row>

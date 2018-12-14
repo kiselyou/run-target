@@ -78,7 +78,7 @@ class Geo {
    */
   getAvgSpeed() {
     const distance = this.getCurrentDistance()
-    return distance ? distance.getAvgSpeed(10) : 0
+    return distance ? distance.getAvgSpeed(5) : 0
   }
 
   /**

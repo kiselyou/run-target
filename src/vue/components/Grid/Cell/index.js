@@ -78,6 +78,7 @@ export default Vue.component('Cell', {
         'grid-cell_content__sm': this.size === 'sm',
         'grid-cell_content__md': this.size === 'md',
         'grid-cell_content__lg': this.size === 'lg',
+        'grid-cell_content__xlg': this.size === 'xlg',
         'grid-cell_content__bold': this.bold,
         'grid-cell_content__underline': this.underline,
       }
