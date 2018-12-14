@@ -5,13 +5,21 @@
 
   <div v-if="selectedActivity">
     <Row>
-      <Cell afterContent="Средний темп" :content="avgValue" align="center" :bold="true" size="lg" />
-      <Cell afterContent="Самый быстрый" :content="upperValue" align="center" :bold="true" size="lg" />
-      <Cell afterContent="Самый медленный" :content="lowerValue" align="center" :bold="true" size="lg" />
+      <Cell afterContent="Средний темп" :content="avgTempo" align="center" :bold="true" size="lg" />
+      <Cell afterContent="Самый быстрый" :content="upperTempo" align="center" :bold="true" size="lg" />
+      <Cell afterContent="Самый медленный" :content="lowerTempo" align="center" :bold="true" size="lg" />
+    </Row>
+
+    <Row>
+      <Cell :afterContent="activityPathLength(selectedActivity)" align="center" :bold="true" size="lg" />
     </Row>
 
     <div class="my-4">
-      <Rate :before="distanceNumber(distance)" :after="distanceTime(distance)" :value="distanceValue(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="1000" class="my-3" />
+      <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="10" class="my-3">
+        <template slot="before">{{ distanceNumber(distance) }}</template>
+        <template slot="center">{{ distanceTempoString(distance) }}</template>
+        <template slot="after">{{ distanceTime(distance) }}</template>
+      </Rate>
     </div>
 
     <Row class="mt-4">

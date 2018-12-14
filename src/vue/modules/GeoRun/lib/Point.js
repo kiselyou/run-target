@@ -23,12 +23,6 @@ class Point {
 
     /**
      *
-     * @type {number}
-     */
-    this.time = position.time || Date.now()
-
-    /**
-     *
      * @type {PointPosition}
      */
     this.position = new PointPosition(position)
@@ -44,6 +38,23 @@ class Point {
      * @type {{ speed: number|?, distance: number|? }}
      */
     this.cache = { speed: null, distance: null }
+
+    /**
+     * Время таймера.
+     *
+     * @type {number}
+     */
+    this.time = 0
+  }
+
+  /**
+   *
+   * @param {number} value
+   * @returns {Point}
+   */
+  setTime(value) {
+    this.time = value
+    return this
   }
 
   /**
@@ -54,6 +65,8 @@ class Point {
     return {
       id: this.id,
       uKey: this.uKey,
+      time: this.time,
+      speed: this.speed,
       position: this.position,
       prevPointUKey: this.prevPoint ? this.prevPoint.uKey : null,
     }
@@ -86,7 +99,7 @@ class Point {
         return this.cache.speed
       }
       const measures = 0.001
-      const time = (this.time / 1000) - (this.prevPoint.time / 1000)
+      const time = (this.position.timestamp / 1000) - (this.prevPoint.position.timestamp / 1000)
       const mPerHr = (this.distance / time) * 3600
       this.cache.speed = Math.round(mPerHr * measures * 10000) / 10000
       return this.cache.speed

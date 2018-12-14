@@ -1,6 +1,8 @@
 
-ALTER TABLE point ADD time TIMESTAMP NULL;
-ALTER TABLE distance ADD minutes INT NOT NULL;
+ALTER TABLE point ADD time INT NULL;
+ALTER TABLE point ADD speed INT NULL;
+ALTER TABLE distance ADD time FLOAT NOT NULL;
+ALTER TABLE distance ADD avgSpeed FLOAT NOT NULL;
 
 CREATE TABLE activity
 (

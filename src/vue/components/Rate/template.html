@@ -1,7 +1,13 @@
 
 <div class="rate">
-  <div class="rate_cell rate_cell__before" v-if="before">{{ before }}</div>
-  <div class="rate_cell rate_cell__percent">{{ `${percent}%` }}</div>
+  <div class="rate_cell rate_cell__before">
+    <slot name="before">{{ before }}</slot>
+  </div>
+  <div class="rate_cell rate_cell__percent">
+    <slot name="center">{{ `${percent}%` }}</slot>
+  </div>
   <div class="rate_cell rate_cell__process" :style="styleProcess" :class="classProcess"></div>
-  <div class="rate_cell rate_cell__after" v-if="after">{{ after }}</div>
+  <div class="rate_cell rate_cell__after">
+    <slot name="after">{{ after }}</slot>
+  </div>
 </div>

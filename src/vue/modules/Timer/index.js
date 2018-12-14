@@ -1,7 +1,7 @@
 import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
-import TimerControls from './lib/TimerControls'
+import Timer from '@lib/Timer'
 
 import '@vue/Button'
 
@@ -15,7 +15,7 @@ export default Vue.component('Timer', {
   data: function () {
     return {
       status: 0, // 0 - выкл., 1 - бег, 2 - пауза
-      timer: new TimerControls(),
+      timer: new Timer(),
     }
   },
   computed: {
@@ -28,6 +28,11 @@ export default Vue.component('Timer', {
     time() {
       return this.timer.toStringHours()
     },
+  },
+  mounted() {
+    this.timer.tick((time) => {
+      this.$emit('onTick', time)
+    })
   },
   methods: {
     start: function () {

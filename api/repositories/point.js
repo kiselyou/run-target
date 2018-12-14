@@ -10,14 +10,15 @@ export const savePoints = (db, deviceId, points) => {
   const rows = points.map(point => {
     return [
       deviceId,
+      point.time,
       point.uKey,
+      point.speed,
       point.prevPointUKey,
-      new Date(point.time),
       JSON.stringify(point.position)
     ]
   })
 
-  return db.query(`INSERT INTO point (distanceId, uKey, prevPointUKey, time, position) VALUES ?`, [ rows ])
+  return db.query(`INSERT INTO point (distanceId, time, uKey, speed, prevPointUKey, position) VALUES ?`, [ rows ])
 }
 
 /**

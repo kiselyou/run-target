@@ -38,6 +38,26 @@ class Geo {
      * @type {number}
      */
     this.dateTimeStop = 0
+
+    /**
+     *
+     * @type {number}
+     */
+    this.time = 0
+  }
+
+  /**
+   *
+   * @param {number} value
+   * @returns {Geo}
+   */
+  setTime(value) {
+    const distance = this.getCurrentDistance()
+    if (distance) {
+      this.time = value
+      distance.setTime(value)
+    }
+    return this
   }
 
   /**

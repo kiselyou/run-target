@@ -14,7 +14,7 @@
     <template slot="content-activity">
       <div class="geo-run_body">
 
-        <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end">
+        <Timer :disabled="disabled" @onStart="beforeStar" @onStop="stop" @onNext="next" @onEnd="end" @onTick="onTimeUpdate">
           <Activity :tempo="tempo" :path="path" :speed="speed" :target="targetDistance" class="my-3"/>
           <div class="row mx-3" v-if="this.geoErrorMessage">
             <div class="col-12 text-center text-danger">{{ this.geoErrorMessage }}</div>

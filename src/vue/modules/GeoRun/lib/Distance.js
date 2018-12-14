@@ -43,6 +43,23 @@ class Distance {
      * @type {number}
      */
     this.pathLength = 0
+
+    /**
+     * Время пробешки. Значение таимера.
+     *
+     * @type {number}
+     */
+    this.time = 0
+  }
+
+  /**
+   *
+   * @param {number} value
+   * @returns {Distance}
+   */
+  setTime(value) {
+    this.time = value
+    return this
   }
 
   /**
@@ -110,7 +127,10 @@ class Distance {
    * @returns {Distance}
    */
   addPosition(value) {
-    this.addPoint(new Point(value, this.lastPoint))
+    this.addPoint(
+      new Point(value, this.lastPoint)
+        .setTime(this.time)
+    )
     return this
   }
 
@@ -151,7 +171,9 @@ class Distance {
     return {
       id: this.id,
       uKey: this.uKey,
+      time: this.time,
       pathLength: this.pathLength,
+      avgSpeed: this.getAvgSpeedFull(),
       distanceNumber: this.distanceNumber,
       prevDistanceUKey: this.prevDistance ? this.prevDistance.uKey : null,
       points: this.points.map((point) => point.serialize())

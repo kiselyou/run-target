@@ -2,7 +2,7 @@
 const HOUR = 60 * 60
 const DAY = 24 * HOUR
 
-class TimerControls {
+class Timer {
   constructor() {
     /**
      *
@@ -30,15 +30,25 @@ class TimerControls {
   }
 
   /**
-   * @param {string} timeStr
+   *
+   * @param {number} value
+   * @returns {Timer}
+   */
+  setTime(value) {
+    this.time = value
+    return this
+  }
+
+  /**
    * @param {number} time - Time in seconds
+   * @param {string} timeStr
    * @callback tickCallback
    */
 
   /**
    *
    * @param {tickCallback} callback
-   * @returns {TimerControls}
+   * @returns {Timer}
    */
   tick(callback) {
     this.tickCallbacks.push(callback)
@@ -47,7 +57,7 @@ class TimerControls {
 
   /**
    *
-   * @returns {TimerControls}
+   * @returns {Timer}
    */
   start() {
     this.stop()
@@ -55,7 +65,7 @@ class TimerControls {
     this.id = setInterval(() => {
       this.time++
       for (const callback of this.tickCallbacks) {
-        callback(this.toString(), this.time)
+        callback(this.time, this.toString())
       }
     }, 1000)
     return this
@@ -63,7 +73,7 @@ class TimerControls {
 
   /**
    *
-   * @returns {TimerControls}
+   * @returns {Timer}
    */
   stop() {
     clearInterval(this.id)
@@ -72,7 +82,7 @@ class TimerControls {
 
   /**
    *
-   * @returns {TimerControls}
+   * @returns {Timer}
    */
   clear() {
     this.stop()
@@ -82,7 +92,7 @@ class TimerControls {
 
   /**
    *
-   * @returns {TimerControls}
+   * @returns {Timer}
    */
   end() {
     this.clear()
@@ -108,6 +118,27 @@ class TimerControls {
     }
     const seconds = Math.floor(remainingHours - (minutes * 60))
     return { days, hours, minutes, seconds }
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  toNumberMinutes() {
+    const time = this.getTimeObject()
+    const minutes = (time.days * 24 * 60) + (time.hours * 60) + time.minutes
+    return minutes + (time.seconds / 100)
+  }
+
+  /**
+   *
+   * @returns {string}
+   */
+  toStringMinutes() {
+    const time = this.getTimeObject()
+    const m = this.numberToString((time.days * 24 * 60) + (time.hours * 60) + time.minutes)
+    const s = this.numberToString(time.seconds)
+    return `${m}'${s}'`
   }
 
   /**
@@ -145,4 +176,4 @@ class TimerControls {
   }
 }
 
-export default TimerControls
+export default Timer

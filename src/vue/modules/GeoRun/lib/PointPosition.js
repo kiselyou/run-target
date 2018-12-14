@@ -2,7 +2,7 @@
 class PointPosition {
   /**
    *
-   * @param {{lat: number, lng: number}} position
+   * @param {{lat: number, lng: number, time: number}} position
    */
   constructor(position) {
     /**
@@ -14,6 +14,12 @@ class PointPosition {
      * @type {number}
      */
     this.lng = position.lng || 0
+
+    /**
+     *
+     * @type {number}
+     */
+    this.timestamp = position.time || Date.now()
   }
 
   /**

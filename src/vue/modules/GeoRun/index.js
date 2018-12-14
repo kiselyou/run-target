@@ -82,8 +82,6 @@ export default Vue.component('GeoRun', {
         .pushItem(new TabItem('content-details', 'Подробности').disable(true))
         .pushItem(new TabItem('content-tempo', 'Темп', true)),
         // .pushItem(new TabItem('content-graph', 'График').disable(true)),
-
-      // loading: false,
     }
   },
   mounted() {
@@ -129,22 +127,6 @@ export default Vue.component('GeoRun', {
       this.day = day
       this.disabled = false
     },
-
-    // /**
-    //  * Tab. Клик по вкладке таба.
-    //  *
-    //  * @param tab
-    //  */
-    // tabOpen: function (tab) {
-    //   this.loading = true
-    // },
-
-    // /**
-    //  * Tab. Содержимое таба загружено.
-    //  */
-    // onTempoDataLoaded: function () {
-    //   this.loading = false
-    // },
 
     /**
      * CalendarRun.
@@ -248,6 +230,10 @@ export default Vue.component('GeoRun', {
 
       this.geo.clear()
     },
+
+    onTimeUpdate: function (time) {
+      this.geo.setTime(time)
+    }
   },
   template: template
 })

@@ -5,7 +5,6 @@ import { saveTarget, getTargetById } from './../repositories/target'
 import { saveCalendarDays, getCalendarDaysByTargetId, updateCalendarDayById } from './../repositories/calendar'
 import { saveDistance, getDistances } from './../repositories/distance'
 import { savePoints, getPoints } from './../repositories/point'
-import moment from 'moment'
 
 /**
  * Create new calendar.
@@ -56,24 +55,15 @@ export async function saveActivityAction({ req, res, db }) {
 
     const distanceId = await saveDistance(db, activityId, {
       uKey: distance.uKey,
-      minutes: 0,//extractDistanceTime(distance),
+      time: distance.time,
+      avgSpeed: distance.avgSpeed,
       pathLength: distance.pathLength,
       distanceNumber: distance.distanceNumber,
       prevDistanceUKey: distance.prevDistanceUKey,
     })
     // сохраняем навигационные точки на отрезке.
-
     await savePoints(db, distanceId, points)
   }
-}
-
-function extractDistanceTime(distance) {
-  const points = objectPath.get(distance, 'points', [])
-  const firstPointTime = objectPath.get(points, [0, 'time'], null)
-  const lastPointTime = objectPath.get(points, [points.length, 'time'], null)
-  const ms = moment(firstPointTime).diff(moment(lastPointTime))
-  const d = moment.duration(ms)
-  const s = d.format('hh:mm:ss')
 }
 
 /**

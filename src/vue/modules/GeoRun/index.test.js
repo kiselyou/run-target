@@ -3,6 +3,8 @@ import Geo from './lib/Geo'
 import Point from './lib/Point'
 import Distance from './lib/Distance'
 
+import { getDistance } from 'geolib'
+
 describe('GeoRun', function() {
   const firstPosition = {
     timestamp: 1542662430374,
@@ -40,12 +42,29 @@ describe('GeoRun', function() {
 
   describe('Point', function() {
     it('should create first point', function () {
-      const point = new Point(firstPosition)
-      assert.equal(point.lat, 55.456000)
-      assert.equal(point.lng, 27.567000)
-      assert.equal(point.time, 1542662430374)
-      assert.equal(point.speed, 0)
-      assert.equal(point.distance, 0)
+
+      const measures = 1
+      const time = (1544792551773 / 1000) - (1544129223198 / 1000)
+
+      const distance = getDistance(
+        {"lat": 53.9180638, "lng": 27.4591375, "timestamp": 1544129223198},
+        {"lat": 53.9180833, "lng": 27.4591592, "timestamp": 1544792551773},
+        6,
+        6
+      )
+
+      const mPerHr = (distance / time) * 3600
+      const speed = Math.round(mPerHr * measures * 10000) / 10000
+      console.log(distance, speed, 1544792551773 - 1544129223198)
+
+      //
+      //
+      // const point = new Point(firstPosition)
+      // assert.equal(point.lat, 55.456000)
+      // assert.equal(point.lng, 27.567000)
+      // assert.equal(point.time, 1542662430374)
+      // assert.equal(point.speed, 0)
+      // assert.equal(point.distance, 0)
     })
 
     it('should create second point', function () {
