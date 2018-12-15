@@ -190,8 +190,11 @@ class Geo {
         this.addPosition({
           lat: position['coords']['latitude'],
           lng: position['coords']['longitude'],
-          speed: position['coords']['speed'],
-          time: Date.now()
+          time: Date.now(),
+
+
+          originSpeed: position['coords']['speed'],
+          originTime: position['coords']['time'],
         })
       },
       (error) => {

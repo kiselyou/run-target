@@ -20,6 +20,9 @@ class PointPosition {
      * @type {number}
      */
     this.timestamp = position.time || Date.now()
+
+    this.originSpeed = position.originSpeed
+    this.originTime = position.originTime
   }
 
   /**

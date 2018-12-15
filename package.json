@@ -20,13 +20,15 @@
     "babel-core": "6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-es2015": "^6.24.1",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "bootstrap": "4.1.3",
     "clean-webpack-plugin": "^1.0.0",
     "connect-redis": "^3.3.3",
     "cookie-parser": "^1.4.3",
     "copy-webpack-plugin": "^4.5.4",
     "cordova-android": "^7.1.4",
+    "cordova-plugin-background-mode": "^0.7.2",
+    "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
     "css-loader": "^1.0.0",
@@ -84,7 +86,8 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
       "android"

@@ -43,19 +43,53 @@ describe('GeoRun', function() {
   describe('Point', function() {
     it('should create first point', function () {
 
-      const measures = 1
-      const time = (1544792551773 / 1000) - (1544129223198 / 1000)
+      const points = [
+        {"lat": 53.9597121, "lng": 27.591207,  "timestamp": 1544865518027},
+        {"lat": 53.9597086, "lng": 27.5912026, "timestamp": 1544865528052},
+        {"lat": 53.9597056, "lng": 27.5911988, "timestamp": 1544865533022},
+        {"lat": 53.9597031, "lng": 27.5911956, "timestamp": 1544865538058},
+        {"lat": 53.9597009, "lng": 27.5911929, "timestamp": 1544865543049},
+        {"lat": 53.9596992, "lng": 27.5911908, "timestamp": 1544865553180},
+        {"lat": 53.9642417, "lng": 27.5802835, "timestamp": 1544865558180},
+      ]
 
-      const distance = getDistance(
-        {"lat": 53.9180638, "lng": 27.4591375, "timestamp": 1544129223198},
-        {"lat": 53.9180833, "lng": 27.4591592, "timestamp": 1544792551773},
-        6,
-        6
-      )
+      for (let i = 0; i < points.length; i++) {
+        if (points[i - 1]) {
 
-      const mPerHr = (distance / time) * 3600
-      const speed = Math.round(mPerHr * measures * 10000) / 10000
-      console.log(distance, speed, 1544792551773 - 1544129223198)
+          const currP = points[i]
+          const prevP = points[i - 1]
+
+          const distance = getDistance(prevP, currP, 6, 6)
+
+          console.log(distance, points[i]['timestamp'] - points[i - 1]['timestamp'])
+        }
+      }
+
+
+      // console.log(
+      //
+      // )
+      //
+      // const measures = 1
+      // const time = (1544792551773 / 1000) - (1544129223198 / 1000)
+      //
+      // const distance = getDistance(
+      //   {"lat": 53.9180638, "lng": 27.4591375, "timestamp": 1544129223198},
+      //   {"lat": 53.9180833, "lng": 27.4591592, "timestamp": 1544792551773},
+      //   6,
+      //   6
+      // )
+      //
+      // const mPerHr = (distance / time) * 3600
+      // const speed = Math.round(mPerHr * measures * 10000) / 10000
+      // console.log(`${distance}м`, `${speed}км.ч.`, 1544792551773 - 1544129223198)
+
+
+
+
+
+
+
 
       //
       //
