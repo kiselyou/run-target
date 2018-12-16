@@ -15,6 +15,7 @@ import '@module/Spinner'
 import '@module/Details'
 import '@module/Activity'
 
+import Plugins from '@lib/cordova/Plugins'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
@@ -168,6 +169,7 @@ export default Vue.component('GeoRun', {
       this.geo.start((error) => {
         this.geoErrorMessage = error.message
       })
+      Plugins.bgMode.enable(true)
     },
 
     /**
@@ -228,8 +230,14 @@ export default Vue.component('GeoRun', {
         .catch(console.error)
 
       this.geo.clear()
+      Plugins.bgMode.enable(false)
     },
 
+    /**
+     * Обновление времени.
+     *
+     * @param {number} time
+     */
     onTimeUpdate: function (time) {
       this.geo.setTime(time)
     }

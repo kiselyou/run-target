@@ -3,7 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import GeoRun from '@module/GeoRun'
 import '@module/Menu'
-
+import Plugins from '@lib/cordova/Plugins'
 Vue.use(VueRouter)
 
 export default Vue.component('App', {
