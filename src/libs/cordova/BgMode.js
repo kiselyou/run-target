@@ -20,14 +20,48 @@ class BgMode {
   }
 
   /**
+   * Various APIs like playing media or tracking GPS position in background might not work while in background even the background mode is active.
+   * To fix such issues the plugin provides a method to disable most optimizations done by Android/CrossWalk.
    *
-   * @param {boolean} value
    * @returns {BgMode}
    */
-  enable(value) {
+  disableWebViewOptimizations() {
     if (this.mode) {
-      this.mode.setEnabled(value)
-      return this
+      this.mode.disableWebViewOptimizations()
+    }
+    return this
+  }
+
+  /**
+   * Override the back button on Android to go to background instead of closing the app.
+   *
+   * @returns {BgMode}
+   */
+  overrideBackButton() {
+    if (this.mode) {
+      this.mode.overrideBackButton()
+    }
+    return this
+  }
+
+  /**
+   *
+   * @returns {BgMode}
+   */
+  enable() {
+    if (this.mode) {
+      this.mode.enable()
+    }
+    return this
+  }
+
+  /**
+   *
+   * @returns {BgMode}
+   */
+  disable() {
+    if (this.mode) {
+      this.mode.disable()
     }
     return this
   }
@@ -70,7 +104,7 @@ class BgMode {
    *
    * @returns {BgMode}
    */
-  toForeground() {
+  moveToForeground() {
     if (this.mode) {
       this.mode.moveToForeground()
     }
@@ -81,9 +115,35 @@ class BgMode {
    *
    * @returns {BgMode}
    */
-  toBackground() {
+  moveToBackground() {
     if (this.mode) {
       this.mode.moveToBackground()
+    }
+    return this
+  }
+
+  /**
+   * A wake-up turns on the screen while unlocking moves the app to foreground even the device is locked.
+   * Turn screen on
+   *
+   * @returns {BgMode}
+   */
+  wakeUp() {
+    if (this.mode) {
+      this.mode.wakeUp()
+    }
+    return this
+  }
+
+  /**
+   * A wake-up turns on the screen while unlocking moves the app to foreground even the device is locked.
+   * Turn screen on and show app even locked
+   *
+   * @returns {BgMode}
+   */
+  unlock() {
+    if (this.mode) {
+      this.mode.unlock()
     }
     return this
   }

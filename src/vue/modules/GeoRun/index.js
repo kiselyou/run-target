@@ -169,7 +169,10 @@ export default Vue.component('GeoRun', {
       this.geo.start((error) => {
         this.geoErrorMessage = error.message
       })
-      Plugins.bgMode.enable(true)
+      Plugins.bgMode.disableWebViewOptimizations()
+      Plugins.bgMode.overrideBackButton()
+      // Plugins.bgMode.wakeUp()
+      Plugins.bgMode.enable()
     },
 
     /**
@@ -230,7 +233,7 @@ export default Vue.component('GeoRun', {
         .catch(console.error)
 
       this.geo.clear()
-      Plugins.bgMode.enable(false)
+      Plugins.bgMode.disable()
     },
 
     /**
