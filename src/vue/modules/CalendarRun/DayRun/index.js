@@ -1,5 +1,6 @@
 import './style.scss'
 import Vue from 'vue'
+import '@vue/VueIcon'
 import '@vue/Calendar/Day'
 import Day from '@vue/Calendar/api/Day'
 import template from './template.html'

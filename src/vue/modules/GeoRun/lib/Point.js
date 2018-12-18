@@ -1,12 +1,11 @@
 import { getDistance } from 'geolib'
 import PointPosition from './PointPosition'
-import objectPath from 'object-path'
 let uKey = 0
 
 class Point {
   /**
    *
-   * @param {{lat: number, lng: number, [time]: number}} position
+   * @param {{lat: number, lng: number, elapsedTime: number}} position
    * @param {Point|?} [prevPoint]
    */
   constructor(position, prevPoint = null) {
@@ -35,26 +34,21 @@ class Point {
 
     /**
      *
-     * @type {{ speed: number|?, distance: number|? }}
+     * @type {number|?}
      */
-    this.cache = { speed: null, distance: null }
+    this.time = this.getTime()
 
     /**
-     * Время таймера.
      *
      * @type {number}
      */
-    this.time = 0
-  }
+    this.speed = this.getSpeed()
 
-  /**
-   *
-   * @param {number} value
-   * @returns {Point}
-   */
-  setTime(value) {
-    this.time = value
-    return this
+    /**
+     *
+     * @type {number|?}
+     */
+    this.distance = this.getDistance()
   }
 
   /**
@@ -67,44 +61,81 @@ class Point {
       uKey: this.uKey,
       time: this.time,
       speed: this.speed,
+      distance: this.distance,
       position: this.position,
-      prevPointUKey: this.prevPoint ? this.prevPoint.uKey : null,
+      prevUKey: this.prevPoint ? this.prevPoint.uKey : null,
     }
+  }
+
+  /**
+   *
+   *
+   * @returns {number}
+   */
+  getDistance() {
+    return this.prevPoint ? this.calculateDistance(this, this.prevPoint) : 0
+  }
+
+  /**
+   * Скорость с момента получения последней точки.
+   *
+   * @returns {number}
+   */
+  getSpeed() {
+    return this.prevPoint ? this.calculateSpeed(this, this.prevPoint) : 0
+  }
+
+  /**
+   * Количество секунд с момента получения последней точки.
+   *
+   * @returns {number}
+   */
+  getTime() {
+    return this.calculateTime(this, this.prevPoint || null)
+  }
+
+  /**
+   * Calculates the speed between current and previous geo coordinates.
+   *
+   * @param {Point} point
+   * @param {Point} prevPoint
+   * @param {number} [measures]
+   * @returns {number}
+   */
+  calculateSpeed(point, prevPoint, measures = 0.001) {
+    const time = this.calculateTime(point, prevPoint)
+    if (time === 0) {
+      return 0
+    }
+    const distance = this.calculateDistance(point, prevPoint)
+    const mPerHr = (distance / time) * 3600
+    return Math.round(mPerHr * measures * 10000) / 10000
   }
 
   /**
    * Calculates the distance between current and previous geo coordinates.
    * Return value is always float and represents the distance in meters.
    *
+   * @param {Point} point
+   * @param {Point} prevPoint
    * @returns {number}
    */
-  get distance() {
-    if (this.prevPoint instanceof Point) {
-      if (this.cache.distance) {
-        return this.cache.distance
-      }
-      this.cache.distance = getDistance(this.prevPoint.position, this.position, 6, 6)
-      return this.cache.distance
-    }
-    return 0
+  calculateDistance(point, prevPoint) {
+    return getDistance(prevPoint.position, point.position, 6, 6)
   }
 
   /**
+   * Calculates the time in seconds between current and previous geo coordinates.
    *
+   * @param {Point} point
+   * @param {Point} prevPoint
    * @returns {number}
    */
-  get speed() {
-    if (this.prevPoint instanceof Point) {
-      if (this.cache.speed) {
-        return this.cache.speed
-      }
-      const measures = 0.001
-      const time = (this.position.timestamp / 1000) - (this.prevPoint.position.timestamp / 1000)
-      const mPerHr = (this.distance / time) * 3600
-      this.cache.speed = Math.round(mPerHr * measures * 10000) / 10000
-      return this.cache.speed
+  calculateTime(point, prevPoint) {
+    if (prevPoint) {
+      return point.position.elapsedTime - prevPoint.position.elapsedTime
     }
-    return 0
+    return point.position.elapsedTime
   }
 }
 

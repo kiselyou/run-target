@@ -41,7 +41,7 @@ export default Vue.component('Countdown', {
       if (this.number >= this.time) {
         clearInterval(this.timerId)
         this.number = 1
-        this.$emit('start')
+        this.$emit('countdownStop')
         return
       }
       this.number++

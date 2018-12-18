@@ -16,6 +16,10 @@ export default Vue.component('CalendarRun', {
       type: String,
       default: 'ru'
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function () {
     return {

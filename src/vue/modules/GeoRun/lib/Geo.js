@@ -1,5 +1,6 @@
 import Distance from './Distance'
 import Signal from './Signal'
+import Timer from '@lib/Timer'
 
 class Geo {
   constructor() {
@@ -8,12 +9,6 @@ class Geo {
      * @type {Array.<Distance>}
      */
     this.distances = []
-
-    /**
-     *
-     * @type {string|?}
-     */
-    this.watchID = null
 
     /**
      *
@@ -41,44 +36,26 @@ class Geo {
 
     /**
      *
-     * @type {number}
+     * @type {string|?}
+     * @private
      */
-    this.time = 0
+    this._watchID = null
+
+    /**
+     *
+     * @type {Timer}
+     */
+    this.timer = new Timer()
   }
 
   /**
-   *
-   * @param {number} value
-   * @returns {Geo}
-   */
-  setTime(value) {
-    const distance = this.getCurrentDistance()
-    if (distance) {
-      this.time = value
-      distance.setTime(value)
-    }
-    return this
-  }
-
-  /**
-   * Скорость объекта на момент добавления точки.
-   * Расчитывается между текущей точкой и предыдущей.
+   * Скорость объекта. Расчет по длине всей дистанции.
    *
    * @returns {number}
    */
-  get speed() {
+  get avgSpeed() {
     const distance = this.getCurrentDistance()
-    return distance ? distance.speed : 0
-  }
-
-  /**
-   * Скорость объекта. Расчет по последним 10 точкам
-   *
-   * @returns {number}
-   */
-  getAvgSpeed() {
-    const distance = this.getCurrentDistance()
-    return distance ? distance.getAvgSpeed(5) : 0
+    return distance ? distance.avgSpeed : 0
   }
 
   /**
@@ -87,8 +64,11 @@ class Geo {
    * @returns {number}
    */
   getTempo() {
-    const speed = this.getAvgSpeed()
-    return speed ? 60 / speed : 0
+    const distance = this.getCurrentDistance()
+    if (distance && distance.pathLength > 0) {
+      return distance.time / distance.pathLength * 1000
+    }
+    return 0
   }
 
   /**
@@ -126,7 +106,7 @@ class Geo {
   /**
    * Добавление точки.
    *
-   * @param {{lat: number, lng: number, [time]: number}} value
+   * @param {{lat: number, lng: number, elapsedTime: number}} value
    * @returns {Geo}
    */
   addPosition(value) {
@@ -151,7 +131,7 @@ class Geo {
    */
   getDistanceByNumber(distanceNumber) {
     for (const distances of this.distances) {
-      if (distances.distanceNumber === distanceNumber) {
+      if (distances.number === distanceNumber) {
         return distances
       }
     }
@@ -182,19 +162,17 @@ class Geo {
    * @returns {Geo}
    */
   start(onError) {
-    if (this.watchID) {
+    if (this._watchID) {
       return this
     }
-    this.watchID = navigator.geolocation.watchPosition(
+
+    this.timer.start()
+    this._watchID = navigator.geolocation.watchPosition(
       (position) => {
         this.addPosition({
           lat: position['coords']['latitude'],
           lng: position['coords']['longitude'],
-          time: Date.now(),
-
-
-          originSpeed: position['coords']['speed'],
-          originTime: position['coords']['time'],
+          elapsedTime: this.timer.time,
         })
       },
       (error) => {
@@ -213,8 +191,9 @@ class Geo {
    * @returns {Geo}
    */
   stop() {
-    navigator.geolocation.clearWatch(this.watchID)
-    this.watchID = null
+    this.timer.stop()
+    navigator.geolocation.clearWatch(this._watchID)
+    this._watchID = null
     return this
   }
 
@@ -223,7 +202,9 @@ class Geo {
    * @returns {Geo}
    */
   clear() {
+    this.timer.clear()
     this.distances.splice(0)
+    this._watchID = null
     return this
   }
 

@@ -19,8 +19,8 @@ let session = expressSession({
 
 app.use(session);
 app.use(defaultHeaders)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', parameterLimit: 50000, extended: true }))
 app.use(express.static('public'))
 
 app.get('/', async (req, res) => {

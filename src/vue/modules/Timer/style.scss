@@ -2,29 +2,22 @@
   color: #252525;
   width: 100%;
 
-  &_time {
-    font-size: 26px;
-    height: 36px;
-    font-weight: bold;
-    text-align: center;
-
-    &__icon {
-      height: 34px;
-      width: 34px;
-      text-align: center;
-    }
+  & svg {
+    fill: #252525;
   }
 
-  &_controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    min-height: 40px;
-    position: relative;
+  &_time {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
   }
 
   &__disabled {
     color: #EBEBEB;
+
+    & svg {
+      fill: #EBEBEB;
+    }
   }
 
   &__pause {

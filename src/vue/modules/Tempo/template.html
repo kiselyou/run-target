@@ -21,7 +21,7 @@
     </Row>
 
     <div class="my-4">
-      <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="10" class="my-3">
+      <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
         <template slot="before">{{ distanceNumber(distance) }}</template>
         <template slot="center">{{ distanceTempoString(distance) }}</template>
         <template slot="after">{{ distanceTime(distance) }}</template>

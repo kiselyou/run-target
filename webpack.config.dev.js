@@ -82,8 +82,7 @@ const config = {
       'src/favicon.ico',
       'src/cordova.js',
       { from: 'src/img/', to: 'img'},
-      { from: 'node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css', to: 'css'},
-      { from: 'node_modules/open-iconic/font/fonts/**', to: 'fonts/[name].[ext]'},
+      { from: 'src/icon/', to: 'icon'},
     ]),
     new HtmlWebpack({ template: `./src/index.html` }),
     new webpack.HashedModuleIdsPlugin()

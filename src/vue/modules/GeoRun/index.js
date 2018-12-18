@@ -15,11 +15,13 @@ import '@module/Spinner'
 import '@module/Details'
 import '@module/Activity'
 
+import Timer from '@lib/Timer'
 import Plugins from '@lib/cordova/Plugins'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
-const debug = false
+const debug = true
+const timer = new Timer()
 
 export default Vue.component('GeoRun', {
   props: {
@@ -64,14 +66,19 @@ export default Vue.component('GeoRun', {
       showConfirmGPS: false,
 
       /**
-       * @type {Function}
+       * @type {boolean}
        */
-      beforeStartGeo: null,
+      disabled: false,
 
       /**
        * @type {boolean}
        */
-      disabled: true,
+      calendarDisabled: false,
+
+      /**
+       * 0 - выкл., 1 - бег, 2 - пауза
+       */
+      status: 0,
 
       /**
        * Табы.
@@ -80,7 +87,7 @@ export default Vue.component('GeoRun', {
        */
       tabItems: new TabItems()
         .pushItem(new TabItem('content-activity', 'Активность', true))
-        .pushItem(new TabItem('content-details', 'Подробности').disable(true))
+        .pushItem(new TabItem('content-details', 'Подробности'))
         .pushItem(new TabItem('content-tempo', 'Темп')),
     }
   },
@@ -101,10 +108,10 @@ export default Vue.component('GeoRun', {
       return (this.day.getNumberOption('resultDistance') * 1000) + this.geo.getPathLengthFull()
     },
     speed: function () {
-      return this.geo.getAvgSpeed()
+      return this.geo.avgSpeed
     },
     tempo: function () {
-      return this.geo.getTempo()
+      return timer.setTime(this.geo.getTempo()).toNumberMinutes()
     },
     geoSignalValue: function () {
       return this.geo.signal.value
@@ -114,6 +121,9 @@ export default Vue.component('GeoRun', {
     },
     dayId: function () {
       return this.day ? this.day.id : null
+    },
+    time: function () {
+      return this.geo.timer.toStringHours()
     },
   },
   methods: {
@@ -161,14 +171,16 @@ export default Vue.component('GeoRun', {
      * Countdown.
      * Срабатывает после того как закончится обратный отсчет.
      */
-    start: function () {
+    startRun: function () {
+      this.status = 1
       this.showCountdown = false
-      if (this.beforeStartGeo) {
-        this.beforeStartGeo()
-      }
       this.geo.start((error) => {
         this.geoErrorMessage = error.message
       })
+      this.calendarDisabled = true
+      for (const tabItem of this.tabItems) {
+        tabItem.disable(true)
+      }
       Plugins.bgMode.disableWebViewOptimizations()
       Plugins.bgMode.overrideBackButton()
       // Plugins.bgMode.wakeUp()
@@ -178,11 +190,8 @@ export default Vue.component('GeoRun', {
     /**
      * Timer.
      * Кнопка старт.
-     *
-     * @param {Function} startTimer - Функция которая запускает таймер. (modules/Timer)
      */
-    beforeStar: function (startTimer) {
-      this.beforeStartGeo = startTimer
+    beforeStarRun: function () {
       if (this.geo.signal.isGeoDisabled) {
         this.showConfirmGPS = true
       } else {
@@ -193,22 +202,19 @@ export default Vue.component('GeoRun', {
     /**
      * Timer.
      * Кнопка стоп.
-     *
-     * @param {Function} stopTimer - Функция которая запускает таймер. (modules/Timer)
      */
-    stop: function (stopTimer) {
-      stopTimer()
+    stopRun: function () {
+      this.status = 2
       this.geo.stop()
     },
 
     /**
      * Timer.
      * Кнопка стоп.
-     *
-     * @param {Function} stopTimer - Функция которая запускает таймер. (modules/Timer)
      */
-    next: function (stopTimer) {
-      stopTimer()
+    nextRun: function () {
+      this.status = 1
+
       this.geo.start((error) => {
         this.geoErrorMessage = error.message
       })
@@ -217,12 +223,14 @@ export default Vue.component('GeoRun', {
     /**
      * Timer.
      * Кнопка закончить.
-     *
-     * @param {Function} endTimer - Функция которая запускает таймер. (modules/Timer)
      */
-    end: function (endTimer) {
-      endTimer()
+    endRun: function () {
+      this.status = 0
       this.geo.stop()
+      this.calendarDisabled = false
+      for (const tabItem of this.tabItems) {
+        tabItem.disable(false)
+      }
 
       const pathLength = this.geo.getPathLengthFull() / 1000
       const oldResultDistance = this.day.getNumberOption('resultDistance')
@@ -235,15 +243,6 @@ export default Vue.component('GeoRun', {
       this.geo.clear()
       Plugins.bgMode.disable()
     },
-
-    /**
-     * Обновление времени.
-     *
-     * @param {number} time
-     */
-    onTimeUpdate: function (time) {
-      this.geo.setTime(time)
-    }
   },
   template: template
 })

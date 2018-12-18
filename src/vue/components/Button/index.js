@@ -1,5 +1,6 @@
 import './style.scss'
 import Vue from 'vue'
+import '@vue/VueIcon'
 import template from './template.html'
 
 export default Vue.component('Button', {
@@ -29,11 +30,6 @@ export default Vue.component('Button', {
     },
     width: {
       type: [Number, String]
-    }
-  },
-  data: function () {
-    return {
-      iconName: this.icon ? `oi oi-${this.icon}` : null
     }
   },
   computed: {

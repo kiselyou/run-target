@@ -18,15 +18,28 @@ export default Vue.component('MonthRun', {
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     next: function (date) {
+      if (this.disabled) {
+        return
+      }
       this.$emit('nextMonth', date)
     },
     prev: function (date) {
+      if (this.disabled) {
+        return
+      }
       this.$emit('prevMonth', date)
     },
     selectDay: function (day) {
+      if (this.disabled) {
+        return
+      }
       this.$emit('selectDay', day)
     }
   },

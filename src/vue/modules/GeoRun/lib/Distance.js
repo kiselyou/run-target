@@ -23,7 +23,7 @@ class Distance {
      *
      * @type {number}
      */
-    this.distanceNumber = distanceNumber
+    this.number = distanceNumber
 
     /**
      *
@@ -38,61 +38,38 @@ class Distance {
     this.points = []
 
     /**
-     * Текущая длина дистанции.
+     * Общее время дистанции. сек.
+     *
+     * @type {number}
+     */
+    this.time = 0
+
+    /**
+     * Истекшее время. сек.
+     *
+     * @type {number}
+     */
+    this.elapsedTime = 0
+
+    /**
+     * Длина текущей дистанции.
      *
      * @type {number}
      */
     this.pathLength = 0
 
     /**
-     * Время пробешки. Значение таимера.
+     * Скорость объекта между двумя последнии точками.
      *
      * @type {number}
      */
-    this.time = 0
-  }
-
-  /**
-   *
-   * @param {number} value
-   * @returns {Distance}
-   */
-  setTime(value) {
-    this.time = value
-    return this
-  }
-
-  /**
-   * Скорость объекта на момент добавления точки.
-   * Расчитывается между текущей точкой и предыдущей.
-   *
-   * @returns {number}
-   */
-  get speed() {
-    const point = this.lastPoint
-    if (point) {
-      return point.speed
-    }
-    return 0
-  }
-
-  /**
-   * Средняя скорость объекта за последние (n) точек.
-   *
-   * @param {number} interval - Количество последних точек для расета средней скорости.
-   */
-  getAvgSpeed(interval) {
-    const avg = { speed: 0, count: 0 }
-    const index = this.points.length >= interval ? this.points.length - interval : 0
-    for (let i = index; i < this.points.length; i++) {
-      const speed = this.points[i]['speed']
-      if (speed === 0) {
-        continue
-      }
-      avg.speed += speed
-      avg.count++
-    }
-    return avg.count > 0 ? avg.speed / avg.count : 0
+    this.speed = 0
+    /**
+     *
+     * @type {{ speed: number, count: number }}
+     * @private
+     */
+    this._avgSpeed = { speed: 0, count: 0 }
   }
 
   /**
@@ -100,8 +77,10 @@ class Distance {
    *
    * @returns {number}
    */
-  getAvgSpeedFull() {
-    return this.getAvgSpeed(this.points.length)
+  get avgSpeed() {
+    const speedAvg = this._avgSpeed.speed
+    const countAvg = this._avgSpeed.count
+    return countAvg > 0 ? speedAvg / countAvg : 0
   }
 
   /**
@@ -123,14 +102,11 @@ class Distance {
 
   /**
    *
-   * @param {{lat: number, lng: number, [time]: number}} value
+   * @param {{lat: number, lng: number, elapsedTime: number}} value
    * @returns {Distance}
    */
   addPosition(value) {
-    this.addPoint(
-      new Point(value, this.lastPoint)
-        .setTime(this.time)
-    )
+    this.addPoint(new Point(value, this.lastPoint))
     return this
   }
 
@@ -140,7 +116,11 @@ class Distance {
    * @returns {Distance}
    */
   addPoint(point) {
+    this.time += point.time
+    this._avgSpeed.count++
+    this._avgSpeed.speed += point.speed
     this.pathLength += point.distance
+    this.elapsedTime = point.position.elapsedTime
     this.points.push(point)
     return this
   }
@@ -172,10 +152,11 @@ class Distance {
       id: this.id,
       uKey: this.uKey,
       time: this.time,
+      number: this.number,
+      avgSpeed: this.avgSpeed,
       pathLength: this.pathLength,
-      avgSpeed: this.getAvgSpeedFull(),
-      distanceNumber: this.distanceNumber,
-      prevDistanceUKey: this.prevDistance ? this.prevDistance.uKey : null,
+      elapsedTime: this.elapsedTime,
+      prevUKey: this.prevDistance ? this.prevDistance.uKey : null,
       points: this.points.map((point) => point.serialize())
     }
   }

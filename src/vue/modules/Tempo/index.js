@@ -90,6 +90,16 @@ export default Vue.component('Tempo', {
       }
       return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
     },
+
+    /**
+     * Максимальный темп.
+     *
+     * @returns {number}
+     */
+    maxTempo: function () {
+      const tempo = Number(this.upperTempo)
+      return tempo + (tempo / 100 * 10)
+    }
   },
   methods: {
     /**
@@ -119,19 +129,17 @@ export default Vue.component('Tempo', {
       return moment(this.day.date).locale('ru').format('DD MMMM')
     },
     /**
-     * Получение темпа из дистанции. Возвращает число.
+     * Получение темпа из дистанции.
      *
      * @param {Object} distance
      * @returns {number}
      */
     distanceTempoNumber(distance) {
-      if (!distance.prevDistanceUKey) {
-        return timer.setTime(distance.time).toNumberMinutes()
+      if (!distance.prevUKey) {
+        return timer.setTime((distance.time / distance.pathLength) * 1000).toNumberMinutes()
       }
-      const prevDistance = this.distances.find((item) => item.uKey === distance.prevDistanceUKey)
-      const time = distance.time - prevDistance.time
-
-      return timer.setTime((time / distance.pathLength) * 1000).toNumberMinutes()
+      const time = (distance.time / distance.pathLength) * 1000
+      return timer.setTime(time).toNumberMinutes()
     },
     /**
      * Получение темпа из дистанции. Возвращает форматированую строку.
@@ -152,9 +160,9 @@ export default Vue.component('Tempo', {
     distanceNumber(distance) {
       let len = 'км'
       if (distance.pathLength < 1000) {
-        len = `- ${distance.pathLength}м`
+        len = `- ${Number(distance.pathLength).toFixed(0)}м`
       }
-      return `${distance.distanceNumber + 1} ${len}`
+      return `${distance.number + 1} ${len}`
     },
     /**
      * Время на дистанции.
@@ -163,7 +171,7 @@ export default Vue.component('Tempo', {
      * @returns {string}
      */
     distanceTime(distance) {
-      return timer.setTime(distance.time).toStringHours()
+      return timer.setTime(distance.elapsedTime).toStringHours()
     },
     /**
      * Длина всего пути активности.

@@ -29,7 +29,9 @@ export default Vue.component('Tab', {
       for (const item of this.items) {
         item.active(item.slotName === tabItem.slotName)
       }
-      this.$emit('onTabOpen', tabItem)
+      if (!tabItem.isDisabled) {
+        this.$emit('onTabOpen', tabItem)
+      }
     }
   },
   template: template

@@ -13,12 +13,12 @@ export const savePoints = (db, deviceId, points) => {
       point.time,
       point.uKey,
       point.speed,
-      point.prevPointUKey,
+      point.prevUKey,
       JSON.stringify(point.position)
     ]
   })
 
-  return db.query(`INSERT INTO point (distanceId, time, uKey, speed, prevPointUKey, position) VALUES ?`, [ rows ])
+  return db.query(`INSERT INTO point (distanceId, time, uKey, speed, prevUKey, position) VALUES ?`, [ rows ])
 }
 
 /**

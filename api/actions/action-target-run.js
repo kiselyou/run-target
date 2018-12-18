@@ -56,14 +56,16 @@ export async function saveActivityAction({ req, res, db }) {
     const distanceId = await saveDistance(db, activityId, {
       uKey: distance.uKey,
       time: distance.time,
+      number: distance.number,
+      prevUKey: distance.prevUKey,
       avgSpeed: distance.avgSpeed,
       pathLength: distance.pathLength,
-      distanceNumber: distance.distanceNumber,
-      prevDistanceUKey: distance.prevDistanceUKey,
+      elapsedTime: distance.elapsedTime,
     })
     // сохраняем навигационные точки на отрезке.
     await savePoints(db, distanceId, points)
   }
+  return res.send({status: true})
 }
 
 /**

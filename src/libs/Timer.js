@@ -18,15 +18,28 @@ class Timer {
 
     /**
      *
-     * @type {boolean}
+     * @type {{time: number, tickTime: number}}
      */
-    this.enabled = false
+    this.cache = { time: 0, tickTime: 0 }
 
     /**
-     *
-     * @type {number}
+     * 
+     * @type {boolean}
      */
-    this.time = 0
+    this.pause = false
+  }
+
+  /**
+   * Time in milliseconds.
+   *
+   * @returns {number}
+   */
+  get time() {
+    const timestamp = Date.now() - this.cache.tickTime
+    if (timestamp > 0 && timestamp < 1000) {
+      return this.cache.time + (timestamp / 1000)
+    }
+    return this.cache.time
   }
 
   /**
@@ -35,7 +48,7 @@ class Timer {
    * @returns {Timer}
    */
   setTime(value) {
-    this.time = value
+    this.cache.time = value
     return this
   }
 
@@ -60,12 +73,19 @@ class Timer {
    * @returns {Timer}
    */
   start() {
-    this.stop()
-    this.enabled = true
+    this.pause = false
+    if (this.id) {
+      return this
+    }
+
     this.id = setInterval(() => {
-      this.time++
-      for (const callback of this.tickCallbacks) {
-        callback(this.time, this.toString())
+      this.cache.tickTime = Date.now()
+      if (!this.pause) {
+        this.cache.time++
+        // Устоновить время итерации.
+        for (const callback of this.tickCallbacks) {
+          callback(this.time)
+        }
       }
     }, 1000)
     return this
@@ -76,7 +96,7 @@ class Timer {
    * @returns {Timer}
    */
   stop() {
-    clearInterval(this.id)
+    this.pause = true
     return this
   }
 
@@ -85,8 +105,11 @@ class Timer {
    * @returns {Timer}
    */
   clear() {
-    this.stop()
-    this.time = 0
+    clearInterval(this.id)
+    this.id = null
+    this.pause = false
+    this.cache.time = 0
+    this.cache.tickTime = 0
     return this
   }
 
@@ -96,7 +119,6 @@ class Timer {
    */
   end() {
     this.clear()
-    this.enabled = false
     return this
   }
 
@@ -105,8 +127,8 @@ class Timer {
    * @returns {{days: number, hours: number, minutes: number, seconds: number}}
    */
   getTimeObject() {
-    let days = Math.floor(this.time / DAY)
-    const remainingDays = this.time - (days * DAY)
+    let days = Math.floor(this.cache.time / DAY)
+    const remainingDays = this.cache.time - (days * DAY)
     let hours =  Math.floor(remainingDays / HOUR)
     if (hours >= 24) {
       hours = 23

@@ -10,6 +10,10 @@
   align-items: center;
   justify-content: space-evenly;
 
+  & svg {
+    fill: #FFFFFF;
+  }
+
   @media screen and (max-width: 359px) {
     min-width: 120px;
   }
@@ -48,6 +52,10 @@
     background: #FFFFFF;
     border: solid 1px #999999;
     color: #252525;
+
+    & svg {
+      fill: #252525;
+    }
 
     &:hover {
       background: #F8F8FF;

@@ -2,17 +2,17 @@
   font-weight: bold;
   width: calc(100% - 20px);
   margin: 6px 10px;
-  height: 18px;
+  height: 26px;
   border: solid 1px #666666;
   background: #252525;
   color: #FFFFFF;
   position: relative;
-  border-radius: 9px;
+  border-radius: 2px;
 
   &_cell {
     position: absolute;
-    height: 16px;
-    border-radius: 8px;
+    height: 24px;
+    border-radius: 2px;
 
     display: flex;
     align-items: center;
@@ -30,7 +30,7 @@
 
     &__before {
       width: 80px;
-      padding-left: 5px;
+      padding-left: 10px;
       justify-content: flex-start;
       z-index: 3;
     }
@@ -43,7 +43,7 @@
     &__after {
       right: 0;
       width: 80px;
-      padding-right: 5px;
+      padding-right: 10px;
       justify-content: flex-end;
       z-index: 3;
     }
