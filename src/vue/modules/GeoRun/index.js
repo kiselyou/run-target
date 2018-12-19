@@ -110,6 +110,17 @@ export default Vue.component('GeoRun', {
     speed: function () {
       return this.geo.avgSpeed
     },
+    speedTest: function() {
+      const speed = Number(this.geo.getAvgSpeedByLastPoints(1)).toFixed(2)
+
+      const d = this.geo.getCurrentDistance()
+      if (d) {
+        console.log(d.lastPoint.position.elapsedTime)
+      }
+
+      console.log(speed)
+      return speed
+    },
     tempo: function () {
       return timer.setTime(this.geo.getTempo()).toNumberMinutes()
     },

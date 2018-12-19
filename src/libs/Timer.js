@@ -20,7 +20,7 @@ class Timer {
      *
      * @type {{time: number, tickTime: number}}
      */
-    this.cache = { time: 0, tickTime: 0 }
+    this.cache = { time: 0, tickTime: 0, pauseTime: 0, stopTime: 0 }
 
     /**
      * 
@@ -36,10 +36,33 @@ class Timer {
    */
   get time() {
     const timestamp = Date.now() - this.cache.tickTime
-    if (timestamp > 0 && timestamp < 1000) {
-      return this.cache.time + (timestamp / 1000)
+    let time = this.cache.time
+    time += (timestamp / 1000)
+
+
+    if (this.cache.stopTime > 0) {
+
+      // const pauseTime = (Date.now() - this.cache.pauseTime) / 1000
+      const stopTime = (Date.now() - this.cache.stopTime) / 1000
+      time -= stopTime - (Math.floor(stopTime))
+
+      console.log(stopTime, stopTime - (Math.floor(stopTime)), '+++++++++++++++++++')
+
+
+
+      // console.log((Date.now() - this.cache.pauseTime) / 1000, (this.cache.stopTime - this.cache.pauseTime) / 1000, '====')
+
+      // console.log(this.cache.stopTime / 1000, (Date.now() - this.cache.pauseTime) / 1000, '==============')
+
     }
-    return this.cache.time
+
+
+
+    return time
+    // if (timestamp > 0 && timestamp < 1000) {
+    //   return this.cache.time + (timestamp / 1000)
+    // }
+    // return this.cache.time
   }
 
   /**
@@ -86,7 +109,14 @@ class Timer {
         for (const callback of this.tickCallbacks) {
           callback(this.time)
         }
+      } else {
+        if (this.cache.stopTime === 0) {
+          console.log('__')
+          this.cache.stopTime = Date.now()
+          console.log(this.cache.stopTime)
+        }
       }
+
     }, 1000)
     return this
   }
@@ -97,6 +127,7 @@ class Timer {
    */
   stop() {
     this.pause = true
+    // this.cache.pauseTime = Date.now()
     return this
   }
 

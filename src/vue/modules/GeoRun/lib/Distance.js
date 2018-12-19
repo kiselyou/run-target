@@ -84,6 +84,25 @@ class Distance {
   }
 
   /**
+   * Средняя скорость объекта за последние (n) точек.
+   *
+   * @param {number} pointsCount - Количество последних точек для расета средней скорости.
+   */
+  getAvgSpeedByLastPoints(pointsCount) {
+    const avg = { speed: 0, count: 0 }
+    const index = this.points.length >= pointsCount ? this.points.length - pointsCount : 0
+    for (let i = index; i < this.points.length; i++) {
+      const point = this.points[i]
+      if (!point.prevPoint) {
+        continue
+      }
+      avg.speed += point.speed
+      avg.count++
+    }
+    return avg.count > 0 ? avg.speed / avg.count : 0
+  }
+
+  /**
    * Последняя точка.
    *
    * @returns {Point|?}
@@ -117,10 +136,12 @@ class Distance {
    */
   addPoint(point) {
     this.time += point.time
-    this._avgSpeed.count++
-    this._avgSpeed.speed += point.speed
     this.pathLength += point.distance
     this.elapsedTime = point.position.elapsedTime
+    if (point.prevPoint) {
+      this._avgSpeed.count++
+      this._avgSpeed.speed += point.speed
+    }
     this.points.push(point)
     return this
   }

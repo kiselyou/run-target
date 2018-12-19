@@ -46,7 +46,7 @@ class EmulatorGeo extends Geo {
     this.timer.start()
     this.intervalId = setInterval(() => {
       this.tick()
-    }, 1200)
+    }, 1000)
     return this
   }
 

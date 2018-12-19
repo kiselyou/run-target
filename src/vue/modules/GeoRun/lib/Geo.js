@@ -59,6 +59,16 @@ class Geo {
   }
 
   /**
+   * Скорость объекта. Расчет по последним n точкам
+   *
+   * @returns {number}
+   */
+  getAvgSpeedByLastPoints(pointsCount) {
+    const distance = this.getCurrentDistance()
+    return distance ? distance.getAvgSpeedByLastPoints(pointsCount) : 0
+  }
+
+  /**
    * Текущий темп.
    *
    * @returns {number}
