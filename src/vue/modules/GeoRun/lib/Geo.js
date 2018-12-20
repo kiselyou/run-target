@@ -183,7 +183,18 @@ class Geo {
           lat: position['coords']['latitude'],
           lng: position['coords']['longitude'],
           elapsedTime: this.timer.time,
-          position: position,
+          position: {
+            timestamp: position['timestamp'],
+            coords: {
+              latitude: position['coords']['latitude'],
+              longitude: position['coords']['longitude'],
+              altitude: position['coords']['altitude'],
+              accuracy: position['coords']['accuracy'],
+              altitudeAccuracy: position['coords']['altitudeAccuracy'],
+              heading : position['coords']['heading'],
+              speed : position['coords']['speed']
+            }
+          },
         })
       },
       (error) => {
