@@ -15,7 +15,7 @@ export const savePoints = (db, deviceId, points) => {
       point.speed,
       point.prevUKey,
       JSON.stringify(point.position),
-      point.tmp,
+      JSON.stringify(point.tmp),
     ]
   })
 
