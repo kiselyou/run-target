@@ -36,7 +36,6 @@ const config = {
         test: [
           /\.(gif|png|jpe?g|svg)$/
         ],
-        exclude: /open-iconic\.svg$/,
         use: {
           loader: "file-loader",
           options: {
@@ -92,7 +91,6 @@ const config = {
       'src/favicon.ico',
       'src/cordova.js',
       { from: 'src/img/', to: 'img'},
-      { from: 'src/icon/', to: 'icon'},
     ]),
     new ExtractText('css/styles.min.css'),
     new HtmlWebpack({ template: `./src/index.html` }),

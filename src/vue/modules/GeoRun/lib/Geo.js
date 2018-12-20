@@ -183,6 +183,7 @@ class Geo {
           lat: position['coords']['latitude'],
           lng: position['coords']['longitude'],
           elapsedTime: this.timer.time,
+          position: position,
         })
       },
       (error) => {

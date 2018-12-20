@@ -20,7 +20,7 @@ class Timer {
      *
      * @type {{time: number, tickTime: number}}
      */
-    this.cache = { time: 0, tickTime: 0, pauseTime: 0, stopTime: 0 }
+    this.cache = { time: 0, tickTime: 0 }
 
     /**
      * 
@@ -35,34 +35,11 @@ class Timer {
    * @returns {number}
    */
   get time() {
-    const timestamp = Date.now() - this.cache.tickTime
-    let time = this.cache.time
-    time += (timestamp / 1000)
-
-
-    if (this.cache.stopTime > 0) {
-
-      // const pauseTime = (Date.now() - this.cache.pauseTime) / 1000
-      const stopTime = (Date.now() - this.cache.stopTime) / 1000
-      time -= stopTime - (Math.floor(stopTime))
-
-      console.log(stopTime, stopTime - (Math.floor(stopTime)), '+++++++++++++++++++')
-
-
-
-      // console.log((Date.now() - this.cache.pauseTime) / 1000, (this.cache.stopTime - this.cache.pauseTime) / 1000, '====')
-
-      // console.log(this.cache.stopTime / 1000, (Date.now() - this.cache.pauseTime) / 1000, '==============')
-
+    const timestamp = (Date.now() - this.cache.tickTime) / 1000
+    if (timestamp > 0 && timestamp < 1) {
+      return this.cache.time + timestamp
     }
-
-
-
-    return time
-    // if (timestamp > 0 && timestamp < 1000) {
-    //   return this.cache.time + (timestamp / 1000)
-    // }
-    // return this.cache.time
+    return this.cache.time
   }
 
   /**
@@ -97,23 +74,18 @@ class Timer {
    */
   start() {
     this.pause = false
+    this.cache.tickTime = Date.now()
     if (this.id) {
       return this
     }
 
     this.id = setInterval(() => {
-      this.cache.tickTime = Date.now()
       if (!this.pause) {
-        this.cache.time++
-        // Устоновить время итерации.
+        const now = Date.now()
+        this.cache.time += (now - this.cache.tickTime) / 1000
+        this.cache.tickTime = now
         for (const callback of this.tickCallbacks) {
           callback(this.time)
-        }
-      } else {
-        if (this.cache.stopTime === 0) {
-          console.log('__')
-          this.cache.stopTime = Date.now()
-          console.log(this.cache.stopTime)
         }
       }
 
@@ -127,7 +99,6 @@ class Timer {
    */
   stop() {
     this.pause = true
-    // this.cache.pauseTime = Date.now()
     return this
   }
 

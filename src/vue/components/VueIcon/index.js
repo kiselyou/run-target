@@ -17,7 +17,7 @@ export default Vue.component('VueIcon', {
   },
   data: function () {
     return {
-      path: './icon/sprite.min.svg'
+      path: './img/sprite.min.svg'
     }
   },
   computed: {

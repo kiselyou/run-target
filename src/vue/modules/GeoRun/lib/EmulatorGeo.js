@@ -26,9 +26,12 @@ class EmulatorGeo extends Geo {
     const distance = this.getCurrentDistance()
 
     this.addPosition({
-      "lat": distance ? distance.lastPoint.position.lat + 0.0000195 : startPoint.lat,
-      "lng": distance ? distance.lastPoint.position.lng + 0.0000217 : startPoint.lng,
-      "elapsedTime": this.timer.time,
+      lat: distance ? distance.lastPoint.position.lat + 0.0000195 : startPoint.lat,
+      lng: distance ? distance.lastPoint.position.lng + 0.0000217 : startPoint.lng,
+      elapsedTime: this.timer.time,
+      time: Date.now(),
+      coordsSpeed: 0,
+      coordsTime: 0,
     })
     return this
   }

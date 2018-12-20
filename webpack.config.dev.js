@@ -82,7 +82,6 @@ const config = {
       'src/favicon.ico',
       'src/cordova.js',
       { from: 'src/img/', to: 'img'},
-      { from: 'src/icon/', to: 'icon'},
     ]),
     new HtmlWebpack({ template: `./src/index.html` }),
     new webpack.HashedModuleIdsPlugin()

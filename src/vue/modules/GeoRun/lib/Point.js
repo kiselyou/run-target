@@ -49,6 +49,8 @@ class Point {
      * @type {number|?}
      */
     this.distance = this.getDistance()
+
+    this.tmp = position.position
   }
 
   /**
@@ -64,6 +66,7 @@ class Point {
       distance: this.distance,
       position: this.position,
       prevUKey: this.prevPoint ? this.prevPoint.uKey : null,
+      tmp: this.tmp
     }
   }
 

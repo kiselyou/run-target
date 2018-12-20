@@ -20,7 +20,7 @@ import Plugins from '@lib/cordova/Plugins'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
-const debug = true
+const debug = false
 const timer = new Timer()
 
 export default Vue.component('GeoRun', {
@@ -111,15 +111,7 @@ export default Vue.component('GeoRun', {
       return this.geo.avgSpeed
     },
     speedTest: function() {
-      const speed = Number(this.geo.getAvgSpeedByLastPoints(1)).toFixed(2)
-
-      const d = this.geo.getCurrentDistance()
-      if (d) {
-        console.log(d.lastPoint.position.elapsedTime)
-      }
-
-      console.log(speed)
-      return speed
+      return Number(this.geo.getAvgSpeedByLastPoints(1)).toFixed(2)
     },
     tempo: function () {
       return timer.setTime(this.geo.getTempo()).toNumberMinutes()
