@@ -20,7 +20,7 @@ import Plugins from '@lib/cordova/Plugins'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
-const debug = true
+const debug = false
 const timer = new Timer()
 
 export default Vue.component('GeoRun', {
