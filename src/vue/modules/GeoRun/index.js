@@ -1,7 +1,7 @@
 import './style.scss'
 import Vue from 'vue'
-import Geo from './lib/Geo'
-import EmulatorGeo from './lib/EmulatorGeo'
+import Geo from '@lib/geo-location/Geo'
+import Signal from '@lib/geo-location/Signal'
 import template from './template.html'
 import Ajax from '@lib/Ajax'
 import '@vue/Tab'
@@ -20,7 +20,7 @@ import Plugins from '@lib/cordova/Plugins'
 import TabItems from '@vue/Tab/api/TabItems'
 import TabItem from '@vue/Tab/api/TabItem'
 
-const debug = false
+const debug = true
 const timer = new Timer()
 
 export default Vue.component('GeoRun', {
@@ -42,7 +42,12 @@ export default Vue.component('GeoRun', {
       /**
        * @type {Geo}
        */
-      geo: debug ? new EmulatorGeo() : new Geo(),
+      geo: new Geo(debug),
+
+      /**
+       * @type {Signal}
+       */
+      signal: new Signal(),
 
       /**
        * Выбранный или активный день календаря. (содержит информацию о текущей цели)
@@ -92,7 +97,8 @@ export default Vue.component('GeoRun', {
     }
   },
   mounted() {
-    this.geo.signal.listen()
+    this.geo.listen()
+    this.signal.listen()
   },
   computed: {
     targetDistance: function () {
@@ -103,24 +109,24 @@ export default Vue.component('GeoRun', {
         return 0
       }
       if (this.day.isNow) {
-        return this.geo.getPathLengthFull()
+        return this.geo.getPathLength()
       }
-      return (this.day.getNumberOption('resultDistance') * 1000) + this.geo.getPathLengthFull()
+      return (this.day.getNumberOption('resultDistance') * 1000) + this.geo.getPathLength()
     },
     speed: function () {
       return this.geo.avgSpeed
     },
     speedTest: function() {
-      return Number(this.geo.getAvgSpeedByLastPoints(1)).toFixed(2)
+      return Number(this.geo.getAvgSpeed(1)).toFixed(2)
     },
     tempo: function () {
       return timer.setTime(this.geo.getTempo()).toNumberMinutes()
     },
     geoSignalValue: function () {
-      return this.geo.signal.value
+      return this.signal.value
     },
     geoIsDisabled: function () {
-      return this.geo.signal.isGeoDisabled
+      return this.signal.isGeoDisabled
     },
     dayId: function () {
       return this.day ? this.day.id : null
@@ -195,7 +201,7 @@ export default Vue.component('GeoRun', {
      * Кнопка старт.
      */
     beforeStarRun: function () {
-      if (this.geo.signal.isGeoDisabled) {
+      if (this.signal.isGeoDisabled) {
         this.showConfirmGPS = true
       } else {
         this.showCountdown = true
@@ -235,7 +241,7 @@ export default Vue.component('GeoRun', {
         tabItem.disable(false)
       }
 
-      const pathLength = this.geo.getPathLengthFull() / 1000
+      const pathLength = this.geo.getPathLength() / 1000
       const oldResultDistance = this.day.getNumberOption('resultDistance')
       this.day.addOption('resultDistance', oldResultDistance + pathLength)
       this.day.pushOption('piecesDistance', pathLength)

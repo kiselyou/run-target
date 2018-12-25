@@ -1,26 +1,19 @@
+import Timer from '../Timer'
 import Distance from './Distance'
-import Signal from './Signal'
-import Timer from '@lib/Timer'
+import GeoLocation from './GeoLocation'
 
 class Geo {
-  constructor() {
+  /**
+   *
+   * @param {boolean} debug
+   */
+  constructor(debug = false) {
+
     /**
      *
      * @type {Array.<Distance>}
      */
     this.distances = []
-
-    /**
-     *
-     * @type {{enableHighAccuracy: boolean, timeout: number}}
-     */
-    this.options = { enableHighAccuracy: true, timeout: 30000 }
-
-    /**
-     *
-     * @type {Signal}
-     */
-    this.signal = new Signal()
 
     /**
      *
@@ -36,20 +29,25 @@ class Geo {
 
     /**
      *
-     * @type {string|?}
-     * @private
-     */
-    this._watchID = null
-
-    /**
-     *
      * @type {Timer}
      */
     this.timer = new Timer()
+
+    /**
+     *
+     * @type {GeoLocation}
+     */
+    this.geoLocation = new GeoLocation(debug)
+
+    /**
+     *
+     * @type {{timeStart: number, timeEnd: number}}
+     */
+    this.pauseTimeData = { timeStart: 0, timeEnd: 0 }
   }
 
   /**
-   * Скорость объекта. Расчет по длине всей дистанции.
+   * Avg speed by 10 last points.
    *
    * @returns {number}
    */
@@ -59,24 +57,23 @@ class Geo {
   }
 
   /**
-   * Скорость объекта. Расчет по последним n точкам
+   * Get current speed. Calculate by (n) last points.
    *
    * @returns {number}
    */
-  getAvgSpeedByLastPoints(pointsCount) {
+  getAvgSpeed(pointsCount) {
     const distance = this.getCurrentDistance()
-    return distance ? distance.getAvgSpeedByLastPoints(pointsCount) : 0
+    return distance ? distance.getAvgSpeed(pointsCount) : 0
   }
 
   /**
-   * Текущий темп.
    *
    * @returns {number}
    */
   getTempo() {
     const distance = this.getCurrentDistance()
     if (distance && distance.pathLength > 0) {
-      return distance.time / distance.pathLength * 1000
+      return distance.elapsedTime / distance.pathLength * 1000
     }
     return 0
   }
@@ -86,7 +83,7 @@ class Geo {
    *
    * @returns {number}
    */
-  getPathLengthFull() {
+  getPathLength() {
     let pathLength = 0
     for (const distance of this.distances) {
       pathLength += distance.pathLength
@@ -95,17 +92,6 @@ class Geo {
   }
 
   /**
-   * Длина текущей дистанции (текущего километра).
-   *
-   * @returns {number}
-   */
-  getPathLengthCurrent() {
-    const distance = this.getCurrentDistance()
-    return distance ? distance.pathLength : 0
-  }
-
-  /**
-   * Текущая дистанция.
    *
    * @returns {Distance|?}
    */
@@ -114,7 +100,6 @@ class Geo {
   }
 
   /**
-   * Добавление точки.
    *
    * @param {{lat: number, lng: number, elapsedTime: number}} value
    * @returns {Geo}
@@ -154,57 +139,48 @@ class Geo {
    * @returns {number}
    */
   getDistanceNumber() {
-    return Math.floor(this.getPathLengthFull() / 1000)
+    return Math.floor(this.getPathLength() / 1000)
   }
 
   /**
-   * @param {PositionError} error
-   * @callback onErrorCallback
+   *
+   * @returns {Geo}
    */
-
-  /**
-   * @callback onSuccessCallback
-   */
+  listen() {
+    this.geoLocation.addEventListener('onTick', (position) => {
+      let pauseTime = this.pauseTimeData.timeEnd - this.pauseTimeData.timeStart
+      if (pauseTime > 0) {
+        this.pauseTimeData.timeStart = 0
+        this.pauseTimeData.timeEnd = 0
+      } else {
+        pauseTime = 0
+      }
+      this.addPosition({
+        pauseTime: pauseTime,
+        timestamp: position.timestamp,
+        coords: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy,
+          altitude: position.coords.altitude,
+          altitudeAccuracy: position.coords.altitudeAccuracy,
+        }
+      })
+    })
+    return this
+  }
 
   /**
    *
-   * @param {onErrorCallback} [onError]
+   * @param {Function} [onError]
    * @returns {Geo}
    */
   start(onError) {
-    if (this._watchID) {
-      return this
+    if (this.pauseTimeData.timeStart > 0) {
+      this.pauseTimeData.timeEnd = Date.now()
     }
-
     this.timer.start()
-    this._watchID = navigator.geolocation.watchPosition(
-      (position) => {
-        this.addPosition({
-          lat: position['coords']['latitude'],
-          lng: position['coords']['longitude'],
-          elapsedTime: this.timer.time,
-          position: {
-            timestamp: position['timestamp'],
-            coords: {
-              latitude: position['coords']['latitude'],
-              longitude: position['coords']['longitude'],
-              altitude: position['coords']['altitude'],
-              accuracy: position['coords']['accuracy'],
-              altitudeAccuracy: position['coords']['altitudeAccuracy'],
-              heading : position['coords']['heading'],
-              speed : position['coords']['speed']
-            }
-          },
-        })
-      },
-      (error) => {
-        this.stop()
-        if (error) {
-          onError(error)
-        }
-      },
-      this.options
-    )
+    this.geoLocation.start()
     return this
   }
 
@@ -213,9 +189,9 @@ class Geo {
    * @returns {Geo}
    */
   stop() {
+    this.pauseTimeData.timeStart = Date.now()
     this.timer.stop()
-    navigator.geolocation.clearWatch(this._watchID)
-    this._watchID = null
+    this.geoLocation.pause()
     return this
   }
 
@@ -225,8 +201,8 @@ class Geo {
    */
   clear() {
     this.timer.clear()
+    this.geoLocation.stop()
     this.distances.splice(0)
-    this._watchID = null
     return this
   }
 

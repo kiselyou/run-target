@@ -5,10 +5,10 @@ let uKey = 0
 class Point {
   /**
    *
-   * @param {{lat: number, lng: number, elapsedTime: number}} position
-   * @param {Point|?} [prevPoint]
+   * @param {Object} position
+   * @param {Point|?} prevPoint
    */
-  constructor(position, prevPoint = null) {
+  constructor(position, prevPoint) {
     /**
      *
      * @type {number|?}
@@ -22,35 +22,15 @@ class Point {
 
     /**
      *
-     * @type {PointPosition}
-     */
-    this.position = new PointPosition(position)
-
-    /**
-     *
      * @type {Point|?}
      */
     this.prevPoint = prevPoint
 
     /**
      *
-     * @type {number|?}
+     * @type {PointPosition}
      */
-    this.time = this.getTime()
-
-    /**
-     *
-     * @type {number}
-     */
-    this.speed = this.getSpeed()
-
-    /**
-     *
-     * @type {number|?}
-     */
-    this.distance = this.getDistance()
-
-    this.tmp = position.position
+    this.position = new PointPosition(position)
   }
 
   /**
@@ -64,36 +44,35 @@ class Point {
       time: this.time,
       speed: this.speed,
       distance: this.distance,
-      position: this.position,
+      position: this.position.asArray(),
       prevUKey: this.prevPoint ? this.prevPoint.uKey : null,
-      tmp: this.tmp
     }
   }
 
   /**
-   *
+   * The distance between current and previous geo coordinates. Meters
    *
    * @returns {number}
    */
-  getDistance() {
+  get distance() {
     return this.prevPoint ? this.calculateDistance(this, this.prevPoint) : 0
   }
 
   /**
-   * Скорость с момента получения последней точки.
+   * The speed between current and previous geo coordinates. Km/h
    *
    * @returns {number}
    */
-  getSpeed() {
+  get speed() {
     return this.prevPoint ? this.calculateSpeed(this, this.prevPoint) : 0
   }
 
   /**
-   * Количество секунд с момента получения последней точки.
+   * The time in seconds between current and previous geo coordinates. Seconds.
    *
    * @returns {number}
    */
-  getTime() {
+  get time() {
     return this.calculateTime(this, this.prevPoint || null)
   }
 
@@ -124,7 +103,9 @@ class Point {
    * @returns {number}
    */
   calculateDistance(point, prevPoint) {
-    return getDistance(prevPoint.position, point.position, 6, 6)
+    const prev = { latitude: prevPoint.position.latitude, longitude: prevPoint.position.longitude }
+    const curr = { latitude: point.position.latitude, longitude: point.position.longitude }
+    return getDistance(prev, curr, 6, 6)
   }
 
   /**
@@ -136,9 +117,9 @@ class Point {
    */
   calculateTime(point, prevPoint) {
     if (prevPoint) {
-      return point.position.elapsedTime - prevPoint.position.elapsedTime
+      return (point.position.timestamp - point.position.pauseTime - prevPoint.position.timestamp) / 1000
     }
-    return point.position.elapsedTime
+    return 0
   }
 }
 

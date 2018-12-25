@@ -1,1 +1,1 @@
-ALTER TABLE point ADD tmp JSON NULL;
+ALTER TABLE distance DROP time;

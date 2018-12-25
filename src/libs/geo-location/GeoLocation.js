@@ -1,6 +1,11 @@
+import Emulator from './Emulator'
 
 class GeoLocation {
-  constructor() {
+  /**
+   * @param {boolean} [emulator]
+   */
+  constructor(emulator = false) {
+
     /**
      *
      * @type {number|?}
@@ -20,7 +25,7 @@ class GeoLocation {
      * @type {{desiredAccuracy: number, totalEventCount: number}}
      * @private
      */
-    this._tickOptions = { desiredAccuracy: 5, totalEventCount: 0 }
+    this._tickOptions = { desiredAccuracy: 8, totalEventCount: 0 }
 
     /**
      *
@@ -35,6 +40,34 @@ class GeoLocation {
      * @private
      */
     this._eventListeners = { onTick: [], onError: [] }
+
+    /**
+     *
+     * @type {Emulator}
+     */
+    this.geo = emulator ? new Emulator() : navigator.geolocation
+  }
+
+  /**
+   *
+   * @param {{ [interval]: number, [accuracyRangeMin]: number, [accuracyRangeMax]: number }} options
+   * @returns {GeoLocation}
+   */
+  emulatorOptions(options) {
+    this.geo.interval = options.interval || this.geo.interval
+    this.geo.accuracyRange.min = options.accuracyRangeMin || this.geo.accuracyRange.min
+    this.geo.accuracyRange.max = options.accuracyRangeMax || this.geo.accuracyRange.max
+    return this
+  }
+
+  /**
+   *
+   * @param {number} value
+   * @returns {GeoLocation}
+   */
+  setDesiredAccuracy(value) {
+    this._tickOptions.desiredAccuracy = value
+    return this
   }
 
   /**
@@ -53,6 +86,7 @@ class GeoLocation {
     }
 
     if (position.coords.accuracy <= this._tickOptions.desiredAccuracy) {
+      position.timestamp = Date.now()
       for (const callback of this._eventListeners.onTick) {
         callback(position)
       }
@@ -99,11 +133,14 @@ class GeoLocation {
         break
       case GeoLocation.STATUS_PAUSED:
         this._status = GeoLocation.STATUS_PROCESS
+        if (this.geo.isEmulator) {
+          this.geo.startMove()
+        }
         return this
       default:
         return this
     }
-    this._watchID = navigator.geolocation.watchPosition(
+    this._watchID = this.geo.watchPosition(
       (position) => this._tick(position),
       (error) => this._error(error),
       this._positionOptions
@@ -117,6 +154,9 @@ class GeoLocation {
    */
   pause() {
     this._status = GeoLocation.STATUS_PAUSED
+    if (this.geo.isEmulator) {
+      this.geo.stopMove()
+    }
     return this
   }
 
@@ -126,7 +166,7 @@ class GeoLocation {
    */
   stop() {
     this._status = GeoLocation.STATUS_DISABLED
-    navigator.geolocation.clearWatch(this._watchID)
+    this.geo.clearWatch(this._watchID)
     return this
   }
 

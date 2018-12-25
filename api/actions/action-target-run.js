@@ -55,7 +55,6 @@ export async function saveActivityAction({ req, res, db }) {
 
     const distanceId = await saveDistance(db, activityId, {
       uKey: distance.uKey,
-      time: distance.time,
       number: distance.number,
       prevUKey: distance.prevUKey,
       avgSpeed: distance.avgSpeed,

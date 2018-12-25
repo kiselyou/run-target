@@ -21,15 +21,29 @@ class Distance {
 
     /**
      *
+     * @type {Distance|?}
+     */
+    this.prevDistance = prevDistance
+
+    /**
+     *
      * @type {number}
      */
     this.number = distanceNumber
 
     /**
+     * Time on distance.
      *
-     * @type {Distance|?}
+     * @type {number}
      */
-    this.prevDistance = prevDistance
+    this.elapsedTime = 0
+
+    /**
+     * Length of distance.
+     *
+     * @type {number}
+     */
+    this.pathLength = 0
 
     /**
      *
@@ -38,73 +52,73 @@ class Distance {
     this.points = []
 
     /**
-     * Общее время дистанции. сек.
      *
-     * @type {number}
-     */
-    this.time = 0
-
-    /**
-     * Истекшее время. сек.
-     *
-     * @type {number}
-     */
-    this.elapsedTime = 0
-
-    /**
-     * Длина текущей дистанции.
-     *
-     * @type {number}
-     */
-    this.pathLength = 0
-
-    /**
-     * Скорость объекта между двумя последнии точками.
-     *
-     * @type {number}
-     */
-    this.speed = 0
-    /**
-     *
-     * @type {{ speed: number, count: number }}
+     * @type {Object}
      * @private
      */
-    this._avgSpeed = { speed: 0, count: 0 }
+    this._cache = {}
   }
 
   /**
-   * Средняя скорость на протяжении дистанции.
+   * Average speed for last 10 points.
    *
    * @returns {number}
    */
   get avgSpeed() {
-    const speedAvg = this._avgSpeed.speed
-    const countAvg = this._avgSpeed.count
-    return countAvg > 0 ? speedAvg / countAvg : 0
+    return this.getAvgSpeed(10)
   }
 
   /**
-   * Средняя скорость объекта за последние (n) точек.
+   * Average speed for (n) points.
    *
-   * @param {number} pointsCount - Количество последних точек для расета средней скорости.
+   * @param {number} pointsCount - Count points to calculate avg speed.
    */
-  getAvgSpeedByLastPoints(pointsCount) {
+  getAvgSpeed(pointsCount) {
+    const key = `${pointsCount}-${this.points.length}`
+    if (this._cache.hasOwnProperty(key)) {
+      return this._cache[key]
+    }
     const avg = { speed: 0, count: 0 }
-    const index = this.points.length >= pointsCount ? this.points.length - pointsCount : 0
-    for (let i = index; i < this.points.length; i++) {
-      const point = this.points[i]
+    const points = this.findLastPoints(pointsCount)
+    for (const point of points) {
       if (!point.prevPoint) {
         continue
       }
       avg.speed += point.speed
       avg.count++
     }
-    return avg.count > 0 ? avg.speed / avg.count : 0
+
+    this._cache[key] = avg.count > 0 ? avg.speed / avg.count : 0
+    return this._cache[key]
   }
 
   /**
-   * Последняя точка.
+   * Find last points.
    *
+   * @param {number} pointsCount - Count points to calculate avg speed.
+   * @returns {Array}
+   */
+  findLastPoints(pointsCount) {
+    let i = 0
+    const len = this.points.length
+    if (len >= pointsCount) {
+      i = len - pointsCount
+    }
+    const points = []
+    for (i; i < len; i++) {
+      if (!this.points[i]) {
+        break
+      }
+      points.push(this.points[i])
+    }
+    if (this.prevDistance && len < pointsCount) {
+      const prevPoints = this.prevDistance.findLastPoints(pointsCount - len)
+      return prevPoints.concat(points)
+    }
+    return points
+  }
+
+  /**
    * @returns {Point|?}
    */
   get lastPoint() {
@@ -135,13 +149,8 @@ class Distance {
    * @returns {Distance}
    */
   addPoint(point) {
-    this.time += point.time
     this.pathLength += point.distance
-    this.elapsedTime = point.position.elapsedTime
-    if (point.prevPoint) {
-      this._avgSpeed.count++
-      this._avgSpeed.speed += point.speed
-    }
+    this.elapsedTime += point.time
     this.points.push(point)
     return this
   }
@@ -172,7 +181,6 @@ class Distance {
     return {
       id: this.id,
       uKey: this.uKey,
-      time: this.time,
       number: this.number,
       avgSpeed: this.avgSpeed,
       pathLength: this.pathLength,

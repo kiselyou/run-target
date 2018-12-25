@@ -15,11 +15,10 @@ export const savePoints = (db, deviceId, points) => {
       point.speed,
       point.prevUKey,
       JSON.stringify(point.position),
-      JSON.stringify(point.tmp),
     ]
   })
 
-  return db.query(`INSERT INTO point (distanceId, time, uKey, speed, prevUKey, position, tmp) VALUES ?`, [ rows ])
+  return db.query(`INSERT INTO point (distanceId, time, uKey, speed, prevUKey, position) VALUES ?`, [ rows ])
 }
 
 /**
@@ -31,8 +30,10 @@ export const savePoints = (db, deviceId, points) => {
 export const getPoints = async (db, deviceId) => {
   const points = await db.query(`SELECT * FROM point WHERE distanceId = ?`, [ Number(deviceId) ])
   if (points.length > 0) {
-    points.map((point) => {
+    return points.map((point) => {
+      // return JSON.parse(point.tmp)
       point.position = JSON.parse(point.position)
+      point.tmp = JSON.parse(point.tmp)
       return point
     })
   }

@@ -136,9 +136,9 @@ export default Vue.component('Tempo', {
      */
     distanceTempoNumber(distance) {
       if (!distance.prevUKey) {
-        return timer.setTime((distance.time / distance.pathLength) * 1000).toNumberMinutes()
+        return timer.setTime((distance.elapsedTime / distance.pathLength) * 1000).toNumberMinutes()
       }
-      const time = (distance.time / distance.pathLength) * 1000
+      const time = (distance.elapsedTime / distance.pathLength) * 1000
       return timer.setTime(time).toNumberMinutes()
     },
     /**
