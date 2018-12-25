@@ -25,14 +25,14 @@ class GeoLocation {
      * @type {{desiredAccuracy: number, totalEventCount: number}}
      * @private
      */
-    this._tickOptions = { desiredAccuracy: 8, totalEventCount: 0 }
+    this._tickOptions = { desiredAccuracy: GeoLocation.DESIRED_ACCURACY, totalEventCount: 0 }
 
     /**
      *
      * @type {{enableHighAccuracy: boolean, timeout: number, maximumAge: number}}
      * @private
      */
-    this._positionOptions = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    this._positionOptions = { enableHighAccuracy: true, timeout: 60000, maximumAge: 0 }
 
     /**
      *
@@ -86,10 +86,31 @@ class GeoLocation {
     }
 
     if (position.coords.accuracy <= this._tickOptions.desiredAccuracy) {
-      position.timestamp = Date.now()
       for (const callback of this._eventListeners.onTick) {
-        callback(position)
+        callback(this._preparePosition(position))
       }
+    }
+  }
+
+  /**
+   * Origin object has readable properties. Need rewrite property timestamp to get accuracy time.
+   *
+   * @param {Object} position
+   * @returns {{coords: {speed: number|?, heading: number, accuracy: number, altitude: number, latitude: number, longitude: number, altitudeAccuracy: number|?}, timestamp: number}}
+   * @private
+   */
+  _preparePosition(position) {
+    return {
+      coords: {
+        speed: position.coords.speed,
+        heading: position.coords.heading,
+        accuracy: position.coords.accuracy,
+        altitude: position.coords.altitude,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        altitudeAccuracy: position.coords.altitudeAccuracy
+      },
+      timestamp: Date.now()
     }
   }
 
@@ -192,6 +213,14 @@ class GeoLocation {
    */
   static get STATUS_DISABLED() {
     return 0
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  static get DESIRED_ACCURACY() {
+    return 10
   }
 }
 

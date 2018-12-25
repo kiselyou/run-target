@@ -92,7 +92,7 @@ export default Vue.component('GeoRun', {
        */
       tabItems: new TabItems()
         .pushItem(new TabItem('content-activity', 'Активность', true))
-        .pushItem(new TabItem('content-details', 'Подробности'))
+        // .pushItem(new TabItem('content-details', 'Подробности').disable(true))
         .pushItem(new TabItem('content-tempo', 'Темп')),
     }
   },
@@ -115,9 +115,6 @@ export default Vue.component('GeoRun', {
     },
     speed: function () {
       return this.geo.avgSpeed
-    },
-    speedTest: function() {
-      return Number(this.geo.getAvgSpeed(1)).toFixed(2)
     },
     tempo: function () {
       return timer.setTime(this.geo.getTempo()).toNumberMinutes()
@@ -164,8 +161,7 @@ export default Vue.component('GeoRun', {
      */
     enableGPS() {
       this.showConfirmGPS = false
-      // TODO: включить модуль GPS
-      this.showCountdown = true // TODO: временно
+      Plugins.diagnostic.switchToLocationSettings()
     },
 
     /**
@@ -192,7 +188,7 @@ export default Vue.component('GeoRun', {
       }
       Plugins.bgMode.disableWebViewOptimizations()
       Plugins.bgMode.overrideBackButton()
-      // Plugins.bgMode.wakeUp()
+      Plugins.bgMode.wakeUp()
       Plugins.bgMode.enable()
     },
 
@@ -201,11 +197,22 @@ export default Vue.component('GeoRun', {
      * Кнопка старт.
      */
     beforeStarRun: function () {
-      if (this.signal.isGeoDisabled) {
-        this.showConfirmGPS = true
-      } else {
-        this.showCountdown = true
-      }
+      Plugins.diagnostic.isGpsLocationEnabled(
+        (enabled) => {
+          if (!enabled) {
+            this.showConfirmGPS = true
+          } else {
+            this.showCountdown = true
+          }
+        },
+        (error) => {
+          if (this.signal.isGeoDisabled) {
+            this.showConfirmGPS = true
+          } else {
+            this.showCountdown = true
+          }
+        }
+      )
     },
 
     /**
@@ -251,6 +258,7 @@ export default Vue.component('GeoRun', {
 
       this.geo.clear()
       Plugins.bgMode.disable()
+      Plugins.bgMode.unlock()
     },
   },
   template: template

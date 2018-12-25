@@ -32,7 +32,7 @@ class Signal {
   /**
    *
    * @param {Function} [callback]
-   * @returns {Promise<Signal>}
+   * @returns {void}
    */
   listen(callback) {
     navigator.geolocation.watchPosition(
@@ -71,7 +71,7 @@ class Signal {
           callback(0)
         }
       },
-      { enableHighAccuracy: true, timeout: 3000 }
+      { enableHighAccuracy: true, timeout: 10000 }
     )
   }
 

@@ -30,11 +30,10 @@ class Ajax {
       options.headers = headers
     } else {
       options.body = JSON.stringify(params)
-      options.headers = {
+      options.headers = Object.assign({
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        ...headers
-      }
+        'Content-Type': 'application/json'
+      }, headers)
     }
 
     const res = await fetch(Ajax.preparePath(path), options)

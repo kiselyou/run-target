@@ -19,6 +19,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "6.26.3",
     "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.18.3",
     "bootstrap": "4.1.3",
@@ -32,6 +33,7 @@
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
+    "cordova.plugins.diagnostic": "^4.0.10",
     "css-loader": "^1.0.0",
     "db-migrate": "^0.11.4",
     "express": "^4.16.3",
@@ -88,7 +90,8 @@
     "plugins": {
       "cordova-plugin-geolocation": {},
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova.plugins.diagnostic": {}
     },
     "platforms": [
       "android"
