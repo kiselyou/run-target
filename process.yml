@@ -2,7 +2,8 @@ apps:
   - script: ./api/index.js
     name: 'run-target'
     instances: 2
-    exec_mode: fork
+    exec_mode: cluster
     exec_interpreter: ./node_modules/.bin/babel-node
+    interpreter_args: 'es2015'
     env_production:
       NODE_ENV: production
