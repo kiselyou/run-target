@@ -31,9 +31,7 @@ export const getPoints = async (db, deviceId) => {
   const points = await db.query(`SELECT * FROM point WHERE distanceId = ?`, [ Number(deviceId) ])
   if (points.length > 0) {
     return points.map((point) => {
-      // return JSON.parse(point.tmp)
       point.position = JSON.parse(point.position)
-      point.tmp = JSON.parse(point.tmp)
       return point
     })
   }
