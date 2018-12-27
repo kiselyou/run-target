@@ -2,15 +2,15 @@
 <Day :day="day" @onClick="onClick">
   <template slot="body">
     <div class="day-run day-run_mark" v-if="hasDistance && expectDistance > 0 && day.isNow">
-      <VueIcon name="timer" v-if="resultDistance === 0"/>
-      <VueIcon name="thumb-up" v-if="resultDistance >= expectDistance"/>
-      <VueIcon name="check" v-if="resultDistance > 0 && resultDistance < expectDistance"/>
+      <VueIcon color="#999999" name="timer" v-if="resultDistance === 0"/>
+      <VueIcon color="#999999" name="thumb-up" v-if="resultDistance >= expectDistance"/>
+      <VueIcon color="#999999" name="check" v-if="resultDistance > 0 && resultDistance < expectDistance"/>
     </div>
 
     <div class="day-run day-run_mark" v-if="hasDistance && expectDistance > 0 && day.isBeforeNow">
-      <VueIcon name="thumb-down" v-if="resultDistance === 0"/>
-      <VueIcon name="thumb-up" v-if="resultDistance >= expectDistance"/>
-      <VueIcon name="check" v-if="resultDistance > 0 && resultDistance < expectDistance"/>
+      <VueIcon color="#999999" name="thumb-down" v-if="resultDistance === 0"/>
+      <VueIcon color="#999999" name="thumb-up" v-if="resultDistance >= expectDistance"/>
+      <VueIcon color="#999999" name="check" v-if="resultDistance > 0 && resultDistance < expectDistance"/>
     </div>
 
     <div class="day-run day-run_result" v-if="hasDistance && resultDistance > 0">

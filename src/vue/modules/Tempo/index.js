@@ -97,7 +97,7 @@ export default Vue.component('Tempo', {
      * @returns {number}
      */
     maxTempo: function () {
-      const tempo = Number(this.upperTempo)
+      const tempo = Number(this.lowerTempo)
       return tempo + (tempo / 100 * 10)
     }
   },
@@ -135,10 +135,11 @@ export default Vue.component('Tempo', {
      * @returns {number}
      */
     distanceTempoNumber(distance) {
+      const pathLength = distance.pathLength > 1000 ? 1000 : distance.pathLength
       if (!distance.prevUKey) {
-        return timer.setTime((distance.elapsedTime / distance.pathLength) * 1000).toNumberMinutes()
+        return timer.setTime((distance.elapsedTime / pathLength) * 1000).toNumberMinutes()
       }
-      const time = (distance.elapsedTime / distance.pathLength) * 1000
+      const time = (distance.elapsedTime / pathLength) * 1000
       return timer.setTime(time).toNumberMinutes()
     },
     /**
@@ -149,7 +150,7 @@ export default Vue.component('Tempo', {
      */
     distanceTempoString(distance) {
       const splitValue = this.distanceTempoNumber(distance).toFixed(2).split('.')
-      return `${splitValue[0]}'${splitValue[1]}'`
+      return `${splitValue[0]}'${splitValue[1]}"`
     },
     /**
      * Номер дистанции.
@@ -158,11 +159,12 @@ export default Vue.component('Tempo', {
      * @returns {string}
      */
     distanceNumber(distance) {
-      let len = 'км'
-      if (distance.pathLength < 1000) {
-        len = `- ${Number(distance.pathLength).toFixed(0)}м`
+      const distances = this.selectedActivity.distances
+      let less = ''
+      if (distances[distances.length - 1]['number'] === distance.number && distance.pathLength < 1000) {
+        less = `<`;
       }
-      return `${distance.number + 1} ${len}`
+      return `${less} ${distance.number + 1}`;
     },
     /**
      * Время на дистанции.
@@ -171,7 +173,15 @@ export default Vue.component('Tempo', {
      * @returns {string}
      */
     distanceTime(distance) {
-      return timer.setTime(distance.elapsedTime).toStringHours()
+      const distances = this.selectedActivity.distances
+      let elapsedTime = 0
+      for (const dist of distances) {
+        if (dist.number > distance.number) {
+          break
+        }
+        elapsedTime += dist.elapsedTime
+      }
+      return timer.setTime(elapsedTime).toStringHours()
     },
     /**
      * Длина всего пути активности.

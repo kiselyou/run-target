@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import GeoRun from '@module/GeoRun'
 import '@module/Menu'
-import Plugins from '@lib/cordova/Plugins'
 Vue.use(VueRouter)
 
 export default Vue.component('App', {
@@ -24,10 +23,12 @@ export default Vue.component('App', {
       routes: this.$router.options.routes,
     }
   },
+
   template: `
-    <div>
+    <GeoRun />
+    <!--<div>
       <Menu :routes="routes"/>
       <router-view class="view"></router-view>
-    </div>
+    </div>-->
   `
 })

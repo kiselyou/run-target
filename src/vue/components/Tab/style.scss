@@ -8,9 +8,19 @@
     justify-content: space-between;
     padding: 0 4px;
 
+    @media screen and (max-width: 400px) {
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
     &__block {
       display: flex;
       align-items: center;
+      padding: 5px 0;
+
+      @media screen and (max-width: 400px) {
+        justify-content: center;
+      }
     }
   }
 

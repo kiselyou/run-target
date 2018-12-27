@@ -220,7 +220,7 @@ class GeoLocation {
    * @returns {number}
    */
   static get DESIRED_ACCURACY() {
-    return 10
+    return 20
   }
 }
 

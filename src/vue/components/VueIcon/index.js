@@ -9,26 +9,16 @@ export default Vue.component('VueIcon', {
       require: true
     },
     size: {
-      type: [String, Number]
+      type: Number,
+      default: 12
     },
     color: {
-      type: String
-    }
-  },
-  data: function () {
-    return {
-      path: './img/sprite.min.svg'
+      type: String,
     }
   },
   computed: {
-    href() {
-      return `${this.path}#${this.name}`
-
-    },
     htmlStyle() {
       return {
-        width: this.size,
-        height: this.size,
         fill: this.color
       }
     }
