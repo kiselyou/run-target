@@ -117,7 +117,7 @@ class Point {
    */
   calculateTime(point, prevPoint) {
     if (prevPoint) {
-      return (point.position.timestamp - point.position.pauseTime - prevPoint.position.timestamp) / 1000
+      return (point.position.time - point.position.pauseTime - prevPoint.position.time) / 1000
     }
     return 0
   }

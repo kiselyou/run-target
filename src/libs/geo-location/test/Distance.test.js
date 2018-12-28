@@ -93,18 +93,18 @@ describe('Distance', function() {
 
 function renderPointsA() {
   return [
-    {"coords": {"speed": 1.1603878736495972, "heading": 349, "accuracy": 3, "altitude": 257, "latitude": 53.9157932, "longitude": 27.4952067, "altitudeAccuracy": null}, "timestamp": 1545636352000},
-    {"coords": {"speed": 1.2106610536575315, "heading": 358, "accuracy": 3, "altitude": 257, "latitude": 53.9157987, "longitude": 27.495204, "altitudeAccuracy": null}, "timestamp": 1545636353000},
-    {"coords": {"speed": 1.3191285133361816, "heading": 0, "accuracy": 3, "altitude": 256, "latitude": 53.915809, "longitude": 27.4952076, "altitudeAccuracy": null}, "timestamp": 1545636354000},
-    {"coords": {"speed": 1.2567417621612549, "heading": 2, "accuracy": 3, "altitude": 256, "latitude": 53.9158171, "longitude": 27.4952041, "altitudeAccuracy": null}, "timestamp": 1545636355000}
+    {"accuracy": 3, "altitude": 257, "latitude": 53.9157932, "longitude": 27.4952067, "time": 1545636352000},
+    {"accuracy": 3, "altitude": 257, "latitude": 53.9157987, "longitude": 27.495204, "time": 1545636353000},
+    {"accuracy": 3, "altitude": 256, "latitude": 53.915809, "longitude": 27.4952076, "time": 1545636354000},
+    {"accuracy": 3, "altitude": 256, "latitude": 53.9158171, "longitude": 27.4952041, "time": 1545636355000}
   ]
 }
 
 function renderPointsB() {
   return [
-    {"coords": {"speed": 1.3600000143051147, "heading": 358, "accuracy": 3, "altitude": 256, "latitude": 53.9158265, "longitude": 27.4952079, "altitudeAccuracy": null}, "timestamp": 1545636356000},
-    {"coords": {"speed": 1.3203409910202026, "heading": 357, "accuracy": 3, "altitude": 257, "latitude": 53.9158376, "longitude": 27.4952021, "altitudeAccuracy": null}, "timestamp": 1545636357000},
-    {"coords": {"speed": 1.3303383588790894, "heading": 5, "accuracy": 3, "altitude": 257, "latitude": 53.9158529, "longitude": 27.4951925, "altitudeAccuracy": null}, "timestamp": 1545636358000},
-    {"coords": {"speed": 1.2319902181625366, "heading": 15, "accuracy": 3, "altitude": 257, "latitude": 53.915863, "longitude": 27.4952011, "altitudeAccuracy": null}, "timestamp": 1545636359000}
+    {"accuracy": 3, "altitude": 256, "latitude": 53.9158265, "longitude": 27.4952079, "time": 1545636356000},
+    {"accuracy": 3, "altitude": 257, "latitude": 53.9158376, "longitude": 27.4952021, "time": 1545636357000},
+    {"accuracy": 3, "altitude": 257, "latitude": 53.9158529, "longitude": 27.4951925, "time": 1545636358000},
+    {"accuracy": 3, "altitude": 257, "latitude": 53.915863, "longitude": 27.4952011, "time": 1545636359000}
   ]
 }

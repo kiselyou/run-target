@@ -157,14 +157,11 @@ class Geo {
       }
       this.addPosition({
         pauseTime: pauseTime,
-        timestamp: position.timestamp,
-        coords: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          altitude: position.coords.altitude,
-          altitudeAccuracy: position.coords.altitudeAccuracy,
-        }
+        time: position.time,
+        latitude: position.latitude,
+        longitude: position.longitude,
+        accuracy: position.accuracy,
+        altitude: position.altitude,
       })
     })
     return this

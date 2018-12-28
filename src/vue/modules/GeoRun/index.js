@@ -186,7 +186,6 @@ export default Vue.component('GeoRun', {
       for (const tabItem of this.tabItems) {
         tabItem.disable(true)
       }
-      Plugins.bgMode.disableWebViewOptimizations()
       Plugins.bgMode.overrideBackButton()
       Plugins.bgMode.wakeUp()
       Plugins.bgMode.enable()

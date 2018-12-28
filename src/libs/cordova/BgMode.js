@@ -15,7 +15,7 @@ class BgMode {
 
     if (debug === true && !this.mode && !warn) {
       warn = true
-      console.warn('BackgroundMode is not allowed')
+      console.warn('Plugin BackgroundMode not found')
     }
   }
 

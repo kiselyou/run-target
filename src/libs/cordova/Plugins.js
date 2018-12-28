@@ -1,9 +1,11 @@
 import BgMode from './BgMode'
 import Diagnostic from './Diagnostic'
+import BgGeoLocation from './BgGeoLocation'
 
 const debug = false
 let bgMode = null
 let diagnostic = null
+let bgGeoLocation = null
 
 class Plugins {
 
@@ -21,6 +23,14 @@ class Plugins {
    */
   static get diagnostic() {
     return diagnostic || (diagnostic = new Diagnostic(debug))
+  }
+
+  /**
+   *
+   * @returns {BgGeoLocation}
+   */
+  static get bgGeoLocation() {
+    return bgGeoLocation || (bgGeoLocation = new BgGeoLocation(debug))
   }
 }
 

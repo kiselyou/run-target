@@ -10,8 +10,8 @@ describe('GeoLocation', function() {
       .setDesiredAccuracy(10)
 
     geo.addEventListener('onTick', (position) => {
-      if (position['coords']['accuracy'] > 13) {
-        assert.isAbove(position['coords']['accuracy'], 13, 'Position accuracy is greater than 13')
+      if (position['accuracy'] > 13) {
+        assert.isAbove(position['accuracy'], 13, 'Position accuracy is greater than 13')
       }
     })
 

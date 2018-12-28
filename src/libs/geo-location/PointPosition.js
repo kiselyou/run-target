@@ -11,12 +11,11 @@ class PointPosition {
      */
     this.store = []
     if (position) {
-      this.store.push(position['timestamp'])
-      this.store.push(position['coords']['latitude'])
-      this.store.push(position['coords']['longitude'])
-      this.store.push(position['coords']['accuracy'])
-      this.store.push(position['coords']['altitude'])
-      this.store.push(position['coords']['altitudeAccuracy'])
+      this.store.push(position['time'])
+      this.store.push(position['latitude'])
+      this.store.push(position['longitude'])
+      this.store.push(position['accuracy'])
+      this.store.push(position['altitude'])
       this.store.push(position['pauseTime'] || 0)
     }
   }
@@ -35,7 +34,7 @@ class PointPosition {
    * @returns {PointPosition}
    */
   fromArray(value) {
-    if (value.length !== 7) {
+    if (value.length !== 6) {
       throw new Error(`Expected seven items but got ${value.length} in method "fromArray"`)
     }
     this.store = value
@@ -64,7 +63,7 @@ class PointPosition {
    *
    * @returns {number|?}
    */
-  get timestamp() {
+  get time() {
     return this.store[0] || null
   }
 
@@ -102,18 +101,10 @@ class PointPosition {
 
   /**
    *
-   * @returns {number|?}
-   */
-  get altitudeAccuracy() {
-    return this.store[5] || null
-  }
-
-  /**
-   *
    * @returns {number}
    */
   get pauseTime() {
-    return this.store[6] || 0
+    return this.store[5] || 0
   }
 
   /**

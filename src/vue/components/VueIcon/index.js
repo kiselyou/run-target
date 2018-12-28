@@ -9,8 +9,7 @@ export default Vue.component('VueIcon', {
       require: true
     },
     size: {
-      type: Number,
-      default: 12
+      type: [Number, String],
     },
     color: {
       type: String,
@@ -19,7 +18,9 @@ export default Vue.component('VueIcon', {
   computed: {
     htmlStyle() {
       return {
-        fill: this.color
+        fill: this.color,
+        width: this.size,
+        height: this.size
       }
     }
   },

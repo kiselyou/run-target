@@ -4,16 +4,11 @@ import PointPosition from '../PointPosition'
 describe('PointPosition', function() {
 
   const position = {
-    "coords": {
-      "speed": 1.2319902181625366,
-      "heading": 15,
-      "accuracy": 3,
-      "altitude": 257,
-      "latitude": 53.915863,
-      "longitude": 27.4952011,
-      "altitudeAccuracy": null
-    },
-    "timestamp": 1545636359000 // This value is not using. Set second argument in class PointPosition instead.
+    accuracy: 3,
+    altitude: 257,
+    latitude: 53.915863,
+    longitude: 27.4952011,
+    time: 1545636359000 // This value is not using. Set second argument in class PointPosition instead.
   }
 
   it('should return correct property values', function () {
@@ -31,7 +26,7 @@ describe('PointPosition', function() {
 })
 
 function validationProperties(point) {
-  assert.strictEqual(point.timestamp, 1545636359000)
+  assert.strictEqual(point.time, 1545636359000)
   assert.strictEqual(point.accuracy, 3)
 
   assert.strictEqual(point.latitude, 53.915863)
@@ -41,7 +36,6 @@ function validationProperties(point) {
   assert.strictEqual(point.lng, 27.4952011)
 
   assert.strictEqual(point.altitude, 257)
-  assert.strictEqual(point.altitudeAccuracy, null)
 
   assert.strictEqual(point.pauseTime, 0)
 }

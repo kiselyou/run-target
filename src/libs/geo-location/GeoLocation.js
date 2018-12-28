@@ -1,4 +1,5 @@
 import Emulator from './Emulator'
+import Plugins from './../cordova/Plugins'
 
 class GeoLocation {
   /**
@@ -29,13 +30,6 @@ class GeoLocation {
 
     /**
      *
-     * @type {{enableHighAccuracy: boolean, timeout: number, maximumAge: number}}
-     * @private
-     */
-    this._positionOptions = { enableHighAccuracy: true, timeout: 60000, maximumAge: 0 }
-
-    /**
-     *
      * @type {{onTick: Array, onError: Array}}
      * @private
      */
@@ -43,9 +37,9 @@ class GeoLocation {
 
     /**
      *
-     * @type {Emulator}
+     * @type {Emulator|BgGeoLocation}
      */
-    this.geo = emulator ? new Emulator() : navigator.geolocation
+    this.geo = emulator ? new Emulator() : Plugins.bgGeoLocation
   }
 
   /**
@@ -85,32 +79,10 @@ class GeoLocation {
       return
     }
 
-    if (position.coords.accuracy <= this._tickOptions.desiredAccuracy) {
+    if (position.accuracy <= this._tickOptions.desiredAccuracy) {
       for (const callback of this._eventListeners.onTick) {
-        callback(this._preparePosition(position))
+        callback(position)
       }
-    }
-  }
-
-  /**
-   * Origin object has readable properties. Need rewrite property timestamp to get accuracy time.
-   *
-   * @param {Object} position
-   * @returns {{coords: {speed: number|?, heading: number, accuracy: number, altitude: number, latitude: number, longitude: number, altitudeAccuracy: number|?}, timestamp: number}}
-   * @private
-   */
-  _preparePosition(position) {
-    return {
-      coords: {
-        speed: position.coords.speed,
-        heading: position.coords.heading,
-        accuracy: position.coords.accuracy,
-        altitude: position.coords.altitude,
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        altitudeAccuracy: position.coords.altitudeAccuracy
-      },
-      timestamp: Date.now()
     }
   }
 
@@ -163,8 +135,7 @@ class GeoLocation {
     }
     this._watchID = this.geo.watchPosition(
       (position) => this._tick(position),
-      (error) => this._error(error),
-      this._positionOptions
+      (error) => this._error(error)
     )
     return this
   }
@@ -220,7 +191,7 @@ class GeoLocation {
    * @returns {number}
    */
   static get DESIRED_ACCURACY() {
-    return 20
+    return 16
   }
 }
 

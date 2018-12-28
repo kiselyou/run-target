@@ -99,21 +99,16 @@ class Emulator {
 
   /**
    *
-   * @returns {{coords: {speed: null, heading: null, accuracy: number, altitude: number, latitude: number, longitude: number, altitudeAccuracy: null}, timestamp: number}}
+   * @returns {{ accuracy: number, altitude: number, latitude: number, longitude: number: time: number }}
    * @private
    */
   _getPosition() {
     return {
-      "coords": {
-        "speed": null,
-        "heading": null,
-        "accuracy": this._getAccuracy(),
-        "altitude": 225,
-        "latitude": this.startLat,
-        "longitude": this.startLng,
-        "altitudeAccuracy": null
-      },
-      "timestamp": Date.now()
+      accuracy: this._getAccuracy(),
+      altitude: 225,
+      latitude: this.startLat,
+      longitude: this.startLng,
+      time: Date.now()
     }
   }
 
