@@ -1,10 +1,18 @@
 
 <div class="activity">
-  <Row>
-    <Cell :content="tempoValue" :afterContent="tempoLabel" :bold="true" :align="true" size="lg" />
-    <Cell :content="pathValue" :afterContent="pathLabel" :bold="true" :align="true" size="lg" />
-    <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="lg" />
-  </Row>
+  <div class="activity_body">
+    <Timer :disabled="disabled" :pause="pause" :time="time" class="my-2"/>
 
-  <RunProcess :target="target" :value="path" :label="processLabel(target, path)" class="mt-3" />
+    <Row class="my-2">
+      <Cell :content="tempoValue" :afterContent="tempoLabel" :bold="true" :align="true" size="xlg" />
+      <Cell :content="pathValue" :afterContent="pathLabel" :bold="true" :align="true" size="xlg" />
+      <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="xlg" />
+    </Row>
+
+    <RunProcess :target="target" :value="path" :label="processLabel(target, path)" class="my-2" />
+
+  </div>
+  <div class="activity_controls">
+    <slot></slot>
+  </div>
 </div>

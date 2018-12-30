@@ -4,6 +4,7 @@ import template from './template.html'
 import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
 import '@vue/RunProcess'
+import '@module/Timer'
 
 export default Vue.component('Activity', {
   props: {
@@ -31,6 +32,17 @@ export default Vue.component('Activity', {
     target: {
       type: Number
     },
+    time: {
+      type: String
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    pause: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     speedValue: function () {
@@ -52,17 +64,8 @@ export default Vue.component('Activity', {
       if (remainder < 0) {
         return `Цель достигнута.`
       }
-      if (remainder < (tagret / 8)) {
-        return `Вижу цель.`
-      }
-      if (remainder < (tagret / 4)) {
-        return `Осталось совсем немного.`
-      }
-      if (remainder < (tagret / 2)) {
-        return `Осталось меньше половины.`
-      }
       return `Осталось ${Number(remainder / 1000).toFixed(3)} км.`
-    }
+    },
   },
   template: template
 })

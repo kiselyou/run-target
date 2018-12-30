@@ -30,12 +30,24 @@ export default Vue.component('Button', {
     },
     width: {
       type: [Number, String]
+    },
+    height: {
+      type: [Number, String]
+    },
+    size: {
+      type: [Number, String]
+    },
+    round: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     htmlWidth: function() {
       return {
-        'min-width': this.width
+        'min-width': this.width,
+        'width': this.size || this.width,
+        'height': this.size || this.height
       }
     },
     htmlClass: function() {
@@ -54,6 +66,7 @@ export default Vue.component('Button', {
         'button__blue': this.skin === 'blue',
         'button__white': this.skin === 'white',
         'button__disabled': this.disabled,
+        'button_shape__round': this.round,
       }
     }
   },

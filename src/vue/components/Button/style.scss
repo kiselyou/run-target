@@ -1,14 +1,12 @@
 .button {
-  min-width: 160px;
   padding: 0 20px;
   height: 40px;
-  border-radius: 2px;
   border: none;
   background: #252525;
   color: #FFFFFF;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
 
   & svg {
     fill: #FFFFFF;
@@ -30,6 +28,8 @@
   &__icon {
     font-size: 20px;
     margin: 0 10px;
+    width: 4vw;
+    height: 4vw;
   }
 
   &__text {
@@ -63,8 +63,8 @@
   }
 
   &__orange {
-    background: #EB9B00;
-    border: solid 1px #EB9B00;
+    background: #EE9900;
+    border: solid 1px #EE9900;
   }
 
   &__green {
@@ -80,5 +80,12 @@
   &__blue {
     background: #1E6EBE;
     border: solid 1px #1E6EBE;
+  }
+
+  &_shape {
+
+    &__round {
+      border-radius: 50%;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import config from '@config'
 import qs from 'query-string'
+import fetch from 'node-fetch'
 
 class Ajax {
 
