@@ -53,11 +53,15 @@ export default Vue.component('ActivityState', {
     loading: {
       type: Boolean,
       default: false
+    },
+    debug: {
+      type: Boolean,
+      default: false
     }
   },
   data: function () {
     return {
-      signal: new Signal(true)
+      signal: new Signal(this.debug)
     }
   },
   beforeMount: function () {

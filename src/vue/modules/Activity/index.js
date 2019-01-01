@@ -10,16 +10,21 @@ import Geo from '@lib/location/Geo'
 import Timer from '@lib/Timer'
 import Ajax from '@lib/Ajax'
 
-const debug = true
 const timer = new Timer()
 
 export default Vue.component('Activity', {
+  props: {
+    debug: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function () {
     return {
       /**
        * @type {Geo}
        */
-      geo: new Geo(debug),
+      geo: new Geo(this.debug),
       /**
        * @type {boolean}
        */
