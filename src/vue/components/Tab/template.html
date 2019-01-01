@@ -2,8 +2,8 @@
 <div class="tab">
   <div class="tab_panel">
     <div class="tab_panel__block">
-      <div class="tab_item" :class="itemHtmlClass(tabItem)" @click="onClick(tabItem)" v-for="tabItem in items">
-        <div>{{ tabItem.name }}</div>
+      <div :key="tab.uuid" v-for="tab in tabs" @click="onClick(tab)" :class="htmlClass(tab)" class="tab_item">
+        <div>{{ tab.name }}</div>
       </div>
     </div>
 
@@ -13,7 +13,9 @@
   </div>
 
   <div class="tab_content">
-    <slot :name="tabItem.slotName" v-if="tabItem.isActive" v-for="tabItem in items"/>
+    <keep-alive :include="keepAliveComponents">
+      <component :is="currentTabComponent"/>
+    </keep-alive>
   </div>
 
 </div>

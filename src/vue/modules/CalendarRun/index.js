@@ -8,10 +8,6 @@ import CalendarRun from './api/CalendarRun'
 
 export default Vue.component('CalendarRun', {
   props: {
-    targetId: {
-      type: Number,
-      require: true
-    },
     locale: {
       type: String,
       default: 'ru'
@@ -25,19 +21,17 @@ export default Vue.component('CalendarRun', {
     return {
       calendar: new CalendarRun(),
       selectedDate: new Date(),
+      targetId: 32
     }
   },
   beforeMount: function () {
-    Ajax.get(`/run/view/calendar/${this.targetId}`)
+    Ajax.get(`/calendar/view/${this.targetId}`)
       .then((calendarOptions) => {
         if (Object.keys(calendarOptions).length > 0) {
           this.calendar.deserialize(calendarOptions)
           this.$emit('activeDay', this.calendar.currentDay)
         }
       })
-  },
-  mounted: function () {
-    this.$emit('activeDay', this.calendar.currentDay)
   },
   methods: {
     month: function () {

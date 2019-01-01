@@ -6,33 +6,28 @@ export default Vue.component('Signal', {
   props: {
     value: {
       type: Number,
-      default: 100
-    },
-    size: {
-      type: Number,
-      default: 16
+      default: 0
     },
     label: {
       type: String,
       default: 'GPS'
     },
-    off: {
-      type: Boolean,
-      default: false
-    },
   },
   computed: {
     htmlClassLabel: function () {
       return {
-        'signal_label__disabled': this.value < 50,
-        'signal_label__off': this.off
+        'signal_label__success': [4,5].includes(this.value),
+        'signal_label__warning': [3].includes(this.value),
+        'signal_label__danger': this.off || [0,1,2].includes(this.value),
       }
     }
   },
   methods: {
     barClass(index) {
       return {
-        'signal_bar__active': (this.value / 20) >= index
+        'signal_bar__success': this.value >= index && [4,5].includes(this.value),
+        'signal_bar__warning': this.value >= index && [3].includes(this.value),
+        'signal_bar__danger': this.value >= index && [1,2].includes(this.value)
       }
     },
   },

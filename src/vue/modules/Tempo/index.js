@@ -2,42 +2,41 @@ import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
 import Ajax from '@lib/Ajax'
+import Timer from '@lib/Timer'
+import moment from 'moment'
+
 import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
-import moment from 'moment'
 import '@vue/Button'
 import '@vue/Rate'
 import '@vue/RunProcess'
-import Timer from '@lib/Timer'
+import '@module/CalendarRun'
+import '@module/Spinner'
 
 const timer = new Timer()
 
 export default Vue.component('Tempo', {
-  props: {
-    day: {
-      type: Object,
-    },
-  },
   data: function () {
     return {
-      loading: false,
+      /**
+       * @type {boolean}
+       */
+      loading: true,
+      /**
+       * @type {Array.<Object>}
+       */
       activities: [],
-      selectedActivity: null
+      /**
+       * @type {Object}
+       */
+      selectedActivity: null,
+      /**
+       * Day from calendar.
+       *
+       * @type {Day}
+       */
+      day: null
     }
-  },
-  beforeMount: function () {
-    if (!this.day) {
-      return
-    }
-    this.loading = true
-    Ajax.get(`run/view/activity/${this.day.id}`)
-      .then((activities) => {
-        this.loading = false
-        this.activities = activities
-      })
-      .catch(() => {
-        this.loading = false
-      })
   },
   computed: {
     /**
@@ -99,9 +98,53 @@ export default Vue.component('Tempo', {
     maxTempo: function () {
       const tempo = Number(this.lowerTempo)
       return tempo + (tempo / 100 * 10)
-    }
+    },
+    /**
+     * Генерация текста если нет активностей.
+     *
+     * @returns {string|?}
+     */
+    activityEmpty: function () {
+      if (!this.day) {
+        return null
+      }
+      return moment(this.day.date).locale('ru').format('DD MMMM')
+    },
   },
   methods: {
+    loadActivities(day) {
+      this.loading = true
+      const timestamp = new Date(day.date).getTime()
+      Ajax.get(`activity/view/${timestamp}`)
+        .then((activities) => {
+          this.loading = false
+          this.activities = activities
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    /**
+     * CalendarRun.
+     * Метод дня устоновки текущего дня в календаре.
+     *
+     * @param day
+     */
+    activeDay: function (day) {
+      this.loadActivities(day)
+      this.day = day
+    },
+
+    /**
+     * CalendarRun.
+     * Метод дня устоновки выбранного дня в календаре.
+     *
+     * @param day
+     */
+    selectDay: function (day) {
+      this.loadActivities(day)
+      this.day = day
+    },
     /**
      * Фарматирование даты.
      *
@@ -119,14 +162,6 @@ export default Vue.component('Tempo', {
      */
     activityName: function (activity) {
       return `${this.formatDate(activity.dateTimeStart)} - ${this.formatDate(activity.dateTimeStop)}`
-    },
-    /**
-     * Генерация текста если нет активностей.
-     *
-     * @returns {string}
-     */
-    activityEmpty: function () {
-      return moment(this.day.date).locale('ru').format('DD MMMM')
     },
     /**
      * Получение темпа из дистанции.

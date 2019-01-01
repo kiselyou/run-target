@@ -6,10 +6,11 @@
   justify-content: center;
 
   &_btn {
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
   }
 
   &_center {

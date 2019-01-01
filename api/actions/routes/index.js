@@ -1,4 +1,5 @@
-import runCalendar from './route-target-run'
+import activity from './route-activity'
+import calendar from './route-calendar'
 
-export default { runCalendar }
+export default { activity, calendar }
 

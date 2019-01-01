@@ -10,7 +10,7 @@ export default Vue.component('PulseLoader', {
     },
     color: {
       type: String,
-      default: '#252525'
+      default: '#EE9900'
     },
     size: {
       type: String,

@@ -13,6 +13,16 @@ class TabItems extends Array {
     this.push(value)
     return this
   }
+
+  /**
+   *
+   * @param {string} componentName
+   */
+  openTab(componentName) {
+    for (const tab of this) {
+      tab.active(tab.componentName === componentName)
+    }
+  }
 }
 
 export default TabItems

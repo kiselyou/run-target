@@ -22,7 +22,8 @@
   }
 
   &__today {
-    background-color: #111111;
+    background-color: #000;
+    border: solid 1px #999 !important;
   }
 
   &__bordered {
@@ -40,7 +41,7 @@
   }
 
   &__active {
-    border: solid 1px #FFFFFF;
+    border: solid 1px #FFFFFF !important;
     &:hover {
       border: solid 1px #FFFFFF;
     }

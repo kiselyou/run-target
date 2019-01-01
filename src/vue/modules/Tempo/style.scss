@@ -1,13 +1,24 @@
 .tempo {
-  margin: 10px 0;
   position: relative;
-  min-height: 100px;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  &_content {
+  &_body {
     width: 100%;
+    min-height: 250px;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &_foot {
+    width: 100%;
+    display: flex;
+    align-items: center;
   }
 
   &_label {

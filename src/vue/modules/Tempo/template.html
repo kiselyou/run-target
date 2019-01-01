@@ -1,60 +1,67 @@
 
 <div class="tempo">
 
-  <Spinner :loading="loading"/>
+  <div class="tempo_body">
 
-  <div v-if="selectedActivity" class="tempo_content">
+    <Spinner :loading="loading"/>
 
-    <Row>
-      <Cell align="center" :bold="true" size="xlg">
-        <template slot="content">
-          <span>{{ activityPathLength(selectedActivity) }}</span>
-          <span class="tempo_distance">км</span>
-        </template>
-      </Cell>
-    </Row>
-
-    <Row>
-      <Cell afterContent="Средний темп" :content="avgTempo" align="center" :bold="true" size="lg" />
-      <Cell afterContent="Самый быстрый" :content="upperTempo" align="center" :bold="true" size="lg" />
-      <Cell afterContent="Самый медленный" :content="lowerTempo" align="center" :bold="true" size="lg" />
-    </Row>
-
-    <div class="my-4">
-      <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
-        <template slot="before">{{ distanceNumber(distance) }}</template>
-        <template slot="center">{{ distanceTempoString(distance) }}</template>
-        <template slot="after">{{ distanceTime(distance) }}</template>
-      </Rate>
-    </div>
-
-    <Row class="mt-4">
-      <Cell :align="true">
-        <template slot="content">
-          <Button skin="orange" text="Список астивностей" @click="closeActivity" />
-        </template>
-      </Cell>
-    </Row>
-  </div>
-
-  <div v-if="!selectedActivity">
-    <div :key="indexActivity" v-for="(activity, indexActivity) of activities">
+    <div v-if="selectedActivity">
       <Row>
-        <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
+        <Cell align="center" :bold="true" size="xlg">
           <template slot="content">
-            {{ activityName(activity) }}
+            <span>{{ activityPathLength(selectedActivity) }}</span>
+            <span class="tempo_distance">км</span>
           </template>
-          <template slot="after-content">
-            <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
+        </Cell>
+      </Row>
+
+      <Row>
+        <Cell afterContent="Средний темп" :content="avgTempo" align="center" :bold="true" size="lg" />
+        <Cell afterContent="Самый быстрый" :content="upperTempo" align="center" :bold="true" size="lg" />
+        <Cell afterContent="Самый медленный" :content="lowerTempo" align="center" :bold="true" size="lg" />
+      </Row>
+
+      <div class="my-4">
+        <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
+          <template slot="before">{{ distanceNumber(distance) }}</template>
+          <template slot="center">{{ distanceTempoString(distance) }}</template>
+          <template slot="after">{{ distanceTime(distance) }}</template>
+        </Rate>
+      </div>
+
+      <Row class="mt-4">
+        <Cell :align="true">
+          <template slot="content">
+            <Button skin="orange" text="Список астивностей" @click="closeActivity" />
           </template>
         </Cell>
       </Row>
     </div>
-    <div v-if="activities.length === 0 && !loading">
-      <Row>
-        <Cell content="Нет активностей" :beforeContent="activityEmpty()" :align="true" />
-      </Row>
+
+    <div v-if="!selectedActivity">
+      <div :key="indexActivity" v-for="(activity, indexActivity) of activities">
+        <Row>
+          <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
+            <template slot="content">
+              {{ activityName(activity) }}
+            </template>
+            <template slot="after-content">
+              <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
+            </template>
+          </Cell>
+        </Row>
+      </div>
+      <div v-if="activities.length === 0 && !loading">
+        <Row>
+          <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
+        </Row>
+      </div>
     </div>
+
+  </div>
+
+  <div class="tempo_foot">
+    <CalendarRun @activeDay="activeDay" @selectDay="selectDay" />
   </div>
 
 </div>

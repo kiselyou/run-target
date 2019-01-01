@@ -3,7 +3,7 @@ import './scss/index.scss'
 import Vue from 'vue'
 
 import './vue/layouts/Mobile'
-import './vue/layouts/Watch'
+// import './vue/layouts/Watch'
 
 const renderView = () => {
   new Vue({

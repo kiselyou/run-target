@@ -3,21 +3,21 @@ import uuid from 'uuid/v4'
 class TabItem {
   /**
    *
-   * @param {string|number} slotName
+   * @param {string|number|?} componentName
    * @param {string|?} [name]
    * @param {boolean} [isActive]
    */
-  constructor(slotName, name = null, isActive = false) {
+  constructor(componentName, name = null, isActive = false) {
     /**
-     * @type {string}
+     * @type {string|number|?}
      */
-    this.slotName = slotName || uuid()
+    this.componentName = componentName
 
     /**
      *
      * @type {string}
      */
-    this.name = name || this.slotName
+    this.name = name || this.componentName
 
     /**
      *
@@ -30,6 +30,27 @@ class TabItem {
      * @type {boolean}
      */
     this.isDisabled = false
+
+    /**
+     * @type {string}
+     */
+    this.uuid = uuid()
+
+    /**
+     *
+     * @type {boolean}
+     */
+    this.keep = false
+  }
+
+  /**
+   *
+   * @param {boolean} [value]
+   * @returns {TabItem}
+   */
+  keepAlive(value = true) {
+    this.keep = value
+    return this
   }
 
   /**

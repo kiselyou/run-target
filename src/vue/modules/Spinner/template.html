@@ -1,5 +1,5 @@
 <div class="target-spinner" v-if="loading">
-  <div class="target-spinner_bg"></div>
+  <div class="target-spinner_bg" v-if="wrap"></div>
   <DotLoader v-if="name === 'DotLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />
   <RingLoader v-if="name === 'RingLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />
   <PulseLoader v-if="name === 'PulseLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />

@@ -1,13 +1,18 @@
 .signal {
   width: 24px;
   padding: 4px;
-  color: #2DBA00;
 
   &_bar {
     stroke: #EBEBEB;
 
-    &__active {
+    &__success {
       stroke: #2DBA00;
+    }
+    &__warning {
+      stroke: #EE9900;
+    }
+    &__danger {
+      stroke: #FF0000;
     }
   }
 
@@ -17,11 +22,13 @@
     text-align: center;
     text-decoration: underline overline;
 
-    &__disabled {
-      color: #252525;
+    &__success {
+      color: #2DBA00;
     }
-
-    &__off {
+    &__warning {
+      color: #EE9900;
+    }
+    &__danger {
       color: #FF0000;
     }
   }

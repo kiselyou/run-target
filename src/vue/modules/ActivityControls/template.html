@@ -2,16 +2,16 @@
 <div class="activity-controls">
 
   <div class="activity-controls_btn activity-controls_center" v-if="status === 0">
-    <Button :key="1" :disabled="disabled" skin="orange" mx="2" text="старт" icon="media-play" @click="beforeStarRun" />
+    <Button :key="1" :disabled="disabled" skin="orange" text="старт" width="190px" icon="media-play" @click="beforeStarRun" />
   </div>
 
   <div class="activity-controls_btn activity-controls_center" v-if="!disabled && status === 1">
-    <Button :key="2" :disabled="disabled" skin="orange" mx="2" text="пауза" icon="media-pause" @click="stopRun" />
+    <Button :key="2" :disabled="disabled" skin="orange" text="пауза" width="190px" icon="media-pause" @click="stopRun" />
   </div>
 
   <div class="activity-controls_btn" v-if="!disabled && status === 2">
-    <Button :key="3" :disabled="disabled" skin="red" mx="2" text="финиш" icon="media-stop" @click="endRun" />
-    <Button :key="4" :disabled="disabled" skin="green" mx="2" text="продолжить" icon="media-step-forward" @click="nextRun" />
+    <Button class="my-2" :key="3" :disabled="disabled" skin="red" text="финиш" width="190px" icon="media-stop" @click="endRun" />
+    <Button class="my-2" :key="4" :disabled="disabled" skin="green" text="продолжить" width="190px" icon="media-step-forward" @click="nextRun" />
   </div>
 
   <Countdown :show="showCountdown" @countdownStop="startRun"/>

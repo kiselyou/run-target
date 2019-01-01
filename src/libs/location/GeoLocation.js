@@ -191,7 +191,7 @@ class GeoLocation {
    * @returns {number}
    */
   static get DESIRED_ACCURACY() {
-    return 16
+    return 10
   }
 }
 

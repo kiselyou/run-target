@@ -31,7 +31,11 @@ export default Vue.component('Spinner', {
     radius: {
       type: String,
       default: undefined
-    }
+    },
+    wrap: {
+      type: Boolean,
+      default: false
+    },
   },
   template: template
 })
