@@ -57,19 +57,15 @@ export default Vue.component('Activity', {
   },
   methods: {
     startRun: function () {
-      this.geo.start((error) => {
-        this.error = error.message
-      })
+      this.geo.start()
     },
     stopRun: function () {
       this.geo.stop()
       this.pause = true
     },
     nextRun: function () {
+      this.geo.start()
       this.pause = false
-      this.geo.start((error) => {
-        this.error = error.message
-      })
     },
     endRun: function () {
       this.geo.stop()

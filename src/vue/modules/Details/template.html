@@ -1,0 +1,14 @@
+
+<Layout :showCorner="true">
+  <template slot="body">
+    <Spinner :loading="loading" />
+    <Row class="my-2">
+      <Cell :content="totalPath" afterContent="всего (км)" :bold="true" :align="true" size="lg" />
+      <Cell :content="totalMonthPath" afterContent="за месяц (км)" :bold="true" :align="true" size="lg" />
+      <Cell :content="totalWeekPath" afterContent="за неделю (км)" :bold="true" :align="true" size="lg" />
+    </Row>
+  </template>
+  <template slot="foot">
+
+  </template>
+</Layout>

@@ -29,10 +29,6 @@ export default Vue.component('ActivityControls', {
        * @type {boolean}
        */
       confirmGPS: false,
-      /**
-       * @type {boolean}
-       */
-      showConfirmGPS: false
     }
   },
   computed: {
@@ -54,10 +50,10 @@ export default Vue.component('ActivityControls', {
     beforeStarRun: function () {
       Plugins.diagnostic.isGpsLocationEnabled(
         (enabled) => {
-          if (!enabled) {
-            this.showConfirmGPS = true
-          } else {
+          if (enabled) {
             this.showCountdown = true
+          } else {
+            this.confirmGPS = true
           }
         },
         (error) => {

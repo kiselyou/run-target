@@ -169,10 +169,9 @@ class Geo {
 
   /**
    *
-   * @param {Function} [onError]
    * @returns {Geo}
    */
-  start(onError) {
+  start() {
     if (this.pauseTimeData.timeStart > 0) {
       this.pauseTimeData.timeEnd = Date.now()
     }
