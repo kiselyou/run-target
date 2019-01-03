@@ -2,22 +2,24 @@
 /**
  *
  * @param {MySQL} db
+ * @param {number} deviceId
  * @param {string|Date} dateTimeStart
  * @param {string|Date} dateTimeStop
  * @returns {Promise.<number>}
  */
-export const saveActivity = (db, dateTimeStart, dateTimeStop) => {
-  const params = [new Date(dateTimeStart), new Date(dateTimeStop)]
-  return db.query(`INSERT INTO activity (dateTimeStart, dateTimeStop) VALUES (?, ?)`, params)
+export const saveActivity = (db, deviceId, dateTimeStart, dateTimeStop) => {
+  const params = [new Date(dateTimeStart), new Date(dateTimeStop), deviceId]
+  return db.query(`INSERT INTO activity (dateTimeStart, dateTimeStop, deviceId) VALUES (?, ?, ?)`, params)
     .then(results => results.insertId)
 }
 
 /**
  *
  * @param {MySQL} db
+ * @param {number} deviceId
  * @param {Date} dateStart
  * @returns {Promise<Array>}
  */
-export const getActivitiesByDateStart = (db, dateStart) => {
-  return db.query(`SELECT * FROM activity WHERE DATE(dateTimeStart) = DATE(?)`, [dateStart])
+export const getActivitiesByDateStart = (db, deviceId, dateStart) => {
+  return db.query(`SELECT * FROM activity WHERE DATE(dateTimeStart) = DATE(?) AND deviceId = ?`, [dateStart, deviceId])
 }

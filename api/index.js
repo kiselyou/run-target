@@ -2,7 +2,7 @@ import multer from 'multer'
 import express from 'express'
 import expressSession from 'express-session'
 import redisStore from 'connect-redis'
-import { defaultHeaders } from './middleware/headers'
+import { defaultHeaders, initHeadersValue } from './middleware/headers'
 import * as core from './core'
 import bodyParser from 'body-parser'
 import routes from './actions/routes'
@@ -19,6 +19,7 @@ let session = expressSession({
 
 app.use(session);
 app.use(defaultHeaders)
+app.use(initHeadersValue)
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', parameterLimit: 50000, extended: true }))
 app.use(express.static('public'))

@@ -9,7 +9,7 @@
 
     <template v-if="!loading">
       <div class="activity-state_signal">
-        <Signal :value="signal.value"/>
+        <Signal :value="signalValue"/>
       </div>
       <Timer :disabled="disabled" :pause="pause" :time="time" class="my-2"/>
 
@@ -19,7 +19,7 @@
         <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="xlg" />
       </Row>
 
-      <RunProcess :target="target" :value="path" :label="processLabel(target, path)" class="my-2" />
+      <RunProcess :target="target" :value="pathPiece" :label="processLabel(target, path)" class="my-2" />
     </template>
   </div>
   <div class="activity-state_controls" :class="htmlClassControls">

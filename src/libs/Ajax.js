@@ -1,6 +1,7 @@
 import config from '@config'
 import qs from 'query-string'
 import fetch from 'node-fetch'
+import Plugins from './cordova/Plugins'
 
 class Ajax {
 
@@ -12,6 +13,9 @@ class Ajax {
    * @returns {Promise<any>}
    */
   static async get(path, params, headers) {
+    headers = Object.assign({
+      'Device-Key': Plugins.device.uuid
+    }, headers)
     const options = { method: 'GET', headers }
     const res = await fetch(Ajax.preparePath(path, params), options)
     return await res.json()
@@ -33,7 +37,8 @@ class Ajax {
       options.body = JSON.stringify(params)
       options.headers = Object.assign({
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Device-Key': Plugins.device.uuid
       }, headers)
     }
 

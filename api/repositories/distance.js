@@ -26,28 +26,30 @@ export const getDistances = (db, activityId) => {
 /**
  *
  * @param {MySQL} db
+ * @param {number} deviceId
  * @param {Date} date
  * @returns {Promise<Object|?>}
  */
-export const getTotalDistances = (db, date) => {
+export const getTotalDistances = (db, deviceId, date) => {
   return db.findOne(`
     SELECT
       (
        SELECT ROUND(SUM(dst.pathLength))
          FROM activity as act
               INNER JOIN distance as dst ON dst.activityId = act.id
+        WHERE deviceId = ?
       ) AS totalDistance,
       (
         SELECT ROUND(SUM(dst.pathLength))
           FROM activity as act
                INNER JOIN distance as dst ON dst.activityId = act.id
-         WHERE dateTimeStart >= DATE_FORMAT(? ,'%Y-%m-01')
+         WHERE deviceId = ? AND dateTimeStart >= DATE_FORMAT(? ,'%Y-%m-01')
       ) AS totalMonthDistance,
       (
         SELECT ROUND(SUM(dst.pathLength))
           FROM activity as act
                INNER JOIN distance as dst ON dst.activityId = act.id
-         WHERE dateTimeStart >= SUBDATE(?, WEEKDAY(?))
+         WHERE deviceId = ? AND dateTimeStart >= SUBDATE(?, WEEKDAY(?))
       ) AS totalWeekDistance
-  `, [date, date, date])
+  `, [deviceId, deviceId, date, deviceId, date, date])
 }

@@ -16,7 +16,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data: function () {
@@ -40,7 +40,7 @@ export default Vue.component('Activity', {
   },
   computed: {
     path: function () {
-      return this.geo.getPathLength() % 1000
+      return this.geo.getPathLength()
     },
     speed: function () {
       return this.geo.avgSpeed

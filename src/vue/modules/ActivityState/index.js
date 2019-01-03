@@ -77,6 +77,12 @@ export default Vue.component('ActivityState', {
     pathValue: function () {
       return (this.path / 1000).toFixed(3)
     },
+    pathPiece: function () {
+      return this.path % 1000
+    },
+    signalValue: function () {
+      return this.signal.value
+    },
     htmlClassControls: function () {
       return {
         'activity-state_controls__corner': this.showCorner
