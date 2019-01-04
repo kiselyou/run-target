@@ -9,6 +9,7 @@ import '@module/ActivityControls'
 import Geo from '@lib/location/Geo'
 import Timer from '@lib/Timer'
 import Ajax from '@lib/Ajax'
+import Plugins from '@lib/cordova/Plugins'
 
 const timer = new Timer()
 
@@ -16,7 +17,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: function () {
@@ -37,6 +38,11 @@ export default Vue.component('Activity', {
   },
   mounted() {
     this.geo.listen()
+    this.geo.addEventListener('change-distance', (distance) => {
+      if (distance.number > 0) {
+        Plugins.vibration.call([200, 100, 200, 100, 200, 100, 200, 100, 200])
+      }
+    })
   },
   computed: {
     path: function () {

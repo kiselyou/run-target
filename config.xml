@@ -37,5 +37,6 @@
         <variable name="ACCOUNT_TYPE" value="$PACKAGE_NAME.account" />
         <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
     </plugin>
+    <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <engine name="android" spec="^7.1.4" />
 </widget>

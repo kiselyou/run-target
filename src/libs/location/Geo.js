@@ -44,6 +44,50 @@ class Geo {
      * @type {{timeStart: number, timeEnd: number}}
      */
     this.pauseTimeData = { timeStart: 0, timeEnd: 0 }
+
+    /**
+     *
+     * @type {Object}
+     * @private
+     */
+    this._events = { changeDistance: [] }
+  }
+
+  /**
+   *
+   * @param {string} eventName
+   * @param {Function} callback
+   * @returns {Geo}
+   */
+  addEventListener(eventName, callback) {
+    switch (eventName) {
+      case 'change-distance':
+        this._events.changeDistance.push(callback)
+        break;
+    }
+    return this
+  }
+
+  /**
+   *
+   * @param {string} eventName
+   * @param {Function} callback
+   * @returns {Geo}
+   */
+  deleteEventListener(eventName, callback) {
+    let events = []
+    switch (eventName) {
+      case 'change-distance':
+        events = this._events.changeDistance
+        break;
+    }
+    for (let i = 0; i < events.length; i++) {
+      if (events[i] === callback) {
+        events.splice(i, 1)
+        break
+      }
+    }
+    return this
   }
 
   /**
@@ -114,6 +158,9 @@ class Geo {
     if (!distance) {
       distance = new Distance(distanceNumber, this.getCurrentDistance())
       this.distances.push(distance)
+      for (const callback of this._events.changeDistance) {
+        callback(distance, this.distances)
+      }
     }
     distance.addPosition(value)
     return this
