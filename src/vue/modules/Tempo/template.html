@@ -16,15 +16,15 @@
       </Row>
 
       <Row class="my-2">
-        <Cell afterContent="Средний темп" :content="avgTempo" align="center" :bold="true" size="lg" />
-        <Cell afterContent="Самый быстрый" :content="upperTempo" align="center" :bold="true" size="lg" />
-        <Cell afterContent="Самый медленный" :content="lowerTempo" align="center" :bold="true" size="lg" />
+        <Cell afterContent="Средний темп" :content="avgTempoString" align="center" :bold="true" size="lg" />
+        <Cell afterContent="Самый быстрый" :content="upperTempoString" align="center" :bold="true" size="lg" />
+        <Cell afterContent="Самый медленный" :content="lowerTempoString" align="center" :bold="true" size="lg" />
       </Row>
 
       <div class="my-4">
-        <Rate :value="distanceTempoNumber(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
+        <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
           <template slot="before">{{ distanceNumber(distance) }}</template>
-          <template slot="center">{{ distanceTempoString(distance) }}</template>
+          <template slot="center">{{ distanceToTempoString(distance) }}</template>
           <template slot="after">{{ distanceTime(distance) }}</template>
         </Rate>
       </div>
@@ -60,7 +60,7 @@
 
   </div>
 
-  <div class="tempo_foot">
+  <div class="tempo_foot" v-show="!selectedActivity">
     <CalendarRun @activeDay="activeDay" @selectDay="selectDay" />
   </div>
 

@@ -50,53 +50,80 @@ export default Vue.component('Tempo', {
     /**
      * Средний темп.
      *
-     * @returns {string}
+     * @returns {number}
      */
-    avgTempo: function () {
-      let sum = 0
+    avgTempoMinutes: function () {
+      let time = 0
+      let path = 0
       for (const distance of this.distances) {
-        sum += this.distanceTempoNumber(distance)
+        time += distance.elapsedTime
+        path += distance.pathLength
       }
-      return Number(sum ? sum / this.distances.length : 0).toFixed(2)
+
+      return this.timeToMinutes(time / path * 1000)
+
+    },
+    /**
+     * Средний темп.
+     *
+     * @returns {number}
+     */
+    avgTempoString() {
+      return this.minutesToStringTempo(this.avgTempoMinutes)
+    },
+    /**
+     * Самый быстрый темп.
+     *
+     * @returns {number}
+     */
+    upperTempoMinutes: function () {
+      let upperTempo = + Infinity
+      for (const distance of this.distances) {
+        const tempo = this.distanceTempoTime(distance)
+        if (tempo < upperTempo) {
+          upperTempo = tempo
+        }
+      }
+      return Number((upperTempo === + Infinity ? 0 : upperTempo).toFixed(2))
     },
     /**
      * Самый быстрый темп.
      *
      * @returns {string}
      */
-    upperTempo: function () {
-      let upperTempo = + Infinity
-      for (const distance of this.distances) {
-        const tempo = this.distanceTempoNumber(distance)
-        if (tempo < upperTempo) {
-          upperTempo = tempo
-        }
-      }
-      return (upperTempo === + Infinity ? 0 : upperTempo).toFixed(2)
+    upperTempoString() {
+      return this.minutesToStringTempo(this.upperTempoMinutes)
     },
     /**
      * Самый медленый темп.
      *
      * @returns {string}
      */
-    lowerTempo: function () {
+    lowerTempoMinutes: function () {
       let lowerTempo = - Infinity
       for (const distance of this.distances) {
-        const tempo = this.distanceTempoNumber(distance)
+        const tempo = this.distanceTempoTime(distance)
         if (tempo > lowerTempo) {
           lowerTempo = tempo
         }
       }
       return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
     },
-
+    /**
+     * Самый медленый темп.
+     *
+     * @returns {string}
+     */
+    lowerTempoString() {
+      return this.minutesToStringTempo(this.lowerTempoMinutes)
+    },
     /**
      * Максимальный темп.
      *
      * @returns {number}
      */
     maxTempo: function () {
-      const tempo = Number(this.lowerTempo)
+      const tempo = Number(this.lowerTempoMinutes)
       return tempo + (tempo / 100 * 10)
     },
     /**
@@ -169,13 +196,29 @@ export default Vue.component('Tempo', {
      * @param {Object} distance
      * @returns {number}
      */
-    distanceTempoNumber(distance) {
+    distanceTempoTime(distance) {
       const pathLength = distance.pathLength > 1000 ? 1000 : distance.pathLength
-      if (!distance.prevUKey) {
-        return timer.setTime((distance.elapsedTime / pathLength) * 1000).toNumberMinutes()
+      if (pathLength > 0) {
+        return this.timeToMinutes((distance.elapsedTime / pathLength) * 1000)
       }
-      const time = (distance.elapsedTime / pathLength) * 1000
+      return 0
+    },
+    /**
+     *
+     * @param {number} time
+     * @returns {number}
+     */
+    timeToMinutes(time) {
       return timer.setTime(time).toNumberMinutes()
+    },
+    /**
+     *
+     * @param {number} minutes
+     * @returns {string}
+     */
+    minutesToStringTempo(minutes) {
+      const splitValue = Number(minutes).toFixed(2).split('.')
+      return `${splitValue[0]}'${splitValue[1]}"`
     },
     /**
      * Получение темпа из дистанции. Возвращает форматированую строку.
@@ -183,9 +226,8 @@ export default Vue.component('Tempo', {
      * @param {Object} distance
      * @returns {string}
      */
-    distanceTempoString(distance) {
-      const splitValue = this.distanceTempoNumber(distance).toFixed(2).split('.')
-      return `${splitValue[0]}'${splitValue[1]}"`
+    distanceToTempoString(distance) {
+      return this.minutesToStringTempo(this.distanceTempoTime(distance))
     },
     /**
      * Номер дистанции.

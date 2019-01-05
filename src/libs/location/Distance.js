@@ -69,6 +69,15 @@ class Distance {
   }
 
   /**
+   * Average speed for last 10 points.
+   *
+   * @returns {number}
+   */
+  get totalAvgSpeed() {
+    return this.getAvgSpeed(this.points.length - 1)
+  }
+
+  /**
    * Average speed for (n) points.
    *
    * @param {number} pointsCount - Count points to calculate avg speed.
@@ -182,7 +191,7 @@ class Distance {
       id: this.id,
       uKey: this.uKey,
       number: this.number,
-      avgSpeed: this.avgSpeed,
+      avgSpeed: this.totalAvgSpeed,
       pathLength: this.pathLength,
       elapsedTime: this.elapsedTime,
       prevUKey: this.prevDistance ? this.prevDistance.uKey : null,

@@ -1,6 +1,7 @@
 import objectPath from 'object-path'
 
-const webUUID = '62aa612c-a452-4695-b028-313d11dfb53b'
+// const webUUID = '62aa612c-a452-4695-b028-313d11dfb53b'
+const webUUID = '44aa993fb613c0b6'
 
 class Device {
   constructor() {
