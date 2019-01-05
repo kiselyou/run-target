@@ -2,16 +2,16 @@
   font-weight: bold;
   width: calc(100% - 20px);
   margin: 6px 10px;
-  height: 22px;
+  height: 14px;
   border: solid 1px #666666;
   background: #252525;
   color: #FFFFFF;
   position: relative;
-  border-radius: 2px;
+  font-size: 12px;
 
   &_cell {
     position: absolute;
-    height: 20px;
+    height: 12px;
     display: flex;
     align-items: center;
 

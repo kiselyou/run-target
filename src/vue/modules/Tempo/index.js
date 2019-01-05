@@ -124,7 +124,7 @@ export default Vue.component('Tempo', {
      */
     maxTempo: function () {
       const tempo = Number(this.lowerTempoMinutes)
-      return tempo + (tempo / 100 * 10)
+      return tempo + (tempo / 100 * 20)
     },
     /**
      * Генерация текста если нет активностей.
