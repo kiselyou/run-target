@@ -1,3 +1,4 @@
+import File from './File'
 import BgMode from './BgMode'
 import Device from './Device'
 import Vibration from './Vibration'
@@ -5,6 +6,7 @@ import Diagnostic from './Diagnostic'
 import BgGeoLocation from './BgGeoLocation'
 
 const debug = false
+let file = null
 let bgMode = null
 let device = null
 let vibration = null
@@ -51,6 +53,14 @@ class Plugins {
    */
   static get vibration() {
     return vibration || (vibration = new Vibration(debug))
+  }
+
+  /**
+   *
+   * @returns {File}
+   */
+  static get file() {
+    return file || (file = new File(debug))
   }
 }
 

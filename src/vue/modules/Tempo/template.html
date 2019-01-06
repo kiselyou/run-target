@@ -1,42 +1,54 @@
 
 <div class="tempo">
 
-  <div class="tempo_body">
+  <div class="tempo_corner tempo_corner__right-top" v-if="selectedActivity">
+      <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="left">
+        <div class="tempo_btn" @click="makeScreen" :class="htmlClassBtnMakeScreen">
+          <VueIcon name="image" :size="16" color="#000"/>
+        </div>
+      </Tooltip>
+  </div>
 
+  <div class="tempo_body">
     <Spinner :loading="loading"/>
 
-    <div v-if="selectedActivity">
-      <Row>
-        <Cell align="center" :bold="true" size="xlg">
-          <template slot="content">
-            <span>{{ activityPathLength(selectedActivity) }}</span>
-            <span class="tempo_distance">км</span>
-          </template>
-        </Cell>
-      </Row>
+    <template v-if="selectedActivity">
+      <div id="tempo-statistics" class="tempo_background">
+        <Row>
+          <Cell align="center" :bold="true" size="xlg" class="tempo_distance">
+            <template slot="content">
+              <span>{{ activityPathLength(selectedActivity) }}</span>
+              <span class="tempo_distance__label">км</span>
+            </template>
+            <template slot="after-content">
+              <span class="tempo_distance__label">{{ activityName(selectedActivity) }}</span>
+            </template>
+          </Cell>
+        </Row>
 
-      <Row class="my-2">
-        <Cell afterContent="Средний темп" :content="avgTempoString" align="center" :bold="true" size="lg" />
-        <Cell afterContent="Самый быстрый" :content="upperTempoString" align="center" :bold="true" size="lg" />
-        <Cell afterContent="Самый медленный" :content="lowerTempoString" align="center" :bold="true" size="lg" />
-      </Row>
+        <Row class="my-2">
+          <Cell afterContent="Средний темп" :content="avgTempoString" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Самый быстрый" :content="upperTempoString" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Самый медленный" :content="lowerTempoString" align="center" :bold="true" size="lg" />
+        </Row>
 
-      <div class="my-4">
-        <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
-          <template slot="before">{{ distanceNumber(distance) }}</template>
-          <template slot="center">{{ distanceToTempoString(distance) }}</template>
-          <template slot="after">{{ distanceTime(distance) }}</template>
-        </Rate>
+        <div class="my-4">
+          <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
+            <template slot="before">{{ distanceNumber(distance) }}</template>
+            <template slot="center">{{ distanceToTempoString(distance) }}</template>
+            <template slot="after">{{ distanceTime(distance) }}</template>
+          </Rate>
+        </div>
       </div>
 
-      <Row class="mt-4">
+      <Row>
         <Cell :align="true">
           <template slot="content">
             <Button skin="orange" text="Список астивностей" @click="closeActivity" />
           </template>
         </Cell>
       </Row>
-    </div>
+    </template>
 
     <div v-if="!selectedActivity">
       <div :key="indexActivity" v-for="(activity, indexActivity) of activities">

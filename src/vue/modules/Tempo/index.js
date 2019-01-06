@@ -4,14 +4,18 @@ import template from './template.html'
 import Ajax from '@lib/Ajax'
 import Timer from '@lib/Timer'
 import moment from 'moment'
+import Plugins from '@lib/cordova/Plugins'
 
+import '@vue/Tooltip'
 import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
 import '@vue/Button'
+import '@vue/VueIcon'
 import '@vue/Rate'
 import '@vue/RunProcess'
 import '@module/CalendarRun'
 import '@module/Spinner'
+import domToImage from 'dom-to-image'
 
 const timer = new Timer()
 
@@ -22,6 +26,10 @@ export default Vue.component('Tempo', {
        * @type {boolean}
        */
       loading: true,
+      /**
+       * @type {string}
+       */
+      imgTooltip: '',
       /**
        * @type {Array.<Object>}
        */
@@ -39,6 +47,9 @@ export default Vue.component('Tempo', {
     }
   },
   computed: {
+    isVisibleImgTooltip: function() {
+      return Boolean(this.imgTooltip)
+    },
     /**
      * Массив всех дистанций.
      *
@@ -137,6 +148,11 @@ export default Vue.component('Tempo', {
       }
       return moment(this.day.date).locale('ru').format('DD MMMM')
     },
+    htmlClassBtnMakeScreen() {
+      return {
+        'tempo_btn__disabled': !Plugins.file.isPluginEnabled
+      }
+    },
   },
   methods: {
     loadActivities(day) {
@@ -178,8 +194,26 @@ export default Vue.component('Tempo', {
      * @param {Date|string} date
      * @returns {string}
      */
-    formatDate(date) {
+    formatDateTime(date) {
       return moment(date).locale('ru').format('DD MMM HH:mm')
+    },
+    /**
+     * Фарматирование даты.
+     *
+     * @param {Date|string} date
+     * @returns {string}
+     */
+    formatDate(date) {
+      return moment(date).locale('ru').format('DD MMM')
+    },
+    /**
+     * Фарматирование даты.
+     *
+     * @param {Date|string} date
+     * @returns {string}
+     */
+    formatTime(date) {
+      return moment(date).format('HH:mm')
     },
     /**
      * Название активности.
@@ -188,7 +222,7 @@ export default Vue.component('Tempo', {
      * @returns {string}
      */
     activityName: function (activity) {
-      return `${this.formatDate(activity.dateTimeStart)} - ${this.formatDate(activity.dateTimeStop)}`
+      return `${this.formatDateTime(activity.dateTimeStart)} - ${this.formatTime(activity.dateTimeStop)}`
     },
     /**
      * Получение темпа из дистанции.
@@ -283,6 +317,39 @@ export default Vue.component('Tempo', {
      */
     openActivity(activity) {
       this.selectedActivity = activity
+    },
+    showImgTooltip: function(content) {
+      this.imgTooltip = content
+      return this
+    },
+    autoHideImgTooltip: function() {
+      setTimeout(() => {
+        this.imgTooltip = ''
+      }, 5000)
+    },
+    makeScreen() {
+      if (!Plugins.file.isPluginEnabled) {
+        return
+      }
+      this.loading = true
+      const node = document.getElementById('tempo-statistics')
+      domToImage.toPng(node)
+        .then((dataUrl) => {
+          Plugins.file.write(
+            dataUrl,
+            () => {
+              this.loading = false
+              this.showImgTooltip('Изображение сохранено в галерее.').autoHideImgTooltip()
+            },
+            () => {
+              this.loading = false
+              this.showImgTooltip('Не могу сохранить файл.').autoHideImgTooltip()
+            })
+        })
+        .catch(() => {
+          this.loading = false
+          this.showImgTooltip('Изображение не доступно.').autoHideImgTooltip()
+        })
     },
     /**
      * Закрыть подробную информацию об активности.

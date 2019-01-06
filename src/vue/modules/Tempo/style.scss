@@ -5,6 +5,45 @@
   align-items: center;
   flex-direction: column;
 
+  &_background {
+    background: #FFFFFF;
+    overflow: auto;
+    padding: 15px 0;
+  }
+
+  &_corner {
+    position: absolute;
+
+    &__right-top {
+      right: 15px;
+      top: 10px;
+    }
+  }
+
+  &_btn {
+    display: flex;
+    cursor: pointer;
+    padding: 4px;
+    border: solid 1px #999;
+    border-radius: 2px;
+    position: relative;
+    background: #FFFFFF;
+
+    &:active {
+      background: #999;
+    }
+
+    &__disabled {
+      border: solid 1px #ebebeb;
+      & svg {
+        fill: #ebebeb !important;
+      }
+      &:active {
+        background: #FFFFFF;
+      }
+    }
+  }
+
   &_body {
     width: 100%;
     min-height: 250px;
@@ -26,8 +65,13 @@
   }
 
   &_distance {
-    color: #8E8E8E;
-    font-size: 12px;
-    font-weight: normal;
+    line-height: 1.4;
+
+    &__label {
+      color: #8E8E8E;
+      font-size: 12px;
+      font-weight: normal;
+      letter-spacing: 2px;
+    }
   }
 }

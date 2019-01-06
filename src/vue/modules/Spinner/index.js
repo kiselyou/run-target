@@ -34,7 +34,7 @@ export default Vue.component('Spinner', {
     },
     wrap: {
       type: Boolean,
-      default: false
+      default: true
     },
   },
   template: template
