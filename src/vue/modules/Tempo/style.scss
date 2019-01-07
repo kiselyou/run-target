@@ -13,34 +13,11 @@
 
   &_corner {
     position: absolute;
+    display: flex;
 
     &__right-top {
       right: 15px;
       top: 10px;
-    }
-  }
-
-  &_btn {
-    display: flex;
-    cursor: pointer;
-    padding: 4px;
-    border: solid 1px #999;
-    border-radius: 2px;
-    position: relative;
-    background: #FFFFFF;
-
-    &:active {
-      background: #999;
-    }
-
-    &__disabled {
-      border: solid 1px #ebebeb;
-      & svg {
-        fill: #ebebeb !important;
-      }
-      &:active {
-        background: #FFFFFF;
-      }
     }
   }
 

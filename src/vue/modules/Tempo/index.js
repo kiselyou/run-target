@@ -148,10 +148,8 @@ export default Vue.component('Tempo', {
       }
       return moment(this.day.date).locale('ru').format('DD MMMM')
     },
-    htmlClassBtnMakeScreen() {
-      return {
-        'tempo_btn__disabled': !Plugins.file.isPluginEnabled
-      }
+    btnMakeScreenDisabled() {
+      return !Plugins.file.isPluginEnabled
     },
   },
   methods: {

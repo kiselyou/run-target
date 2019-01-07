@@ -38,10 +38,7 @@
   }
 
   &__disabled {
-    opacity: 0.6 !important;
-    background: #252525 !important;
-    border: solid 1px #252525 !important;
-    color: #D2D2D2 !important;
+    opacity: 0.2 !important;
 
     &:hover {
       cursor: not-allowed;
@@ -50,11 +47,11 @@
 
   &__white {
     background: #FFFFFF;
-    border: solid 1px #999999;
-    color: #252525;
+    border: solid 1px #7CCE67;
+    color: #7CCE67;
 
     & svg {
-      fill: #252525;
+      fill: #7CCE67;
     }
 
     &:hover {
@@ -86,6 +83,8 @@
 
     &__round {
       border-radius: 50%;
+      padding: 0;
+      width: 40px;
     }
   }
 }

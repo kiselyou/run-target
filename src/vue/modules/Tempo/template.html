@@ -3,9 +3,7 @@
 
   <div class="tempo_corner tempo_corner__right-top" v-if="selectedActivity">
       <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="left">
-        <div class="tempo_btn" @click="makeScreen" :class="htmlClassBtnMakeScreen">
-          <VueIcon name="image" :size="16" color="#000"/>
-        </div>
+        <Button icon="image" :round="true" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
       </Tooltip>
   </div>
 

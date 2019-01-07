@@ -21,6 +21,7 @@ export default Vue.component('Button', {
     },
     skin: {
       type: String,
+      default: 'white'
     },
     mx: {
       type: [String, Number],
