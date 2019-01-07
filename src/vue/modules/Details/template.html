@@ -2,13 +2,24 @@
 <Layout :showCorner="true">
   <template slot="body">
     <Spinner :loading="loading" />
-    <Row class="my-2">
-      <Cell :content="totalPath" afterContent="всего (км)" :bold="true" :align="true" size="lg" />
-      <Cell :content="totalMonthPath" afterContent="за месяц (км)" :bold="true" :align="true" size="lg" />
-      <Cell :content="totalWeekPath" afterContent="за неделю (км)" :bold="true" :align="true" size="lg" />
-    </Row>
+
+    <div class="details">
+      <WrapCorner>
+        <Tooltip content="Создать цель" placement="bottom">
+          <Button icon="target" :round="true" @click="createTarget()" :disabled="isDisabledCreateTarget"/>
+        </Tooltip>
+      </WrapCorner>
+
+      <div class="details_content">
+        <Row class="my-2">
+          <Cell :content="totalPath" afterContent="всего (км)" :bold="true" :align="true" size="lg" />
+          <Cell :content="totalMonthPath" afterContent="за месяц (км)" :bold="true" :align="true" size="lg" />
+          <Cell :content="totalWeekPath" afterContent="за неделю (км)" :bold="true" :align="true" size="lg" />
+        </Row>
+      </div>
+    </div>
   </template>
   <template slot="foot">
-
+    <CalendarRun @activeDay="activeDay" @selectDay="selectDay" />
   </template>
 </Layout>

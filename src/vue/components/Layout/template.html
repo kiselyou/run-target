@@ -1,9 +1,9 @@
 
 <div class="layout">
-  <div class="layout_body">
+  <div class="layout_body" v-show="showBody">
     <slot name="body"></slot>
   </div>
-  <div class="layout_foot" :class="footHtmlClass">
+  <div class="layout_foot" v-show="showFoot" :class="footHtmlClass">
     <slot name="foot"></slot>
   </div>
 </div>

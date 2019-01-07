@@ -8,32 +8,17 @@
   &_background {
     background: #FFFFFF;
     overflow: auto;
-    padding: 15px 0;
   }
 
-  &_corner {
-    position: absolute;
-    display: flex;
-
-    &__right-top {
-      right: 15px;
-      top: 10px;
-    }
-  }
-
-  &_body {
-    width: 100%;
+  &_container {
     min-height: 250px;
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  &_foot {
-    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    &__column {
+      flex-direction: column;
+    }
   }
 
   &_label {

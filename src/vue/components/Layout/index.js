@@ -7,6 +7,14 @@ export default Vue.component('Layout', {
     showCorner: {
       type: Boolean,
       default: false
+    },
+    showBody: {
+      type: Boolean,
+      default: true
+    },
+    showFoot: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

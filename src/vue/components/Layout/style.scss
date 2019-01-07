@@ -2,15 +2,9 @@
   height: 100%;
   &_body {
     min-height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   &_foot {
     min-height: calc(100% - 250px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: #333333;
     color: #FFFFFF;
     position: relative;
@@ -23,6 +17,14 @@
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
       border-top: 8px solid #FFFFFF;
+    }
+  }
+
+  &_align {
+    display: flex;
+    &__center {
+      align-items: center;
+      justify-content: center;
     }
   }
 }

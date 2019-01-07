@@ -1,18 +1,18 @@
 
-<div class="tempo">
+<Layout :showCorner="true" :showFoot="!selectedActivity">
+  <template slot="body">
 
-  <div class="tempo_corner tempo_corner__right-top" v-if="selectedActivity">
+    <WrapCorner v-if="selectedActivity">
       <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="left">
         <Button icon="image" :round="true" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
       </Tooltip>
-  </div>
+    </WrapCorner>
 
-  <div class="tempo_body">
     <Spinner :loading="loading"/>
 
-    <template v-if="selectedActivity">
+    <div v-if="selectedActivity">
       <div id="tempo-statistics" class="tempo_background">
-        <Row>
+        <Row class="my-4">
           <Cell align="center" :bold="true" size="xlg" class="tempo_distance">
             <template slot="content">
               <span>{{ activityPathLength(selectedActivity) }}</span>
@@ -24,13 +24,13 @@
           </Cell>
         </Row>
 
-        <Row class="my-2">
+        <Row class="my-4">
           <Cell afterContent="Средний темп" :content="avgTempoString" align="center" :bold="true" size="lg" />
           <Cell afterContent="Самый быстрый" :content="upperTempoString" align="center" :bold="true" size="lg" />
           <Cell afterContent="Самый медленный" :content="lowerTempoString" align="center" :bold="true" size="lg" />
         </Row>
 
-        <div class="my-4">
+        <div class="mt-4">
           <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
             <template slot="before">{{ distanceNumber(distance) }}</template>
             <template slot="center">{{ distanceToTempoString(distance) }}</template>
@@ -39,39 +39,36 @@
         </div>
       </div>
 
-      <Row>
+      <Row class="mt-2 mb-4">
         <Cell :align="true">
           <template slot="content">
             <Button skin="orange" text="Список астивностей" @click="closeActivity" />
           </template>
         </Cell>
       </Row>
-    </template>
+    </div>
 
-    <div v-if="!selectedActivity">
-      <div :key="indexActivity" v-for="(activity, indexActivity) of activities">
-        <Row>
-          <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
-            <template slot="content">
-              {{ activityName(activity) }}
-            </template>
-            <template slot="after-content">
-              <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
-            </template>
-          </Cell>
-        </Row>
-      </div>
+    <div v-if="!selectedActivity" class="tempo_container tempo_container__column">
+      <Row :key="indexActivity" v-for="(activity, indexActivity) of activities">
+        <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
+          <template slot="content">
+            {{ activityName(activity) }}
+          </template>
+          <template slot="after-content">
+            <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
+          </template>
+        </Cell>
+      </Row>
+
       <div v-if="activities.length === 0 && !loading">
         <Row>
           <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
         </Row>
       </div>
     </div>
+  </template>
 
-  </div>
-
-  <div class="tempo_foot" v-show="!selectedActivity">
+  <template slot="foot">
     <CalendarRun @activeDay="activeDay" @selectDay="selectDay" />
-  </div>
-
-</div>
+  </template>
+</Layout>

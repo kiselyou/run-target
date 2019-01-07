@@ -1,0 +1,20 @@
+.wrap-corner {
+  position: absolute;
+
+  &_left-top {
+    left: 10px;
+    top: 10px;
+  }
+  &_right-top {
+    right: 10px;
+    top: 10px;
+  }
+  &_left-bottom {
+    left: 10px;
+    bottom: 10px;
+  }
+  &_right-bottom {
+    right: 10px;
+    bottom: 10px;
+  }
+}

@@ -5,6 +5,8 @@ import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
 import '@vue/RunProcess'
 import '@vue/Signal'
+import '@vue/Layout'
+import '@vue/WrapCorner'
 import '@module/Timer'
 
 import Signal from '@lib/location/Signal'

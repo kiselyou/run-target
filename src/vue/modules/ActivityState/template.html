@@ -1,28 +1,34 @@
 
-<div class="activity-state">
-  <div class="activity-state_body">
+<Layout :showCorner="true">
+  <template slot="body">
+
     <Spinner :loading="loading"/>
 
-    <Row class="my-4" v-if="loading">
-      <Cell afterContent="сохранение" :align="true" />
-    </Row>
+    <WrapCorner>
+      <Signal :value="signalValue"/>
+    </WrapCorner>
 
-    <template v-if="!loading">
-      <div class="activity-state_signal">
-        <Signal :value="signalValue"/>
-      </div>
-      <Timer :disabled="disabled" :pause="pause" :time="time" class="my-2"/>
+    <div class="activity-state activity-state_body">
+     <Row class="my-4" v-if="loading">
+        <Cell afterContent="сохранение" :align="true" />
+      </Row>
 
-      <Row class="my-2">
+      <Timer :disabled="disabled" :pause="pause" :time="time" class="mt-4"/>
+
+      <Row class="mt-2">
         <Cell :content="tempoValue" :afterContent="tempoLabel" :bold="true" :align="true" size="xlg" />
         <Cell :content="pathValue" :afterContent="pathLabel" :bold="true" :align="true" size="xlg" />
         <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="xlg" />
       </Row>
 
       <RunProcess :target="target" :value="pathPiece" :label="processLabel(target, path)" class="my-2" />
-    </template>
-  </div>
-  <div class="activity-state_controls" :class="htmlClassControls">
+    </div>
+
+  </template>
+
+  <template slot="foot">
+    <div class="activity-state activity-state_foot">
     <slot></slot>
-  </div>
-</div>
+    </div>
+  </template>
+</Layout>
