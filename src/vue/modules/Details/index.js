@@ -7,9 +7,7 @@ import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
 import '@vue/Layout'
 import '@vue/Button'
-import '@vue/WrapCorner'
 import '@module/Spinner'
-import '@module/CalendarRun'
 import Ajax from '@lib/Ajax'
 
 export default Vue.component('Details', {
@@ -38,9 +36,6 @@ export default Vue.component('Details', {
     totalWeekPath: function () {
       return this.details ? this.normalizedDistance(this.details['totalWeekDistance']) : 0
     },
-    isDisabledCreateTarget: function () {
-      return false
-    }
   },
   methods: {
     normalizedDistance(distance) {
@@ -61,15 +56,6 @@ export default Vue.component('Details', {
         .catch(() => {
           this.loading = false
         })
-    },
-    createTarget() {
-
-    },
-    activeDay() {
-      console.log('activeDay')
-    },
-    selectDay() {
-      console.log('selectDay')
     }
   },
   template: template

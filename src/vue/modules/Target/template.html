@@ -1,0 +1,25 @@
+
+<Layout :showCorner="true">
+  <template slot="body">
+    <Spinner :loading="loading" />
+
+    <div class="target">
+      <WrapCorner>
+        <Tooltip content="Создать цель" placement="bottom">
+          <Button icon="plus" :round="true" @click="createTarget"/>
+        </Tooltip>
+      </WrapCorner>
+
+      <div class="target_content">
+        <Row class="my-2">
+          <Cell :bold="true" :align="true" size="lg">
+            asdas
+          </Cell>
+        </Row>
+      </div>
+    </div>
+  </template>
+  <template slot="foot">
+    <CalendarRun @activeDay="activeDay" @selectDay="selectDay" />
+  </template>
+</Layout>

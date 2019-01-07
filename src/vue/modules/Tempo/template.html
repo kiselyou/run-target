@@ -3,7 +3,7 @@
   <template slot="body">
 
     <WrapCorner v-if="selectedActivity">
-      <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="left">
+      <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
         <Button icon="image" :round="true" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
       </Tooltip>
     </WrapCorner>

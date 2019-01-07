@@ -1,4 +1,4 @@
-import GeoLocation from '@lib/location/GeoLocation';
+import GeoLocation from '@lib/location/GeoLocation'
 
 class Signal {
   /**
@@ -23,7 +23,7 @@ class Signal {
      *
      * @type {Array}
      */
-    this.accuracyPercent = [[5, 0, 4], [4, 4, 10], [3, 10, 15], [2, 15, 20], [1, 20, 40]]
+    this.accuracyPercent = [[5, 0, 4], [4, 4, 10], [3, 10, 12], [2, 12, 20], [1, 20, 40]]
   }
 
   /**
