@@ -55,93 +55,94 @@ export default Vue.component('Tempo', {
     isVisibleImgTooltip: function() {
       return Boolean(this.imgTooltip)
     },
-    /**
-     * Массив всех дистанций.
-     *
-     * @returns {Array}
-     */
-    distances: function () {
-      return this.selectedActivity ? this.selectedActivity.distances : []
-    },
-    /**
-     * Средний темп.
-     *
-     * @returns {number}
-     */
-    avgTempoMinutes: function () {
-      let time = 0
-      let path = 0
-      for (const distance of this.distances) {
-        time += distance.elapsedTime
-        path += distance.pathLength
-      }
-
-      return this.timeToMinutes(time / path * 1000)
-
-    },
-    /**
-     * Средний темп.
-     *
-     * @returns {number}
-     */
-    avgTempoString() {
-      return this.minutesToStringTempo(this.avgTempoMinutes)
-    },
-    /**
-     * Самый быстрый темп.
-     *
-     * @returns {number}
-     */
-    upperTempoMinutes: function () {
-      let upperTempo = + Infinity
-      for (const distance of this.distances) {
-        const tempo = this.distanceTempoTime(distance)
-        if (tempo < upperTempo) {
-          upperTempo = tempo
-        }
-      }
-      return Number((upperTempo === + Infinity ? 0 : upperTempo).toFixed(2))
-    },
-    /**
-     * Самый быстрый темп.
-     *
-     * @returns {string}
-     */
-    upperTempoString() {
-      return this.minutesToStringTempo(this.upperTempoMinutes)
-    },
-    /**
-     * Самый медленый темп.
-     *
-     * @returns {string}
-     */
-    lowerTempoMinutes: function () {
-      let lowerTempo = - Infinity
-      for (const distance of this.distances) {
-        const tempo = this.distanceTempoTime(distance)
-        if (tempo > lowerTempo) {
-          lowerTempo = tempo
-        }
-      }
-      return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
-    },
-    /**
-     * Самый медленый темп.
-     *
-     * @returns {string}
-     */
-    lowerTempoString() {
-      return this.minutesToStringTempo(this.lowerTempoMinutes)
-    },
-    /**
-     * Максимальный темп.
-     *
-     * @returns {number}
-     */
-    maxTempo: function () {
-      const tempo = Number(this.lowerTempoMinutes)
-      return tempo + (tempo / 100 * 20)
-    },
+    // /**
+    //  * Массив всех дистанций.
+    //  *
+    //  * @returns {Array}
+    //  */
+    // distances: function () {
+    //   return this.selectedActivity ? this.selectedActivity.distances : []
+    // },
+    // /**
+    //  * Средний темп.
+    //  *
+    //  * @returns {number}
+    //  */
+    // avgTempoMinutes: function () {
+    //   let time = 0
+    //   let path = 0
+    //   for (const distance of this.distances) {
+    //     time += distance.elapsedTime
+    //     path += distance.pathLength
+    //   }
+    //
+    //   return this.timeToMinutes(time / path * 1000)
+    //
+    // },
+    // /**
+    //  * Средний темп.
+    //  *
+    //  * @returns {number}
+    //  */
+    // avgTempoString() {
+    //   return this.minutesToStringTempo(this.avgTempoMinutes)
+    // },
+    // /**
+    //  * Самый быстрый темп.
+    //  *
+    //  * @returns {number}
+    //  */
+    // upperTempoMinutes: function () {
+    //   let upperTempo = + Infinity
+    //   for (const distance of this.distances) {
+    //     const tempo = this.distanceTempoTime(distance)
+    //     if (tempo < upperTempo) {
+    //       upperTempo = tempo
+    //     }
+    //   }
+    //   return Number((upperTempo === + Infinity ? 0 : upperTempo).toFixed(2))
+    // },
+    // /**
+    //  * Самый быстрый темп.
+    //  *
+    //  * @param {Object|?} activity
+    //  * @returns {string}
+    //  */
+    // upperTempoString(activity) {
+    //   return this.minutesToStringTempo(this.upperTempoMinutes(activity))
+    // },
+    // /**
+    //  * Самый медленый темп.
+    //  *
+    //  * @returns {string}
+    //  */
+    // lowerTempoMinutes: function () {
+    //   let lowerTempo = - Infinity
+    //   for (const distance of this.distances) {
+    //     const tempo = this.distanceTempoTime(distance)
+    //     if (tempo > lowerTempo) {
+    //       lowerTempo = tempo
+    //     }
+    //   }
+    //   return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
+    // },
+    // /**
+    //  * Самый медленый темп.
+    //  *
+    //  * @returns {string}
+    //  */
+    // lowerTempoString() {
+    //   return this.minutesToStringTempo(this.lowerTempoMinutes)
+    // },
+    // /**
+    //  * Максимальный темп.
+    //  *
+    //  * @returns {number}
+    //  */
+    // maxTempo: function () {
+    //   const tempo = Number(this.lowerTempoMinutes)
+    //   return tempo + (tempo / 100 * 20)
+    // },
     /**
      * Генерация текста если нет активностей.
      *
@@ -158,6 +159,103 @@ export default Vue.component('Tempo', {
     },
   },
   methods: {
+    /**
+     * Массив всех дистанций.
+     *
+     * @param {Object|?} activity
+     * @returns {Array}
+     */
+    distances(activity) {
+      return activity ? activity.distances : []
+    },
+    /**
+     * Средний темп.
+     *
+     * @param {Object|?} activity
+     * @returns {number}
+     */
+    avgTempoMinutes(activity) {
+      let time = 0
+      let path = 0
+      const distances = this.distances(activity)
+      for (const distance of distances) {
+        time += distance.elapsedTime
+        path += distance.pathLength
+      }
+
+      return this.timeToMinutes(time / path * 1000)
+    },
+    /**
+     * Самый быстрый темп.
+     *
+     * @param {Object|?} activity
+     * @returns {string}
+     */
+    upperTempoString(activity) {
+      return this.minutesToStringTempo(this.upperTempoMinutes(activity))
+    },
+    /**
+     * Самый быстрый темп.
+     *
+     * @param {Object|?} activity
+     * @returns {number}
+     */
+    upperTempoMinutes(activity) {
+      let upperTempo = + Infinity
+      const distances = this.distances(activity)
+      for (const distance of distances) {
+        const tempo = this.distanceTempoTime(distance)
+        if (tempo < upperTempo) {
+          upperTempo = tempo
+        }
+      }
+      return Number((upperTempo === + Infinity ? 0 : upperTempo).toFixed(2))
+    },
+    /**
+     * Самый медленый темп.
+     *
+     * @param {Object|?} activity
+     * @returns {string}
+     */
+    lowerTempoMinutes(activity) {
+      let lowerTempo = - Infinity
+      const distances = this.distances(activity)
+      for (const distance of distances) {
+        const tempo = this.distanceTempoTime(distance)
+        if (tempo > lowerTempo) {
+          lowerTempo = tempo
+        }
+      }
+      return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
+    },
+    /**
+     * Самый медленый темп.
+     *
+     * @param {Object|?} activity
+     * @returns {string}
+     */
+    lowerTempoString(activity) {
+      return this.minutesToStringTempo(this.lowerTempoMinutes(activity))
+    },
+    /**
+     * Максимальный темп.
+     *
+     * @param {Object|?} activity
+     * @returns {number}
+     */
+    maxTempo(activity) {
+      const tempo = Number(this.lowerTempoMinutes(activity))
+      return tempo + (tempo / 100 * 20)
+    },
+    /**
+     * Средний темп.
+     *
+     * @param {Object|?} activity
+     * @returns {number}
+     */
+    avgTempoString(activity) {
+      return this.minutesToStringTempo(this.avgTempoMinutes(activity))
+    },
     loadActivities(day) {
       this.loading = true
       const timestamp = new Date(day.date).getTime()
@@ -269,12 +367,13 @@ export default Vue.component('Tempo', {
     /**
      * Номер дистанции.
      *
+     * @param {Object} activity
      * @param {Object} distance
      * @returns {string}
      */
-    distanceNumber(distance) {
-      const distances = this.selectedActivity.distances
+    distanceNumber(activity, distance) {
       let less = ''
+      const distances = this.distances(activity)
       if (distances[distances.length - 1]['number'] === distance.number && distance.pathLength < 1000) {
         less = `<`;
       }
@@ -283,11 +382,12 @@ export default Vue.component('Tempo', {
     /**
      * Время на дистанции.
      *
+     * @param {Object} activity
      * @param {Object} distance
      * @returns {string}
      */
-    distanceTime(distance) {
-      const distances = this.selectedActivity.distances
+    distanceTime(activity, distance) {
+      const distances = this.distances(activity)
       let elapsedTime = 0
       for (const dist of distances) {
         if (dist.number > distance.number) {
@@ -306,11 +406,12 @@ export default Vue.component('Tempo', {
     activityPathLength(activity) {
       let len = 0
       if (activity) {
-        for (const distance of activity.distances) {
+        const distances = this.distances(activity)
+        for (const distance of distances) {
           len += distance.pathLength
         }
       }
-      return (len / 1000).toFixed(3) + 'км'
+      return (len / 1000).toFixed(3) + ' км'
     },
     /**
      * Открыть подробную информацию об активности.

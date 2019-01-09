@@ -11,13 +11,16 @@
   }
 
   &_container {
+    width: 100%;
     min-height: 250px;
     display: flex;
-    align-items: center;
-    justify-content: center;
 
     &__column {
       flex-direction: column;
+    }
+
+    &__center {
+      justify-content: center;
     }
   }
 

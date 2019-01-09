@@ -25,16 +25,16 @@
         </Row>
 
         <Row class="my-4">
-          <Cell afterContent="Средний темп" :content="avgTempoString" align="center" :bold="true" size="lg" />
-          <Cell afterContent="Самый быстрый" :content="upperTempoString" align="center" :bold="true" size="lg" />
-          <Cell afterContent="Самый медленный" :content="lowerTempoString" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Самый быстрый" :content="upperTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
         </Row>
 
         <div class="mt-4">
-          <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances" :min="0" :max="maxTempo" class="my-3">
-            <template slot="before">{{ distanceNumber(distance) }}</template>
+          <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances(selectedActivity)" :min="0" :max="maxTempo(selectedActivity)" class="my-3">
+            <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
             <template slot="center">{{ distanceToTempoString(distance) }}</template>
-            <template slot="after">{{ distanceTime(distance) }}</template>
+            <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
           </Rate>
         </div>
       </div>
@@ -48,21 +48,19 @@
       </Row>
     </div>
 
-    <SquareArea alignHorizontal="center" alignVertical="center" v-if="!selectedActivity">
-      <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
-        <template slot="image">
-          <Rating />
-        </template>
-        <template slot="title">
-          {{ activityName(activity) }}
-        </template>
-        <template slot="description">
-          {{ activityPathLength(activity) }}
-        </template>
-      </SquareItem>
-    </SquareArea>
+    <div class="tempo_container tempo_container__column" v-if="!selectedActivity && activities.length > 0">
+      <SquareArea alignHorizontal="center">
+        <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
+          <template slot="image">
+            <Rating :label="activityPathLength(activity)" />
+          </template>
+          <template slot="title">{{ activityName(activity) }}</template>
+          <template slot="description">Средний темп {{ avgTempoString(activity) }}</template>
+        </SquareItem>
+      </SquareArea>
+    </div>
 
-    <div class="tempo_container" v-if="activities.length === 0 && !loading">
+    <div class="tempo_container tempo_container__column tempo_container__center" v-if="activities.length === 0 && !loading">
       <Row>
         <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
       </Row>
