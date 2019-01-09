@@ -48,23 +48,24 @@
       </Row>
     </div>
 
-    <div v-if="!selectedActivity" class="tempo_container tempo_container__column">
-      <Row :key="indexActivity" v-for="(activity, indexActivity) of activities">
-        <Cell @click="openActivity(activity)" :align="true" :hover="true" :underline="true" padding="md">
-          <template slot="content">
-            {{ activityName(activity) }}
-          </template>
-          <template slot="after-content">
-            <div class="tempo_label">{{ activityPathLength(activity) }} км</div>
-          </template>
-        </Cell>
-      </Row>
+    <SquareArea alignHorizontal="center" alignVertical="center" v-if="!selectedActivity">
+      <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
+        <template slot="image">
+          <Rating />
+        </template>
+        <template slot="title">
+          {{ activityName(activity) }}
+        </template>
+        <template slot="description">
+          {{ activityPathLength(activity) }}
+        </template>
+      </SquareItem>
+    </SquareArea>
 
-      <div v-if="activities.length === 0 && !loading">
-        <Row>
-          <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
-        </Row>
-      </div>
+    <div class="tempo_container" v-if="activities.length === 0 && !loading">
+      <Row>
+        <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
+      </Row>
     </div>
   </template>
 

@@ -15,8 +15,11 @@ import '@vue/VueIcon'
 import '@vue/Rate'
 import '@vue/RunProcess'
 import '@vue/WrapCorner'
+import '@vue/SquareArea'
+import '@vue/SquareItem'
 import '@module/CalendarRun'
 import '@module/Spinner'
+import '@module/Rating'
 import domToImage from 'dom-to-image'
 
 const timer = new Timer()
@@ -307,7 +310,7 @@ export default Vue.component('Tempo', {
           len += distance.pathLength
         }
       }
-      return (len / 1000).toFixed(3)
+      return (len / 1000).toFixed(3) + 'км'
     },
     /**
      * Открыть подробную информацию об активности.

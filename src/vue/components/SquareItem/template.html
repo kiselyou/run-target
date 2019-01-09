@@ -1,23 +1,18 @@
 
-<div class="square-item">
+<div class="square-item" @click="click">
   <div class="square-item_status">
-    <div class="square-item_status__stars">
-      <VueIcon name="star" :size="15" color="#EE9900" />
-      <VueIcon name="star" :size="15" color="#EE9900" />
-      <VueIcon name="star" :size="20" color="#EE9900" />
-      <VueIcon name="star" :size="15" />
-      <VueIcon name="star" :size="15" />
-    </div>
-    <div class="square-item_status__value">
-      42 км
-    </div>
+    <slot name="image"></slot>
   </div>
   <div class="square-item_content">
     <div class="square-item_content__title">
-      <span>01.01.2019</span> - <span>30.06.2019</span>
+      <slot name="title">
+        <span v-if="title">{{ title }}</span>
+      </slot>
     </div>
     <div class="square-item_content__description">
-      Выполнено на 90%
+      <slot name="description">
+        <span v-if="description">{{ description }}</span>
+      </slot>
     </div>
   </div>
 </div>

@@ -1,0 +1,14 @@
+.rating {
+  width: 120px;
+  &_status {
+    &__stars {
+      text-align: center;
+    }
+    &__label {
+      width: 120px;
+      text-align: center;
+      font-size: 10px;
+      color: #999999;
+    }
+  }
+}

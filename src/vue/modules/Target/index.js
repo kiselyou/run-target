@@ -11,6 +11,7 @@ import '@vue/SquareArea'
 import '@vue/SquareItem'
 import '@vue/WrapCorner'
 import '@module/Spinner'
+import '@module/Rating'
 import '@module/CalendarRun'
 
 export default Vue.component('Target', {

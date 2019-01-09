@@ -6,22 +6,18 @@ import '@vue/VueIcon'
 
 export default Vue.component('SquareItem', {
   props: {
-    name: {
+    title: {
       type: String,
       require: true
     },
-    size: {
-      type: [Number, String],
-    },
-    color: {
+    description: {
       type: String,
-    }
+      require: true
+    },
   },
-  computed: {
-    htmlStyle() {
-      return {
-
-      }
+  methods: {
+    click: function (e) {
+      this.$emit('click', e)
     }
   },
   template: template

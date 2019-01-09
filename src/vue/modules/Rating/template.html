@@ -1,0 +1,11 @@
+
+<div class="rating">
+  <div class="rating_status__stars">
+    <VueIcon :name="icon" :size="size" :color="colorItem(1)" />
+    <VueIcon :name="icon" :size="size" :color="colorItem(2)" />
+    <VueIcon :name="icon" :size="size" :color="colorItem(3)" />
+    <VueIcon :name="icon" :size="size" :color="colorItem(4)" />
+    <VueIcon :name="icon" :size="size" :color="colorItem(5)" />
+  </div>
+  <div class="rating_status__label" v-if="label">{{ label }}</div>
+</div>

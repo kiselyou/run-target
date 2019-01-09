@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 400px;
   height: 60px;
-  margin: 5px;
+  margin: 2px 0;
   border: solid 1px #EBEBEB;
   display: flex;
   align-items: center;
@@ -15,16 +15,7 @@
   }
 
   &_status {
-    &__stars {
-      width: 120px;
-      text-align: center;
-    }
-    &__value {
-      width: 120px;
-      text-align: center;
-      font-size: 10px;
-      color: #999999;
-    }
+    max-width: 120px;
   }
   &_content {
     padding: 5px;
