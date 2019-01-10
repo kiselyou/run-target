@@ -20,6 +20,7 @@ import '@vue/SquareItem'
 import '@module/CalendarRun'
 import '@module/Spinner'
 import '@module/Rating'
+
 import domToImage from 'dom-to-image'
 
 const timer = new Timer()
@@ -51,98 +52,23 @@ export default Vue.component('Tempo', {
       day: null
     }
   },
+  beforeMount: function () {
+    // TODO: add data to calendar
+    Ajax.get(`/calendar/view/tempo/${Date.now()}`)
+      .then((data) => {
+        for (const index in data) {
+          if (!data.hasOwnProperty(index)) {
+            continue
+          }
+          const day = data[index]
+          console.log(new Date(day['date']))
+        }
+      })
+  },
   computed: {
     isVisibleImgTooltip: function() {
       return Boolean(this.imgTooltip)
     },
-    // /**
-    //  * Массив всех дистанций.
-    //  *
-    //  * @returns {Array}
-    //  */
-    // distances: function () {
-    //   return this.selectedActivity ? this.selectedActivity.distances : []
-    // },
-    // /**
-    //  * Средний темп.
-    //  *
-    //  * @returns {number}
-    //  */
-    // avgTempoMinutes: function () {
-    //   let time = 0
-    //   let path = 0
-    //   for (const distance of this.distances) {
-    //     time += distance.elapsedTime
-    //     path += distance.pathLength
-    //   }
-    //
-    //   return this.timeToMinutes(time / path * 1000)
-    //
-    // },
-    // /**
-    //  * Средний темп.
-    //  *
-    //  * @returns {number}
-    //  */
-    // avgTempoString() {
-    //   return this.minutesToStringTempo(this.avgTempoMinutes)
-    // },
-    // /**
-    //  * Самый быстрый темп.
-    //  *
-    //  * @returns {number}
-    //  */
-    // upperTempoMinutes: function () {
-    //   let upperTempo = + Infinity
-    //   for (const distance of this.distances) {
-    //     const tempo = this.distanceTempoTime(distance)
-    //     if (tempo < upperTempo) {
-    //       upperTempo = tempo
-    //     }
-    //   }
-    //   return Number((upperTempo === + Infinity ? 0 : upperTempo).toFixed(2))
-    // },
-    // /**
-    //  * Самый быстрый темп.
-    //  *
-    //  * @param {Object|?} activity
-    //  * @returns {string}
-    //  */
-    // upperTempoString(activity) {
-    //   return this.minutesToStringTempo(this.upperTempoMinutes(activity))
-    // },
-    // /**
-    //  * Самый медленый темп.
-    //  *
-    //  * @returns {string}
-    //  */
-    // lowerTempoMinutes: function () {
-    //   let lowerTempo = - Infinity
-    //   for (const distance of this.distances) {
-    //     const tempo = this.distanceTempoTime(distance)
-    //     if (tempo > lowerTempo) {
-    //       lowerTempo = tempo
-    //     }
-    //   }
-    //   return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
-    // },
-    // /**
-    //  * Самый медленый темп.
-    //  *
-    //  * @returns {string}
-    //  */
-    // lowerTempoString() {
-    //   return this.minutesToStringTempo(this.lowerTempoMinutes)
-    // },
-    // /**
-    //  * Максимальный темп.
-    //  *
-    //  * @returns {number}
-    //  */
-    // maxTempo: function () {
-    //   const tempo = Number(this.lowerTempoMinutes)
-    //   return tempo + (tempo / 100 * 20)
-    // },
     /**
      * Генерация текста если нет активностей.
      *

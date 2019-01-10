@@ -53,3 +53,24 @@ export const getTotalDistances = (db, deviceId, date) => {
       ) AS totalWeekDistance
   `, [deviceId, deviceId, date, deviceId, date, date])
 }
+
+/**
+ *
+ * @param {MySQL} db
+ * @param {number} deviceId
+ * @param {number} timestamp
+ * @returns {Promise<Array>}
+ */
+export const getDistancesPathLength = (db, deviceId, timestamp) => {
+  const date = new Date()
+  date.setTime(Number(timestamp))
+  return db.query(`
+    SELECT SUM(d.pathLength) AS pathLength,
+           DATE(a.dateTimeStart) AS date
+      FROM activity AS a
+           INNER JOIN distance AS d on a.id = d.activityId
+     WHERE a.deviceId = ?
+       AND DATE(a.dateTimeStart) BETWEEN DATE_FORMAT(? ,'%Y-%m-01') AND LAST_DAY(?)
+     GROUP BY date
+  `, [deviceId, date, date])
+}

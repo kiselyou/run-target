@@ -1,10 +1,12 @@
 import objectPath from 'object-path'
-import { getDevice } from './../repositories/device'
+import { getDevice, saveKeyAndGetDeviceId } from './../repositories/device'
 import { saveTarget, getTargetById } from './../repositories/target'
 import { saveCalendarDays, getCalendarDaysByTargetId } from './../repositories/calendar'
 import { savePoints, getPoints } from './../repositories/point'
+import { getDistancesPathLength } from './../repositories/distance'
 
 /**
+ * TODO: deprecated
  * Create new calendar.
  *
  * @param {Object} req
@@ -27,6 +29,7 @@ export async function saveCalendarAction({ req, res, db }) {
 }
 
 /**
+ * TODO: deprecated
  *
  * @param {Object} req
  * @param {Object} res
@@ -40,6 +43,7 @@ export async function viewPointsAction({ req, res, db }) {
 }
 
 /**
+ * TODO: deprecated
  * Update day in calendar.
  *
  * @param {Object} req
@@ -60,4 +64,21 @@ export async function viewCalendarAction({ req, res, db }) {
     startKm: target.startKm,
     options: target.options,
   })
+}
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Object}
+ */
+export async function viewCalendarTempoAction({ req, res, db }) {
+  if (!req.deviceKey) {
+    return res.status(403).send('Device key is required.')
+  }
+  const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
+  const timestamp = objectPath.get(req, ['params', 'timestamp'])
+  const distancesPath = await getDistancesPathLength(db, deviceId, timestamp)
+  return res.send(distancesPath)
 }
