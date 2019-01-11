@@ -201,14 +201,6 @@ class CalendarRun extends Calendar {
          * @type {number}
          */
         expectDistance: 0,
-        /**
-         * Растояние в км
-         * Тренировка может состоять из нескольких отдельно сохраненных кусков.
-         * Здесь массив значений рузультатов каждой дистанции
-         *
-         * @type {number}
-         */
-        piecesDistance: []
       })
       if (this.isDayRun(dayNumber)) {
         day.addOption('expectDistance', trainingMap[index])

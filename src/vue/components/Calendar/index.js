@@ -16,11 +16,19 @@ export default Vue.component('Calendar', {
       type: String,
       default: 'ru'
     },
+    eachDayCallback: {
+      type: Function
+    }
   },
   data: function () {
     return {
-      calendar: new Calendar().setStartDate(this.startDate).generate(),
+      calendar: new Calendar().setStartDate(this.startDate).generate(this.eachDayCallback),
       selectedDate: new Date(this.startDate)
+    }
+  },
+  mounted: function () {
+    if (this.calendar.currentDay) {
+      this.$emit('activeDay', this.calendar.currentDay)
     }
   },
   methods: {
@@ -38,7 +46,7 @@ export default Vue.component('Calendar', {
     selectDay: function (day) {
       this.calendar.setSelectedDay(day)
       this.$emit('selectDay', day)
-    }
+    },
   },
   template: template
 })

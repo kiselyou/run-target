@@ -49,20 +49,21 @@ export default Vue.component('Tempo', {
        *
        * @type {Day}
        */
-      day: null
+      day: null,
+      /**
+       * @type {Object|?}
+       */
+      calendarActivity: null
     }
   },
   beforeMount: function () {
-    // TODO: add data to calendar
     Ajax.get(`/calendar/view/tempo/${Date.now()}`)
       .then((data) => {
-        for (const index in data) {
-          if (!data.hasOwnProperty(index)) {
-            continue
-          }
-          const day = data[index]
-          console.log(new Date(day['date']))
-        }
+        this.loading = false
+        this.calendarActivity = data
+      })
+      .catch(() => {
+        this.loading = false
       })
   },
   computed: {

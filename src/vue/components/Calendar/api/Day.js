@@ -145,7 +145,7 @@ class Day {
    * @returns {number}
    */
   getNumberOption(key) {
-    return this.options[key] ? this.options[key] : 0
+    return this.options[key] || 0
   }
 
   /**

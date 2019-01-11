@@ -5,6 +5,8 @@ import '@module/Spinner'
 import Ajax from '@lib/Ajax'
 import template from './template.html'
 import CalendarRun from './api/CalendarRun'
+import objectPath from 'object-path'
+import moment from 'moment'
 
 export default Vue.component('CalendarRun', {
   props: {
@@ -15,6 +17,10 @@ export default Vue.component('CalendarRun', {
     disabled: {
       type: Boolean,
       default: false
+    },
+    calendarActivity: {
+      type: Object,
+      default: null
     }
   },
   data: function () {
@@ -24,20 +30,27 @@ export default Vue.component('CalendarRun', {
       targetId: 32
     }
   },
-  beforeMount: function () {
-    Ajax.get(`/calendar/view/${this.targetId}`)
-      .then((data) => {
-        console.log(data)
-        if (Object.keys(data).length > 0) {
-          this.calendar.deserialize(data)
-          this.$emit('activeDay', this.calendar.currentDay)
+  mounted: function () {
+    if (this.calendar.currentDay) {
+      this.$emit('activeDay', this.calendar.currentDay)
+    }
+  },
+  computed: {
+    month: function () {
+      if (!this.calendarActivity) {
+        return this.calendar.getMonth(this.selectedDate)
+      }
+
+      return this.calendar.getMonth(this.selectedDate, (day) => {
+        const date = moment(day.date).format('YYYY-MM-DD')
+        const resultDistance = objectPath.get(this.calendarActivity, [date, 'resultDistance'], null)
+        if (resultDistance) {
+          day.addOption('resultDistance', resultDistance / 1000)
         }
       })
+    },
   },
   methods: {
-    month: function () {
-      return this.calendar.getMonth(this.selectedDate)
-    },
     next: function (month) {
       this.selectedDate = new Date(month.lastDay)
       this.selectedDate.setDate(this.selectedDate.getDate() + 1)

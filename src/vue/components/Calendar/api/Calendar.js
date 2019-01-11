@@ -97,7 +97,12 @@ class Calendar {
    * @returns {Month}
    */
   getMonth(date, callback) {
-    return this.findMonth(date) || this.month(date, callback)
+    const month = this.findMonth(date)
+    if (month) {
+      month.eachEnabledDay(callback)
+      return month
+    }
+    return this.month(date, callback)
   }
 
   /**
@@ -271,10 +276,11 @@ class Calendar {
 
   /**
    *
+   * @param {eachDayCallback} [callback]
    * @returns {Calendar}
    */
-  generate() {
-    this.setMonth(this.month(this.startDate))
+  generate(callback) {
+    this.setMonth(this.month(this.startDate, callback))
     return this
   }
 

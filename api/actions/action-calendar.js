@@ -4,6 +4,7 @@ import { saveTarget, getTargetById } from './../repositories/target'
 import { saveCalendarDays, getCalendarDaysByTargetId } from './../repositories/calendar'
 import { savePoints, getPoints } from './../repositories/point'
 import { getDistancesPathLength } from './../repositories/distance'
+import moment from 'moment'
 
 /**
  * TODO: deprecated
@@ -80,5 +81,10 @@ export async function viewCalendarTempoAction({ req, res, db }) {
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
   const timestamp = objectPath.get(req, ['params', 'timestamp'])
   const distancesPath = await getDistancesPathLength(db, deviceId, timestamp)
-  return res.send(distancesPath)
+  const resultDistances = {}
+  for (const item of distancesPath) {
+    const date = moment(item.date).format('YYYY-MM-DD')
+    resultDistances[date] = { resultDistance: item.pathLength }
+  }
+  return res.send(resultDistances)
 }
