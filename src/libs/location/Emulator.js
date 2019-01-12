@@ -103,12 +103,13 @@ class Emulator {
    * @private
    */
   _getPosition() {
+    const time = Date.now()
     return {
       accuracy: this._getAccuracy(),
       altitude: 225,
       latitude: this.startLat,
       longitude: this.startLng,
-      time: Date.now()
+      time: time - (time % 1000)
     }
   }
 

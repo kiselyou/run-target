@@ -33,7 +33,7 @@ export default Vue.component('Rating', {
   },
   methods: {
     colorItem: function (number) {
-      if (this.percent < (number * 20)) {
+      if (this.percent >= (number * 20)) {
         return this.activeColor
       }
       return this.defaultColor

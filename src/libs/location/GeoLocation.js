@@ -40,6 +40,12 @@ class GeoLocation {
      * @type {Emulator|BgGeoLocation}
      */
     this.geo = emulator ? new Emulator() : Plugins.bgGeoLocation
+
+    /**
+     *
+     * @type {number|?}
+     */
+    this.lastPositionTime = null
   }
 
   /**
@@ -74,12 +80,22 @@ class GeoLocation {
     if (this._status === GeoLocation.STATUS_PAUSED) {
       return
     }
-    // Ignore the first event unless it's the only one received because some devices seem to send a cached location even when maxaimumAge is set to zero.
+    // Ignore the first event unless it's the only one received because some devices seem to send a cached location even when maximumAge is set to zero.
     if (this._tickOptions.totalEventCount === 1) {
       return
     }
 
+    if (position.time % 1000 > 0) {
+      return
+    }
+
+    // Skip position if elapsed time less than 1 sec
+    if (this.lastPositionTime && (position.time - this.lastPositionTime) < 1000) {
+      return
+    }
+
     if (position.accuracy <= this._tickOptions.desiredAccuracy) {
+      this.lastPositionTime = position.time
       for (const callback of this._eventListeners.onTick) {
         callback(position)
       }
