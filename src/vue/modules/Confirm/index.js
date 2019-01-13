@@ -2,6 +2,7 @@ import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
 import '@vue/Button'
+import '@vue/VueIcon'
 
 export default Vue.component('Confirm', {
   props: {
@@ -43,7 +44,6 @@ export default Vue.component('Confirm', {
   },
   data: function () {
     return {
-      iconName: this.icon ? `oi oi-${this.icon}` : null,
       enabled: this.show
     }
   },

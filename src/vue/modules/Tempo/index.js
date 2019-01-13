@@ -18,6 +18,7 @@ import '@vue/WrapCorner'
 import '@vue/SquareArea'
 import '@vue/SquareItem'
 import '@module/CalendarRun'
+import '@module/Confirm'
 import '@module/Spinner'
 import '@module/Rating'
 
@@ -53,7 +54,11 @@ export default Vue.component('Tempo', {
       /**
        * @type {Object|?}
        */
-      calendarActivity: null
+      calendarActivity: null,
+      /**
+       * @type {boolean}
+       */
+      confirmRemoveEnable: false
     }
   },
   beforeMount: function () {
@@ -389,7 +394,26 @@ export default Vue.component('Tempo', {
      */
     closeActivity() {
       this.selectedActivity = null
-    }
+    },
+
+    showConfirmRemoveActivity() {
+      this.confirmRemoveEnable = true
+    },
+
+    cancelRemoveActivity() {
+      this.confirmRemoveEnable = false
+    },
+
+    confirmRemoveActivity() {
+      this.cancelRemoveActivity()
+      this.loading = true
+      Ajax.post(`activity/remove`, { activityId: this.selectedActivity.id})
+        .finally(() => {
+          this.loading = false
+          this.selectedActivity = null
+          this.loadActivities(this.day)
+        })
+    },
   },
   template: template
 })

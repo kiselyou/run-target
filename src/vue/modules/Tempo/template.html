@@ -3,10 +3,22 @@
   <template slot="body">
 
     <WrapCorner v-if="selectedActivity">
-      <Tooltip :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
-        <Button icon="image" :round="true" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
+      <Tooltip class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
+        <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
+      </Tooltip>
+      <Tooltip content="Удалить активность" placement="bottom">
+        <Button size="30px" icon="trash" skin="gray" shape="square" @click="showConfirmRemoveActivity"/>
       </Tooltip>
     </WrapCorner>
+
+    <Confirm
+      icon="trash"
+      btnNo="Нет"
+      btnYes="Да"
+      text="Вы уверены что хотите удалить активность?"
+      :show="confirmRemoveEnable"
+      @clickNo="cancelRemoveActivity"
+      @clickYes="confirmRemoveActivity" />
 
     <Spinner :loading="loading"/>
 

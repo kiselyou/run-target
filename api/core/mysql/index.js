@@ -8,7 +8,19 @@ class MySQL {
     return pool.query(sql, params)
   }
 
-  async findOne (sql, params) {
+  beginTransaction() {
+    return this.query('START TRANSACTION');
+  }
+
+  rollback() {
+    return this.query('ROLLBACK');
+  }
+
+  commit() {
+    return this.query('COMMIT');
+  }
+
+  async findOne(sql, params) {
     const res = await pool.query(sql, params)
     return res.length > 0 ? res[0] : null
   }

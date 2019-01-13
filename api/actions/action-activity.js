@@ -1,7 +1,7 @@
 import objectPath from 'object-path'
-import { saveActivity, getActivitiesByDateStart } from './../repositories/activity'
-import { saveDistance, getDistances } from './../repositories/distance'
-import { savePoints } from './../repositories/point'
+import { saveActivity, getActivitiesByDateStart, removeActivityById } from './../repositories/activity'
+import { saveDistance, getDistances, removeDistancesByActivityId } from './../repositories/distance'
+import { savePoints, removePointsByActivityId } from './../repositories/point'
 import { saveKeyAndGetDeviceId } from './../repositories/device'
 
 /**
@@ -61,4 +61,31 @@ export async function viewActivitiesAction({ req, res, db }) {
     activity['distances'] = await getDistances(db, activity.id)
   }
   return res.send(activities)
+}
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Promise<void>}
+ */
+export async function removeActivitiesAction({ req, res, db }) {
+  if (!req.deviceKey) {
+    return res.status(403).send('Device key is required.')
+  }
+
+  let status = true
+  const activityId = objectPath.get(req, ['body', 'activityId'], null)
+  try {
+    await db.beginTransaction()
+    await removePointsByActivityId(db, activityId)
+    await removeDistancesByActivityId(db, activityId)
+    await removeActivityById(db, activityId)
+    await db.commit()
+  } catch (e) {
+    status = false
+    await db.rollback()
+  }
+  return res.send({ status })
 }

@@ -2,7 +2,6 @@
   padding: 0 20px;
   height: 40px;
   border: none;
-  background: #252525;
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -23,14 +22,13 @@
 
   &__icon {
     font-size: 20px;
-    margin: 0 10px;
     width: 4vw;
     height: 4vw;
   }
 
   &__text {
-    font-size: 14px;
     font-weight: bold;
+    margin: 0 10px;
   }
 
   &__disabled {
@@ -60,6 +58,20 @@
     border: solid 1px #EE9900;
   }
 
+  &__black {
+    background: #252525;
+    border: solid 1px #252525;
+  }
+
+  &__gray {
+    background: #FFFFFF;
+    border: solid 1px #DFDFDF;
+
+    & svg {
+      fill: #DFDFDF;
+    }
+  }
+
   &__green {
     background: #2DBA00;
     border: solid 1px #2DBA00;
@@ -79,6 +91,11 @@
 
     &__round {
       border-radius: 50%;
+      padding: 0;
+      width: 40px;
+    }
+
+    &__square {
       padding: 0;
       width: 40px;
     }

@@ -1,21 +1,26 @@
 <div class="confirm" v-if="show">
 
-  <div class="confirm_body">
-    <slot>
-      <div class="confirm_body__icon" v-if="iconName">
-        <i :class="iconName"></i>
-      </div>
-      <div class="confirm_body__text">{{ text }}</div>
-    </slot>
-  </div>
+  <div class="confirm_bg"></div>
+  <div class="confirm_window" >
 
-  <div class="confirm_foot">
-    <div class="confirm_btn">
-      <Button :text="btnNo" width="100%" :skin="btnNoSkin" :disabled="btnNoDisabled" @click="eventNo"/>
+    <div class="confirm_body">
+      <div class="confirm_body__icon" v-if="icon">
+        <VueIcon :name="icon" />
+      </div>
+      <slot>
+        <div class="confirm_body__text">{{ text }}</div>
+      </slot>
     </div>
-    <div class="confirm_btn">
-      <Button :text="btnYes" width="100%" :skin="btnNoSkin" :disabled="btnYesDisabled" @click="eventYes"/>
+
+    <div class="confirm_foot">
+      <div class="confirm_btn">
+        <Button :text="btnNo" width="100%" :skin="btnNoSkin" :disabled="btnNoDisabled" @click="eventNo"/>
+      </div>
+      <div class="confirm_btn">
+        <Button :text="btnYes" width="100%" :skin="btnNoSkin" :disabled="btnYesDisabled" @click="eventYes"/>
+      </div>
     </div>
+
   </div>
 
 </div>

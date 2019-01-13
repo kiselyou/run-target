@@ -42,6 +42,10 @@ export default Vue.component('CalendarRun', {
         if (resultDistance) {
           day.addOption('resultDistance', resultDistance / 1000)
         }
+        const expectDistance = objectPath.get(this.calendarActivity, [date, 'expectDistance'], null)
+        if (expectDistance) {
+          day.addOption('expectDistance', expectDistance / 1000)
+        }
       })
     },
     next: function (month) {

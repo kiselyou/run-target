@@ -37,3 +37,13 @@ export const getPoints = async (db, deviceId) => {
   }
   return points
 }
+
+/**
+ *
+ * @param {MySQL} db
+ * @param {number} activityId
+ * @returns {Promise<Array>}
+ */
+export const removePointsByActivityId = (db, activityId) => {
+  return db.query(`DELETE FROM point WHERE distanceId IN(SELECT id FROM distance WHERE activityId = ?)`, [activityId])
+}

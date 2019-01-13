@@ -74,3 +74,13 @@ export const getDistancesPathLength = (db, deviceId, timestamp) => {
      GROUP BY date
   `, [deviceId, date, date])
 }
+
+/**
+ *
+ * @param {MySQL} db
+ * @param {number} activityId
+ * @returns {Promise<Array>}
+ */
+export const removeDistancesByActivityId = (db, activityId) => {
+  return db.query(`DELETE FROM distance WHERE activityId = ?`, [activityId])
+}
