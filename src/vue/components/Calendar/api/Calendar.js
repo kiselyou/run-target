@@ -40,13 +40,13 @@ class Calendar {
 
   /**
    *
-   * @param {Day} value
+   * @param {Day} day
    */
-  setSelectedDay(value) {
+  setSelectedDay(day) {
     if (this.selectedDay) {
       this.selectedDay.setActive(false)
     }
-    this.selectedDay = value
+    this.selectedDay = day
     this.selectedDay.setActive(true)
     return this
   }

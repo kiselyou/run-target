@@ -15,15 +15,15 @@
   </div>
   <div class="month_body">
     <div class="month_week month_week__header">
-      <Day :key="day.id" :day="day" v-for="day of month.weekDays" :head="true">
+      <Day :key="dayIndex" :day="day" v-for="(day, dayIndex) of month.weekDays" :head="true">
         <template slot="head">{{ day.getNameShort(locale) }}</template>
       </Day>
     </div>
 
     <div class="month_week">
       <slot name="week">
-        <template v-for="weeks of month.weeks">
-          <Day :key="day.id" :day="day" v-for="day of weeks.days" @onClick="selectDay">
+        <template v-for="(weeks, weekIndex) of month.weeks">
+          <Day :key="`${weekIndex}-${dayIndex}`" :day="day" v-for="(day, dayIndex) of weeks.days" @onClick="selectDay">
             <template slot="body">{{ day.number }}</template>
           </Day>
         </template>

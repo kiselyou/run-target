@@ -8,7 +8,7 @@ import template from './template.html'
 export default Vue.component('DayRun', {
   props: {
     day: {
-      type: [ Day ],
+      type: Day,
       required: true
     },
     unit: {

@@ -16,32 +16,33 @@ export default Vue.component('Calendar', {
       type: String,
       default: 'ru'
     },
-    eachDayCallback: {
-      type: Function
-    }
   },
   data: function () {
     return {
-      calendar: new Calendar().setStartDate(this.startDate).generate(this.eachDayCallback),
-      selectedDate: new Date(this.startDate)
+      calendar: new Calendar().setStartDate(this.startDate),
+      selectedDate: new Date(this.startDate),
+      month: null
     }
   },
   mounted: function () {
     if (this.calendar.currentDay) {
       this.$emit('activeDay', this.calendar.currentDay)
     }
+    this.updateMonth()
   },
   methods: {
-    selectedMonth: function () {
-      return this.calendar.getMonth(this.selectedDate)
+    updateMonth() {
+      this.month = this.calendar.getMonth(this.selectedDate)
     },
     next: function (month) {
       this.selectedDate = new Date(month.lastDay)
       this.selectedDate.setDate(this.selectedDate.getDate() + 1)
+      this.updateMonth()
     },
     prev: function (month) {
       this.selectedDate = new Date(month.firstDay)
       this.selectedDate.setDate(this.selectedDate.getDate() - 1)
+      this.updateMonth()
     },
     selectDay: function (day) {
       this.calendar.setSelectedDay(day)

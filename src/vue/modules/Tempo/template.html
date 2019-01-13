@@ -68,6 +68,6 @@
   </template>
 
   <template slot="foot">
-    <CalendarRun @activeDay="activeDay" @selectDay="selectDay" :calendarActivity="calendarActivity" />
+    <CalendarRun v-if="calendarActivity" @activeDay="activeDay" @selectDay="selectDay" :calendarActivity="calendarActivity" />
   </template>
 </Layout>

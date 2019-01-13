@@ -81,9 +81,6 @@ class Month {
   getDays() {
     const days = []
     this.eachEnabledDay((day) => {
-      if (!day.enabled) {
-        return
-      }
       days.push(day)
     })
     return days
@@ -96,10 +93,7 @@ class Month {
    */
   setActiveDay(activeDay) {
     this.eachEnabledDay((day) => {
-      if (!day.enabled) {
-        return
-      }
-      day.setActive(activeDay.date === day.date)
+      day.setActive(activeDay.date.getTime() === day.date.getTime())
     })
     return this
   }

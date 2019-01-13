@@ -41,7 +41,7 @@ export default Vue.component('MonthRun', {
         return
       }
       this.$emit('selectDay', day)
-    }
+    },
   },
   template: template
 })

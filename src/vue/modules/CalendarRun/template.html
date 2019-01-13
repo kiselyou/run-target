@@ -1,2 +1,2 @@
 
-<MonthRun :month="month" :locale="locale" :showArrow="true" @nextMonth="next" @prevMonth="prev" @selectDay="selectDay" :disabled="disabled" />
+<MonthRun v-if="month" :month="month" :locale="locale" :showArrow="true" @nextMonth="next" @prevMonth="prev" @selectDay="selectDay" :disabled="disabled" />

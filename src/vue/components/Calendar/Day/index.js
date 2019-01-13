@@ -14,7 +14,7 @@ export default Vue.component('Day', {
       default: false
     }
   },
-  methods: {
+  computed: {
     htmlClass: function () {
       if (this.head) {
         return {}
@@ -27,6 +27,8 @@ export default Vue.component('Day', {
         'day__disabled': !this.day.enabled,
       }
     },
+  },
+  methods: {
     click: function () {
       if (this.day.enabled) {
         this.$emit('onClick', this.day)
