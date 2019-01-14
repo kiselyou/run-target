@@ -45,6 +45,9 @@ export default Vue.component('Calendar', {
       this.updateMonth()
     },
     selectDay: function (day) {
+      if (this.calendar.isDaySelected(day)) {
+        return
+      }
       this.calendar.setSelectedDay(day)
       this.$emit('selectDay', day)
     },

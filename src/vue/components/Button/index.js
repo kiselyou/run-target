@@ -23,6 +23,10 @@ export default Vue.component('Button', {
       type: String,
       default: 'white'
     },
+    type: {
+      type: String,
+      default: 'button'
+    },
     mx: {
       type: [String, Number],
     },

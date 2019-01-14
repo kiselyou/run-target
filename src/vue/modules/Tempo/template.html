@@ -2,6 +2,12 @@
 <Layout :showCorner="true" :showFoot="!selectedActivity">
   <template slot="body">
 
+    <WrapCorner v-if="!selectedActivity && !showFormAddActivity">
+      <Tooltip content="Добавить активность" placement="bottom">
+        <Button size="30px" icon="plus" shape="square" @click="addActivity"/>
+      </Tooltip>
+    </WrapCorner>
+
     <WrapCorner v-if="selectedActivity">
       <Tooltip class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
         <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
@@ -72,11 +78,52 @@
       </SquareArea>
     </div>
 
-    <div class="tempo_container tempo_container__column tempo_container__center" v-if="activities.length === 0 && !loading">
+    <div class="tempo_container tempo_container__column tempo_container__center" v-if="activities.length === 0 && !loading && !showFormAddActivity">
       <Row>
         <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
       </Row>
     </div>
+
+    <div v-if="showFormAddActivity" class="tempo_container tempo_container__column tempo_container__center">
+      <form class="mx-2 mt-4">
+        <div class="form-row">
+          <div class="form-group col-12 text-muted text-center">
+            <h4>{{ formatDate(day.date, 'DD MMMM') }}</h4>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="timeStart">Время старта</label>
+            <input type="text" name="timeStart" class="form-control" id="timeStart" placeholder="12:00">
+          </div>
+          <div class="form-group col-6">
+            <label for="timeFinish">Время финиша</label>
+            <input type="text" name="timeFinish" class="form-control" id="timeFinish" placeholder="12:00">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="distance">Дистанция (м)</label>
+            <input type="text" name="distance" class="form-control" id="distance" placeholder="1000">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="tempo">Средий темп</label>
+            <input type="text" name="tempo" class="form-control" id="tempo" placeholder="5.50">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <Button width="100%" skin="orange" text="Список астивностей" @click="cancelSaveActivity" />
+          </div>
+          <div class="form-group col-6">
+            <Button width="100%" skin="green" text="Сохранить" @click="saveActivity" />
+          </div>
+        </div>
+      </form>
+    </div>
+
   </template>
 
   <template slot="foot">

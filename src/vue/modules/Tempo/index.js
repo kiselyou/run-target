@@ -58,7 +58,11 @@ export default Vue.component('Tempo', {
       /**
        * @type {boolean}
        */
-      confirmRemoveEnable: false
+      confirmRemoveEnable: false,
+      /**
+       * @type {boolean}
+       */
+      showFormAddActivity: false
     }
   },
   beforeMount: function () {
@@ -234,10 +238,11 @@ export default Vue.component('Tempo', {
      * Фарматирование даты.
      *
      * @param {Date|string} date
+     * @param {string} [format]
      * @returns {string}
      */
-    formatDate(date) {
-      return moment(date).locale('ru').format('DD MMM')
+    formatDate(date, format = 'DD MMM') {
+      return moment(date).locale('ru').format(format)
     },
     /**
      * Фарматирование даты.
@@ -414,6 +419,21 @@ export default Vue.component('Tempo', {
           this.loadActivities(this.day)
         })
     },
+
+    addActivity() {
+      console.log(this.day)
+      this.showFormAddActivity = true
+    },
+
+    cancelSaveActivity() {
+      console.log(this.day)
+      this.showFormAddActivity = false
+    },
+
+    saveActivity() {
+      console.log(this.day)
+      this.showFormAddActivity = false
+    }
   },
   template: template
 })

@@ -53,6 +53,18 @@ class Calendar {
 
   /**
    *
+   * @param {Day} day
+   * @returns {boolean}
+   */
+  isDaySelected(day) {
+    if (!this.selectedDay) {
+      return false
+    }
+    return this.selectedDay.date.getTime() === day.date.getTime()
+  }
+
+  /**
+   *
    * @param {string|Date} value
    */
   setStartDate(value) {
@@ -202,7 +214,7 @@ class Calendar {
       let isNow = false
       if (calendarDay.isNow) {
         isNow = true
-        this.currentDay = calendarDay
+        this.setCurrentDay(calendarDay)
       }
       if (callback) {
         callback(calendarDay, isNow)

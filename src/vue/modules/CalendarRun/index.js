@@ -29,10 +29,10 @@ export default Vue.component('CalendarRun', {
     }
   },
   mounted: function () {
+    this.updateMonth()
     if (this.calendar.currentDay) {
       this.$emit('activeDay', this.calendar.currentDay)
     }
-    this.updateMonth()
   },
   methods: {
     updateMonth() {
@@ -59,6 +59,9 @@ export default Vue.component('CalendarRun', {
       this.updateMonth()
     },
     selectDay: function (day) {
+      if (this.calendar.isDaySelected(day)) {
+        return
+      }
       this.calendar.setSelectedDay(day)
       this.$emit('selectDay', day)
     },

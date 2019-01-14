@@ -18,9 +18,9 @@ export default Vue.component('Mobile', {
        * @type {TabItems}
        */
       tabs: new TabItems()
-        .pushItem(new TabItem('Details', 'Статистика', true))
+        .pushItem(new TabItem('Details', 'Статистика'))
         .pushItem(new TabItem('Activity', 'Активность').keepAlive())
-        .pushItem(new TabItem('Tempo', 'Темп'))
+        .pushItem(new TabItem('Tempo', 'Темп', true))
         .pushItem(new TabItem('Target', 'Цель').keepAlive()),
     }
   },
