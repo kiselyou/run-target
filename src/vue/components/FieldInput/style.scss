@@ -1,0 +1,24 @@
+.input {
+  overflow: auto;
+  padding: 4px 1px;
+
+  &_field {
+    font-family: inherit;
+    width: 100%;
+    background-clip: padding-box;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    height: 32px;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &_label {
+    color: #999999;
+  }
+}

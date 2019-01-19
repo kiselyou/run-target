@@ -1,11 +1,12 @@
 .button {
   padding: 0 20px;
-  height: 40px;
+  height: 34px;
   border: none;
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: inherit;
 
   & svg {
     fill: #FFFFFF;

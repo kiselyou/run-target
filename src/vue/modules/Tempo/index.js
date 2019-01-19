@@ -6,6 +6,7 @@ import Timer from '@lib/Timer'
 import moment from 'moment'
 import Plugins from '@lib/cordova/Plugins'
 
+import '@vue/Title'
 import '@vue/Layout'
 import '@vue/Tooltip'
 import '@vue/Grid/Row'
@@ -61,9 +62,11 @@ export default Vue.component('Tempo', {
        */
       confirmRemoveEnable: false,
       /**
-       * @type {boolean}
+       * @type {string|?} (no-activities|list-activities|details-activity|create-activity)
        */
-      showFormAddActivity: false
+      view: 'no-activities',
+
+      prevView: null
     }
   },
   beforeMount: function () {
@@ -94,8 +97,53 @@ export default Vue.component('Tempo', {
     btnMakeScreenDisabled() {
       return !Plugins.file.isPluginEnabled
     },
+    viewTitle() {
+      switch (this.view) {
+        case 'create-activity':
+          return 'Новая активность'
+        case 'list-activities':
+        case 'no-activities':
+          return 'Список активностей'
+        case 'details-activity':
+          return this.activityName(this.selectedActivity)
+      }
+      return null
+    },
+    viewTitleDescription() {
+      switch (this.view) {
+        case 'create-activity':
+          return this.day ? this.formatDate(this.day.date, 'DD MMMM') : null
+      }
+      return null
+    },
   },
   methods: {
+    isViewVisible(view) {
+      if (Array.isArray(view)) {
+        return view.includes(this.view)
+      }
+      return this.view === view
+    },
+    showViewCreateActivity() {
+      this.prevView = this.view
+      this.view = 'create-activity'
+    },
+    showViewNoActivities() {
+      this.prevView = this.view
+      this.view = 'no-activities'
+    },
+    showViewListActivities() {
+      this.prevView = this.view
+      this.view = this.activities.length > 0 ? 'list-activities' : 'no-activities'
+    },
+    showViewDetailsActivity() {
+      this.prevView = this.view
+      this.view = 'details-activity'
+    },
+    showPrevView() {
+      this.view = this.prevView
+      this.prevView = null
+    },
     /**
      * Массив всех дистанций.
      *
@@ -200,6 +248,7 @@ export default Vue.component('Tempo', {
         .then((activities) => {
           this.loading = false
           this.activities = activities
+          this.showViewListActivities()
         })
         .catch(() => {
           this.loading = false
@@ -359,6 +408,7 @@ export default Vue.component('Tempo', {
      */
     openActivity(activity) {
       this.selectedActivity = activity
+      this.showViewDetailsActivity()
     },
     showImgTooltip: function(content) {
       this.imgTooltip = content
@@ -374,7 +424,7 @@ export default Vue.component('Tempo', {
         return
       }
       this.loading = true
-      const node = document.getElementById('tempo-statistics')
+      const node = document.getElementById('tempo-background')
       domToImage.toPng(node)
         .then((dataUrl) => {
           Plugins.file.write(
@@ -400,6 +450,7 @@ export default Vue.component('Tempo', {
      */
     closeActivity() {
       this.selectedActivity = null
+      this.showViewListActivities()
     },
 
     showConfirmRemoveActivity() {
@@ -423,17 +474,17 @@ export default Vue.component('Tempo', {
 
     addActivity() {
       console.log(this.day)
-      this.showFormAddActivity = true
+      this.showViewCreateActivity()
     },
 
     cancelSaveActivity() {
       console.log(this.day)
-      this.showFormAddActivity = false
+      this.showPrevView()
     },
 
     saveActivity() {
       console.log(this.day)
-      this.showFormAddActivity = false
+      this.showPrevView()
     }
   },
   template: template

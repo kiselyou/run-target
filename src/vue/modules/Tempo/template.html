@@ -2,13 +2,13 @@
 <Layout :showCorner="true" :showFoot="!selectedActivity">
   <template slot="body">
 
-    <WrapCorner v-if="!selectedActivity && !showFormAddActivity">
+    <WrapCorner v-if="isViewVisible(['list-activities', 'no-activities'])">
       <Tooltip content="Добавить активность" placement="bottom">
         <Button size="30px" icon="plus" shape="square" @click="addActivity"/>
       </Tooltip>
     </WrapCorner>
 
-    <WrapCorner v-if="selectedActivity">
+    <WrapCorner v-if="isViewVisible('details-activity')">
       <Tooltip class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
         <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
       </Tooltip>
@@ -28,21 +28,20 @@
 
     <Spinner :loading="loading"/>
 
-    <div v-if="selectedActivity">
-      <div id="tempo-statistics" class="tempo_background">
-        <Row class="my-4">
+    <div id="tempo-background" class="tempo_background">
+      <Title :description="viewTitleDescription">{{ viewTitle }}</Title>
+
+      <div v-if="isViewVisible('details-activity')">
+        <Row class="my-2">
           <Cell align="center" :bold="true" size="xlg" class="tempo_distance">
             <template slot="content">
               <span>{{ activityPathLength(selectedActivity) }}</span>
               <span class="tempo_distance__label">км</span>
             </template>
-            <template slot="after-content">
-              <span class="tempo_distance__label">{{ activityName(selectedActivity) }}</span>
-            </template>
           </Cell>
         </Row>
 
-        <Row class="my-4">
+        <Row class="my-2">
           <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
           <Cell afterContent="Самый быстрый" :content="upperTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
           <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
@@ -57,35 +56,35 @@
         </div>
       </div>
 
-      <Row class="mt-2 mb-4">
-        <Cell :align="true">
-          <template slot="content">
-            <Button skin="orange" text="Список астивностей" @click="closeActivity" />
-          </template>
-        </Cell>
-      </Row>
+      <div class="tempo_container tempo_container__column px-2" v-if="isViewVisible('list-activities')">
+        <SquareArea alignHorizontal="center">
+          <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
+            <template slot="image">
+              <Rating :label="activityPathLength(activity) + ' км'" />
+            </template>
+            <template slot="title">{{ activityName(activity) }}</template>
+            <template slot="description">Средний темп {{ avgTempoString(activity) }}</template>
+          </SquareItem>
+        </SquareArea>
+      </div>
     </div>
 
-    <div class="tempo_container tempo_container__column" v-if="!selectedActivity && activities.length > 0">
-      <SquareArea alignHorizontal="center">
-        <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
-          <template slot="image">
-            <Rating :label="activityPathLength(activity) + ' км'" />
-          </template>
-          <template slot="title">{{ activityName(activity) }}</template>
-          <template slot="description">Средний темп {{ avgTempoString(activity) }}</template>
-        </SquareItem>
-      </SquareArea>
-    </div>
+    <Row class="mt-2 mb-4" v-if="isViewVisible('details-activity')">
+      <Cell :alignContainer="true">
+        <template slot="content">
+          <Button skin="orange" text="Список астивностей" @click="closeActivity" />
+        </template>
+      </Cell>
+    </Row>
 
-    <div class="tempo_container tempo_container__column tempo_container__center" v-if="activities.length === 0 && !loading && !showFormAddActivity">
+    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('no-activities')">
       <Row>
         <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
       </Row>
     </div>
 
-    <div v-if="showFormAddActivity" class="tempo_container tempo_container__column tempo_container__center">
-      <TempoForm :title="formatDate(day.date, 'DD MMMM')" @save="saveActivity" @cancel="cancelSaveActivity" />
+    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('create-activity')">
+      <TempoForm @save="saveActivity" @cancel="cancelSaveActivity" />
     </div>
 
   </template>

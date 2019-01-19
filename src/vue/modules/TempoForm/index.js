@@ -4,12 +4,13 @@ import template from './template.html'
 import Ajax from '@lib/Ajax'
 
 import '@vue/Button'
+import '@vue/FieldInput'
+import '@vue/Grid/Row'
+import '@vue/Grid/Cell'
 
 export default Vue.component('TempoForm', {
   props: {
-    title: {
-      type: String
-    }
+
   },
   data: function () {
     return {

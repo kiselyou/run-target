@@ -14,6 +14,16 @@ export default Vue.component('SquareItem', {
       type: String,
       require: true
     },
+    width: {
+      type: String,
+    }
+  },
+  computed: {
+    htmlStyle: function () {
+      return {
+        'maxWidth': this.width
+      }
+    }
   },
   methods: {
     click: function (e) {

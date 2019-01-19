@@ -1,0 +1,11 @@
+
+<div class="title">
+  <div class="title_container" :class="htmlClass">
+    <div>
+      <slot>
+        <span>{{ text }}</span>
+      </slot>
+      <small v-if="description" class="title_description">{{ description }}</small>
+    </div>
+  </div>
+</div>

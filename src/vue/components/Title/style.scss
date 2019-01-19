@@ -1,0 +1,25 @@
+.title {
+  padding: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+
+  &_container {
+    width: 100%;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+  }
+
+  &_bordered {
+    border-bottom: solid 1px #D0D0D0;
+  }
+
+  &_description {
+    font-size: 10px;
+    font-weight: normal;
+    color: #999999;
+  }
+}

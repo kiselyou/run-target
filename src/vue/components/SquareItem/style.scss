@@ -1,8 +1,7 @@
 .square-item {
   width: 100%;
-  max-width: 400px;
   height: 60px;
-  margin: 6px;
+  margin: 6px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
@@ -10,7 +9,6 @@
   cursor: pointer;
 
   &:hover {
-    //border: solid 1px #999999;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
 

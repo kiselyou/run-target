@@ -21,7 +21,7 @@ export default Vue.component('Mobile', {
         .pushItem(new TabItem('Details', 'Статистика'))
         .pushItem(new TabItem('Activity', 'Активность').keepAlive())
         .pushItem(new TabItem('Tempo', 'Темп', true))
-        .pushItem(new TabItem('Target', 'Цель').keepAlive()),
+        // .pushItem(new TabItem('Target', 'Цель').keepAlive()),
     }
   },
   template: `

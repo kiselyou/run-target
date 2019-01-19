@@ -33,6 +33,10 @@ export default Vue.component('Cell', {
       type: [Boolean, String],
       default: null
     },
+    alignContainer: {
+      type: [Boolean, String],
+      default: null
+    },
     padding: {
       type: String,
     },
@@ -65,6 +69,7 @@ export default Vue.component('Cell', {
         'grid-cell_container__pmd': this.padding === 'md',
         'grid-cell_container__plg': this.padding === 'lg',
         'grid-cell_container__hover': this.hover,
+        'grid-cell__center': this.alignContainer === true || this.alignContainer === 'center',
       }
     },
     htmlStyleContainer: function () {
