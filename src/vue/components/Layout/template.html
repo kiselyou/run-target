@@ -1,6 +1,6 @@
 
 <div class="layout">
-  <div class="layout_body" v-show="showBody">
+  <div class="layout_body" v-show="showBody" :class="bodyHtmlClass">
     <slot name="body"></slot>
   </div>
   <div class="layout_foot" v-show="showFoot" :class="footHtmlClass">

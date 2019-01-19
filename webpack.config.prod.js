@@ -35,7 +35,7 @@ const config = {
         use: {
           loader: "file-loader",
           options: {
-            name: "fonts/[name].[ext]",
+            name: "../fonts/[name].[ext]",
           }
         }
       },
@@ -98,6 +98,7 @@ const config = {
       'src/favicon.ico',
       'src/cordova.js',
       { from: 'src/img/', to: 'img'},
+      { from: 'src/fonts/', to: 'fonts'},
     ]),
     new ExtractText('css/styles.min.css'),
     new HtmlWebpack({ template: `./src/index.html` }),

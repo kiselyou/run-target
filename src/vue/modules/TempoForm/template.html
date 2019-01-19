@@ -1,0 +1,38 @@
+
+<form class="m-3">
+  <div class="form-row">
+    <div class="form-group col-12 text-muted text-center border-bottom">
+      <h4>{{ title }}</h4>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-6">
+      <label for="timeStart">Время старта</label>
+      <input type="text" name="timeStart" class="form-control" id="timeStart" placeholder="12:00">
+    </div>
+    <div class="form-group col-6">
+      <label for="timeFinish">Время финиша</label>
+      <input type="text" name="timeFinish" class="form-control" id="timeFinish" placeholder="12:00">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="distance">Дистанция (м)</label>
+      <input type="text" name="distance" class="form-control" id="distance" placeholder="1000">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="tempo">Средий темп</label>
+      <input type="text" name="tempo" class="form-control" id="tempo" placeholder="5.50">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <Button width="100%" skin="orange" text="Назад" @click="cancelSave" />
+    </div>
+    <div class="col-6">
+      <Button width="100%" skin="green" text="Сохранить" @click="save" />
+    </div>
+  </div>
+</form>

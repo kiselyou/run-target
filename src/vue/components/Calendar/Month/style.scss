@@ -1,6 +1,5 @@
 
 .month {
-  width: 100%;
   border-radius: 2px;
   border: solid 1px transparent;
   user-select: none;
@@ -9,8 +8,7 @@
 
     &__dark {
       border: solid 1px #555555;
-      background-color: #252525;
-      color: #cccccc;
+      background-color: #000000;
     }
   }
 

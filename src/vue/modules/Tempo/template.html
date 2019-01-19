@@ -70,7 +70,7 @@
       <SquareArea alignHorizontal="center">
         <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
           <template slot="image">
-            <Rating :label="activityPathLength(activity)" />
+            <Rating :label="activityPathLength(activity) + ' км'" />
           </template>
           <template slot="title">{{ activityName(activity) }}</template>
           <template slot="description">Средний темп {{ avgTempoString(activity) }}</template>
@@ -85,43 +85,7 @@
     </div>
 
     <div v-if="showFormAddActivity" class="tempo_container tempo_container__column tempo_container__center">
-      <form class="mx-2 mt-4">
-        <div class="form-row">
-          <div class="form-group col-12 text-muted text-center">
-            <h4>{{ formatDate(day.date, 'DD MMMM') }}</h4>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-6">
-            <label for="timeStart">Время старта</label>
-            <input type="text" name="timeStart" class="form-control" id="timeStart" placeholder="12:00">
-          </div>
-          <div class="form-group col-6">
-            <label for="timeFinish">Время финиша</label>
-            <input type="text" name="timeFinish" class="form-control" id="timeFinish" placeholder="12:00">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="distance">Дистанция (м)</label>
-            <input type="text" name="distance" class="form-control" id="distance" placeholder="1000">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="tempo">Средий темп</label>
-            <input type="text" name="tempo" class="form-control" id="tempo" placeholder="5.50">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-6">
-            <Button width="100%" skin="orange" text="Список астивностей" @click="cancelSaveActivity" />
-          </div>
-          <div class="form-group col-6">
-            <Button width="100%" skin="green" text="Сохранить" @click="saveActivity" />
-          </div>
-        </div>
-      </form>
+      <TempoForm :title="formatDate(day.date, 'DD MMMM')" @save="saveActivity" @cancel="cancelSaveActivity" />
     </div>
 
   </template>
