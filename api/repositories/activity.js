@@ -1,15 +1,16 @@
+export const TYPE_GPS_LOCATION = 1
+export const TYPE_USER_FORM = 2
 
 /**
  *
  * @param {MySQL} db
  * @param {number} deviceId
- * @param {string|Date} dateTimeStart
- * @param {string|Date} dateTimeStop
+ * @param {{ dateTimeStart: (string|Date), dateTimeStop: (string|Date), type: number }} options
  * @returns {Promise.<number>}
  */
-export const saveActivity = (db, deviceId, dateTimeStart, dateTimeStop) => {
-  const params = [new Date(dateTimeStart), new Date(dateTimeStop), deviceId]
-  return db.query(`INSERT INTO activity (dateTimeStart, dateTimeStop, deviceId) VALUES (?, ?, ?)`, params)
+export const saveActivity = (db, deviceId, options) => {
+  const params = [new Date(options.dateTimeStart), new Date(options.dateTimeStop), deviceId, options.type]
+  return db.query(`INSERT INTO activity (dateTimeStart, dateTimeStop, deviceId, type) VALUES (?, ?, ?, ?)`, params)
     .then(results => results.insertId)
 }
 

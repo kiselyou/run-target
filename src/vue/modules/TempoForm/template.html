@@ -2,28 +2,22 @@
 <form class="m-2">
   <Row>
     <Cell padding="xs">
-      <FieldInput label="Время старта" name="timeStart" placeholder="12:00" />
+      <FieldInput :value="timeStart" @onChange="timeStartEvent" label="Время старта" name="timeStart" placeholder="12:00" />
     </Cell>
     <Cell padding="xs">
-      <FieldInput label="Время финиша" name="timeFinish" placeholder="13:25" />
-    </Cell>
-  </Row>
-
-  <Row>
-    <Cell padding="xs">
-      <FieldInput label="Дистанция (км)" name="distance" placeholder="12.500" />
+      <FieldInput :value="timeStop" @onChange="timeStopEvent" label="Время финиша" name="timeStop" placeholder="13:25" />
     </Cell>
   </Row>
 
   <Row>
     <Cell padding="xs">
-      <FieldInput label="Средий темп (мин/км)" name="distance" placeholder="5'50''" />
+      <FieldInput :value="pathLength" @onChange="pathLengthEvent" label="Дистанция (км)" name="pathLength" placeholder="12.500" />
     </Cell>
   </Row>
 
   <Row class="mt-2">
     <Cell padding="xs" align="center">
-      <Button width="100%" skin="orange" text="Назад" @click="cancelSave" />
+      <Button width="100%" skin="orange" text="Назад" @click="cancel" />
     </Cell>
     <Cell padding="xs" align="center">
       <Button width="100%" skin="green" text="Сохранить" @click="save" />

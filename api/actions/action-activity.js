@@ -1,4 +1,6 @@
+import moment from 'moment'
 import objectPath from 'object-path'
+import { TYPE_GPS_LOCATION, TYPE_USER_FORM } from './../repositories/activity'
 import { saveActivity, getActivitiesByDateStart, removeActivityById } from './../repositories/activity'
 import { saveDistance, getDistances, removeDistancesByActivityId } from './../repositories/distance'
 import { savePoints, removePointsByActivityId } from './../repositories/point'
@@ -20,7 +22,11 @@ export async function saveActivityAction({ req, res, db }) {
   const dateTimeStart = objectPath.get(req, ['body', 'activity', 'dateTimeStart'], null)
   const dateTimeStop = objectPath.get(req, ['body', 'activity', 'dateTimeStop'], null)
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
-  const activityId = await saveActivity(db, deviceId, dateTimeStart, dateTimeStop)
+  const activityId = await saveActivity(db, deviceId, {
+    dateTimeStart,
+    dateTimeStop,
+    type: TYPE_GPS_LOCATION
+  })
 
   // сохраняем дистанцию (отрезки по 1-км).
   const distances = objectPath.get(req, [ 'body', 'activity', 'distances' ], [])
@@ -33,12 +39,51 @@ export async function saveActivityAction({ req, res, db }) {
       prevUKey: distance.prevUKey,
       avgSpeed: distance.avgSpeed,
       pathLength: distance.pathLength,
-      elapsedTime: distance.elapsedTime,
+      elapsedTime: distance.elapsedTime
     })
     // сохраняем навигационные точки на отрезке.
     await savePoints(db, distanceId, points)
   }
   return res.send({status: true})
+}
+
+/**
+ * Update user activity.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Promise<void>}
+ */
+export async function saveCustomActivityAction({ req, res, db }) {
+  if (!req.deviceKey) {
+    return res.status(403).send('Device key is required.')
+  }
+
+  const dateTimeStart = joinDateAndTime(req.body.date, req.body.timeStart)
+  const dateTimeStop = joinDateAndTime(req.body.date, req.body.timeStop)
+
+  // сохраняем активность.
+  const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
+  const activityId = await saveActivity(db, deviceId, {
+    dateTimeStart: dateTimeStart.toDate(),
+    dateTimeStop: dateTimeStop.toDate(),
+    type: TYPE_USER_FORM
+  })
+  // сохраняем дистанцию.
+  await saveDistance(db, activityId, {
+    pathLength: Number(req.body.pathLength) * 1000,// километры в метры
+    elapsedTime: dateTimeStop.diff(dateTimeStart) / 1000,
+  })
+
+  return res.send({status: true})
+}
+
+function joinDateAndTime(date, time) {
+  const dateMoment = moment(date)
+  const timeMoment = moment(time, 'HH:mm')
+  dateMoment.set({hour: timeMoment.get('hour'), minute: timeMoment.get('minute'), second: timeMoment.get('second')})
+  return dateMoment
 }
 
 /**

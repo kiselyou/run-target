@@ -1,5 +1,5 @@
 
 <div class="input">
   <label :for="inputId" class="input_label" v-if="label">{{ label }}</label>
-  <input :type="type" :name="name" :id="inputId" :placeholder="placeholder" class="input_field" />
+  <input v-model="modelValue" @input="onChangeEvent" :type="type" :name="name" :id="inputId" :placeholder="placeholder" class="input_field" />
 </div>

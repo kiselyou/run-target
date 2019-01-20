@@ -1,7 +1,6 @@
 import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
-import Ajax from '@lib/Ajax'
 
 import '@vue/Button'
 import '@vue/FieldInput'
@@ -10,27 +9,48 @@ import '@vue/Grid/Cell'
 
 export default Vue.component('TempoForm', {
   props: {
-
+    values: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   data: function () {
     return {
-
+      timeStart: this.values.timeStart || null,
+      timeStop: this.values.timeStop || null,
+      pathLength: this.values.pathLength || null,
     }
-  },
-  beforeMount: function () {
-
   },
   computed: {
-
+    formData: function () {
+      return {
+        timeStart: this.timeStart,
+        timeStop: this.timeStop,
+        pathLength: this.pathLength
+      }
+    }
   },
   methods: {
-    cancelSave() {
-      this.$emit('cancel')
+    cancel() {
+      this.$emit('cancel', this.formData)
+    },
+    save() {
+      this.$emit('save', this.formData)
     },
 
-    save() {
-      this.$emit('save')
-    }
+    timeStartEvent(value) {
+      this.timeStart = value
+    },
+
+    timeStopEvent(value) {
+      this.timeStop = value
+    },
+
+    pathLengthEvent(value) {
+      this.pathLength = value
+    },
   },
   template: template
 })

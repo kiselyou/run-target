@@ -1,16 +1,16 @@
 
-<Layout :showCorner="true" :showFoot="!selectedActivity">
+<Layout :showCorner="true" :showFoot="!isViewVisible('details-activity')">
   <template slot="body">
 
     <WrapCorner v-if="isViewVisible(['list-activities', 'no-activities'])">
       <Tooltip content="Добавить активность" placement="bottom">
-        <Button size="30px" icon="plus" shape="square" @click="addActivity"/>
+        <Button size="30px" icon="plus" shape="square" @click="showViewFormActivity"/>
       </Tooltip>
     </WrapCorner>
 
     <WrapCorner v-if="isViewVisible('details-activity')">
-      <Tooltip class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
-        <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="btnMakeScreenDisabled"/>
+      <Tooltip v-if="selectedActivity.type === 1" class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
+        <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="isDisabledBtnMakeScreen"/>
       </Tooltip>
       <Tooltip content="Удалить активность" placement="bottom">
         <Button size="30px" icon="trash" skin="gray" shape="square" @click="showConfirmRemoveActivity"/>
@@ -29,7 +29,9 @@
     <Spinner :loading="loading"/>
 
     <div id="tempo-background" class="tempo_background">
-      <Title :description="viewTitleDescription">{{ viewTitle }}</Title>
+      <Title :description="viewTitleDescription">
+        {{ viewTitle }}
+      </Title>
 
       <div v-if="isViewVisible('details-activity')">
         <Row class="my-2">
@@ -41,9 +43,9 @@
           </Cell>
         </Row>
 
-        <Row class="my-2">
-          <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
+        <Row>
           <Cell afterContent="Самый быстрый" :content="upperTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
+          <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
           <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
         </Row>
 
@@ -62,7 +64,11 @@
             <template slot="image">
               <Rating :label="activityPathLength(activity) + ' км'" />
             </template>
-            <template slot="title">{{ activityName(activity) }}</template>
+            <template slot="title">
+              <VueIcon v-if="activity.type === 1" name="map-marker" :size="12" color="#7CCE67" />
+              <VueIcon v-if="activity.type === 2" name="pencil" :size="12" color="#EB9B00" />
+              <span class="mx-2">{{ activityName(activity) }}</span>
+            </template>
             <template slot="description">Средний темп {{ avgTempoString(activity) }}</template>
           </SquareItem>
         </SquareArea>
@@ -83,8 +89,8 @@
       </Row>
     </div>
 
-    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('create-activity')">
-      <TempoForm @save="saveActivity" @cancel="cancelSaveActivity" />
+    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('form-activity')">
+      <TempoForm @save="saveActivity" @cancel="showPrevView" />
     </div>
 
   </template>

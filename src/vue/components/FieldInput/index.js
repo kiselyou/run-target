@@ -20,11 +20,24 @@ export default Vue.component('FieldInput', {
       type: String,
       default: 'text'
     },
+    value: {
+      type: [String, Number],
+    },
+  },
+  data: function () {
+    return {
+      modelValue: this.value
+    }
   },
   computed: {
     inputId: function () {
       return this.id || this.name
     }
+  },
+  methods: {
+    onChangeEvent: function (event) {
+      this.$emit('onChange', this.modelValue,  event)
+    },
   },
   template: template
 })

@@ -62,22 +62,17 @@ export default Vue.component('Tempo', {
        */
       confirmRemoveEnable: false,
       /**
-       * @type {string|?} (no-activities|list-activities|details-activity|create-activity)
+       * @type {string|?} (no-activities|list-activities|details-activity|form-activity)
        */
       view: 'no-activities',
-
+      /**
+       * @type {string|?} (no-activities|list-activities|details-activity|form-activity)
+       */
       prevView: null
     }
   },
   beforeMount: function () {
-    Ajax.get(`/calendar/view/tempo/${Date.now()}`)
-      .then((data) => {
-        this.loading = false
-        this.calendarActivity = data
-      })
-      .catch(() => {
-        this.loading = false
-      })
+    this.loadCalendarActivity()
   },
   computed: {
     isVisibleImgTooltip: function() {
@@ -94,12 +89,12 @@ export default Vue.component('Tempo', {
       }
       return moment(this.day.date).locale('ru').format('DD MMMM')
     },
-    btnMakeScreenDisabled() {
+    isDisabledBtnMakeScreen() {
       return !Plugins.file.isPluginEnabled
     },
     viewTitle() {
       switch (this.view) {
-        case 'create-activity':
+        case 'form-activity':
           return 'Новая активность'
         case 'list-activities':
         case 'no-activities':
@@ -111,7 +106,7 @@ export default Vue.component('Tempo', {
     },
     viewTitleDescription() {
       switch (this.view) {
-        case 'create-activity':
+        case 'form-activity':
           return this.day ? this.formatDate(this.day.date, 'DD MMMM') : null
       }
       return null
@@ -124,9 +119,9 @@ export default Vue.component('Tempo', {
       }
       return this.view === view
     },
-    showViewCreateActivity() {
+    showViewFormActivity() {
       this.prevView = this.view
-      this.view = 'create-activity'
+      this.view = 'form-activity'
     },
     showViewNoActivities() {
       this.prevView = this.view
@@ -241,6 +236,21 @@ export default Vue.component('Tempo', {
     avgTempoString(activity) {
       return this.minutesToStringTempo(this.avgTempoMinutes(activity))
     },
+    /**
+     * TODO: вынести загрузку данных календаря на 1 уровень в верх
+     * @param {Day} day
+     */
+    loadCalendarActivity(day) {
+      const timestamp = day ? day.date.getTime() : Date.now()
+      Ajax.get(`/calendar/view/tempo/${timestamp}`)
+        .then((data) => {
+          this.loading = false
+          this.calendarActivity = data
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
     loadActivities(day) {
       this.loading = true
       const timestamp = new Date(day.date).getTime()
@@ -319,9 +329,8 @@ export default Vue.component('Tempo', {
      * @returns {number}
      */
     distanceTempoTime(distance) {
-      const pathLength = distance.pathLength > 1000 ? 1000 : distance.pathLength
-      if (pathLength > 0) {
-        return this.timeToMinutes((distance.elapsedTime / pathLength) * 1000)
+      if (distance.pathLength > 0) {
+        return this.timeToMinutes((distance.elapsedTime / distance.pathLength) * 1000)
       }
       return 0
     },
@@ -463,6 +472,7 @@ export default Vue.component('Tempo', {
 
     confirmRemoveActivity() {
       this.cancelRemoveActivity()
+      this.showPrevView()
       this.loading = true
       Ajax.post(`activity/remove`, { activityId: this.selectedActivity.id})
         .finally(() => {
@@ -472,19 +482,13 @@ export default Vue.component('Tempo', {
         })
     },
 
-    addActivity() {
-      console.log(this.day)
-      this.showViewCreateActivity()
-    },
-
-    cancelSaveActivity() {
-      console.log(this.day)
-      this.showPrevView()
-    },
-
-    saveActivity() {
-      console.log(this.day)
-      this.showPrevView()
+    saveActivity(formData) {
+      this.loading = true
+      Ajax.post(`activity/save/custom`, { ...formData, date: this.day.date })
+        .finally(() => {
+          this.loading = false
+          this.loadActivities(this.day)
+        })
     }
   },
   template: template
