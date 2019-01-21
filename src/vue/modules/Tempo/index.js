@@ -484,7 +484,8 @@ export default Vue.component('Tempo', {
 
     saveActivity(formData) {
       this.loading = true
-      Ajax.post(`activity/save/custom`, { ...formData, date: this.day.date })
+      const data = Object.assign({ date: this.day.date }, formData)
+      Ajax.post(`activity/save/custom`, data)
         .finally(() => {
           this.loading = false
           this.loadActivities(this.day)
