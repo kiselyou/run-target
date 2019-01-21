@@ -17,14 +17,21 @@ export default Vue.component('Mobile', {
        *
        * @type {TabItems}
        */
-      tabs: new TabItems()
-        .pushItem(new TabItem('Details', 'Статистика'))
+      tabItems: new TabItems()
+        .pushItem(new TabItem('Details', 'Статистика', true).keepAlive())
         .pushItem(new TabItem('Activity', 'Активность').keepAlive())
-        .pushItem(new TabItem('Tempo', 'Темп', true))
+        .pushItem(new TabItem('Tempo', 'Темп').keepAlive())
         // .pushItem(new TabItem('Target', 'Цель').keepAlive()),
     }
   },
+  methods: {
+    forceRerender: function () {
+      for (const tab of this.tabItems.items) {
+        tab.updateUUID()
+      }
+    }
+  },
   template: `
-    <Tab :tabs="tabs" />
+    <Tab :tabItems="tabItems" @forceRerender="forceRerender" />
   `
 })

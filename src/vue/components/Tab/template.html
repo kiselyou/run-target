@@ -2,7 +2,7 @@
 <div class="tab">
   <div class="tab_panel">
     <div class="tab_panel__block">
-      <div :key="tab.uuid" v-for="tab in tabs" @click="onClick(tab)" :class="htmlClass(tab)" class="tab_item">
+      <div :key="tab.uuid" v-for="tab in tabItems.items" @click="onClick(tab)" :class="htmlClass(tab)" class="tab_item">
         <div>{{ tab.name }}</div>
       </div>
     </div>
@@ -14,7 +14,7 @@
 
   <div class="tab_content">
     <keep-alive :include="keepAliveComponents">
-      <component :is="currentTabComponent"/>
+      <component :is="currentTabComponent" @forceRerender="forceRerender" :key="keyRerender" />
     </keep-alive>
   </div>
 

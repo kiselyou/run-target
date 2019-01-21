@@ -82,6 +82,15 @@ class TabItem {
     this.name = value
     return this
   }
+
+  /**
+   *
+   * @returns {TabItem}
+   */
+  updateUUID() {
+    this.uuid = uuid()
+    return this
+  }
 }
 
 export default TabItem

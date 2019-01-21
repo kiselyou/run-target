@@ -70,10 +70,11 @@ export async function saveCustomActivityAction({ req, res, db }) {
     dateTimeStop: dateTimeStop.toDate(),
     type: TYPE_USER_FORM
   })
+
   // сохраняем дистанцию.
   await saveDistance(db, activityId, {
     pathLength: Number(req.body.pathLength) * 1000,// километры в метры
-    elapsedTime: dateTimeStop.diff(dateTimeStart) / 1000,
+    elapsedTime: req.body.elapsedTime * 60, // минуты в секунды
   })
 
   return res.send({status: true})

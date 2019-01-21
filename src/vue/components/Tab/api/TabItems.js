@@ -1,7 +1,7 @@
 
-class TabItems extends Array {
+class TabItems {
   constructor() {
-    super()
+    this.items = []
   }
 
   /**
@@ -10,18 +10,33 @@ class TabItems extends Array {
    * @returns {TabItems}
    */
   pushItem(value) {
-    this.push(value)
+    this.items.push(value)
     return this
   }
 
   /**
    *
    * @param {string} componentName
+   * @returns {TabItems}
    */
   openTab(componentName) {
-    for (const tab of this) {
+    for (const tab of this.items) {
       tab.active(tab.componentName === componentName)
     }
+    return this
+  }
+
+  /**
+   *
+   * @returns {TabItem|?}
+   */
+  getActiveTab() {
+    for (const tab of this.items) {
+      if (tab.isActive) {
+        return tab
+      }
+    }
+    return null
   }
 }
 

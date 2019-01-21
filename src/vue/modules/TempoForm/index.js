@@ -21,6 +21,7 @@ export default Vue.component('TempoForm', {
       timeStart: this.values.timeStart || null,
       timeStop: this.values.timeStop || null,
       pathLength: this.values.pathLength || null,
+      elapsedTime: this.values.elapsedTime || null,
     }
   },
   computed: {
@@ -28,7 +29,8 @@ export default Vue.component('TempoForm', {
       return {
         timeStart: this.timeStart,
         timeStop: this.timeStop,
-        pathLength: this.pathLength
+        pathLength: this.pathLength,
+        elapsedTime: this.elapsedTime
       }
     }
   },
@@ -50,6 +52,10 @@ export default Vue.component('TempoForm', {
 
     pathLengthEvent(value) {
       this.pathLength = value
+    },
+
+    elapsedTimeEvent(value) {
+      this.elapsedTime = value
     },
   },
   template: template

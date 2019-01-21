@@ -237,7 +237,6 @@ export default Vue.component('Tempo', {
       return this.minutesToStringTempo(this.avgTempoMinutes(activity))
     },
     /**
-     * TODO: вынести загрузку данных календаря на 1 уровень в верх
      * @param {Day} day
      */
     loadCalendarActivity(day) {
@@ -470,25 +469,32 @@ export default Vue.component('Tempo', {
       this.confirmRemoveEnable = false
     },
 
+    /**
+     * Удалить активность и перегенерировать текущий компонент.
+     *
+     * @returns {void}
+     */
     confirmRemoveActivity() {
       this.cancelRemoveActivity()
       this.showPrevView()
       this.loading = true
       Ajax.post(`activity/remove`, { activityId: this.selectedActivity.id})
         .finally(() => {
-          this.loading = false
-          this.selectedActivity = null
-          this.loadActivities(this.day)
+          this.$emit('forceRerender')
         })
     },
-
+    /**
+     * Сохранить активность и перегенерировать текущий компонент.
+     *
+     * @param {Object} formData
+     * @returns {void}
+     */
     saveActivity(formData) {
       this.loading = true
       const data = Object.assign({ date: this.day.date }, formData)
       Ajax.post(`activity/save/custom`, data)
         .finally(() => {
-          this.loading = false
-          this.loadActivities(this.day)
+          this.$emit('forceRerender', ['Tempo', 'Details'])
         })
     }
   },
