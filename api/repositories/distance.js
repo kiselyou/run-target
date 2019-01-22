@@ -49,7 +49,7 @@ export const getTotalDistances = (db, deviceId, date) => {
         SELECT ROUND(SUM(dst.pathLength))
           FROM activity as act
                INNER JOIN distance as dst ON dst.activityId = act.id
-         WHERE deviceId = ? AND dateTimeStart >= SUBDATE(?, WEEKDAY(?))
+         WHERE deviceId = ? AND dateTimeStart >= SUBDATE(DATE(?), WEEKDAY(?))
       ) AS totalWeekDistance
   `, [deviceId, deviceId, date, deviceId, date, date])
 }
