@@ -5,6 +5,7 @@ import Ajax from '@lib/Ajax'
 import Timer from '@lib/Timer'
 import moment from 'moment'
 import Plugins from '@lib/cordova/Plugins'
+import { joinDateAndTime } from '@lib/helpers/date-helper'
 
 import '@vue/Title'
 import '@vue/Layout'
@@ -491,8 +492,11 @@ export default Vue.component('Tempo', {
      */
     saveActivity(formData) {
       this.loading = true
-      const data = Object.assign({ date: this.day.date }, formData)
-      Ajax.post(`activity/save/custom`, data)
+      const params = Object.assign({
+        dateTimeStart: joinDateAndTime(this.day.date, formData.timeStart),
+        dateTimeStop: joinDateAndTime(this.day.date, formData.timeStop)
+      }, formData)
+      Ajax.post(`activity/save/custom`, params)
         .finally(() => {
           this.$emit('forceRerender', ['Tempo', 'Details'])
         })

@@ -60,14 +60,11 @@ export async function saveCustomActivityAction({ req, res, db }) {
     return res.status(403).send('Device key is required.')
   }
 
-  const dateTimeStart = joinDateAndTime(req.body.date, req.body.timeStart)
-  const dateTimeStop = joinDateAndTime(req.body.date, req.body.timeStop)
-
   // сохраняем активность.
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
   const activityId = await saveActivity(db, deviceId, {
-    dateTimeStart: dateTimeStart.toDate(),
-    dateTimeStop: dateTimeStop.toDate(),
+    dateTimeStart: req.body.dateTimeStart,
+    dateTimeStop: req.body.dateTimeStop,
     type: TYPE_USER_FORM
   })
 
@@ -78,13 +75,6 @@ export async function saveCustomActivityAction({ req, res, db }) {
   })
 
   return res.send({status: true})
-}
-
-function joinDateAndTime(date, time) {
-  const dateMoment = moment(date)
-  const timeMoment = moment(time, 'HH:mm')
-  dateMoment.set({hour: timeMoment.get('hour'), minute: timeMoment.get('minute'), second: timeMoment.get('second')})
-  return dateMoment
 }
 
 /**
