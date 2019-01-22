@@ -18,7 +18,7 @@ export async function viewDetailsAction({ req, res, db }) {
   if (timestamp > 0) {
     date.setTime(timestamp)
   }
-  console.log(date)
+
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
   const distances = await getTotalDistances(db, deviceId, date)
   return res.send(distances)
