@@ -6,7 +6,7 @@ import '@module/Spinner'
 import '@module/ActivityState'
 import '@module/ActivityControls'
 
-import GeoControls from '@lib/location/Geo'
+import GeoControls from '@lib/location/GeoControls'
 import Timer from '@lib/Timer'
 import Ajax from '@lib/Ajax'
 import Plugins from '@lib/cordova/Plugins'
