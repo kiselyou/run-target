@@ -1,8 +1,9 @@
 import Timer from '../Timer'
 import Distance from './Distance'
 import GeoLocation from './GeoLocation'
+import GeoLocation from "@lib/location/GeoLocation";
 
-class Geo {
+class GeoControls {
   /**
    *
    * @param {boolean} debug
@@ -43,7 +44,13 @@ class Geo {
      *
      * @type {{timeStart: number, timeEnd: number}}
      */
-    this.pauseTimeData = { timeStart: 0, timeEnd: 0 }
+    this.pauseGeoLocation = { timeStart: 0, timeEnd: 0 }
+
+    /**
+     *
+     * @type {string}
+     */
+    this.status = GeoControls.STATUS_DISABLED
 
     /**
      *
@@ -51,13 +58,20 @@ class Geo {
      * @private
      */
     this._events = { changeDistance: [] }
+
+    /**
+     *
+     * @type {{geoListener: Function|?}}
+     * @private
+     */
+    this._cache = { geoListener: null }
   }
 
   /**
    *
    * @param {string} eventName
    * @param {Function} callback
-   * @returns {Geo}
+   * @returns {GeoControls}
    */
   addEventListener(eventName, callback) {
     switch (eventName) {
@@ -72,7 +86,7 @@ class Geo {
    *
    * @param {string} eventName
    * @param {Function} callback
-   * @returns {Geo}
+   * @returns {GeoControls}
    */
   deleteEventListener(eventName, callback) {
     let events = []
@@ -146,7 +160,7 @@ class Geo {
   /**
    *
    * @param {{lat: number, lng: number, elapsedTime: number}} value
-   * @returns {Geo}
+   * @returns {GeoControls}
    */
   addPosition(value) {
     if (this.distances.length === 0) {
@@ -190,15 +204,49 @@ class Geo {
   }
 
   /**
-   *
-   * @returns {Geo}
+   * @param {Object} position
+   * @callback geoListener
    */
-  listen() {
-    this.geoLocation.addEventListener('onTick', (position) => {
-      let pauseTime = this.pauseTimeData.timeEnd - this.pauseTimeData.timeStart
+
+  /**
+   * Добавить событие для получение координат геолокации.
+   *
+   * @param {geoListener} callback
+   * @returns {GeoControls}
+   */
+  addGeoListener(callback) {
+    this.geoLocation.addEventListener('onTick', callback)
+    return this
+  }
+
+  /**
+   * Удалить событие получения координат геолокации.
+   *
+   * @param {geoListener} callback
+   * @returns {GeoControls}
+   */
+  deleteGeoListener(callback) {
+    this.geoLocation.deleteEventListener('onTick', callback)
+    return this
+  }
+
+  /**
+   * Запустить геолокацию и добавить слушатель.
+   *
+   * @returns {GeoControls}
+   */
+  enableGeoLocation() {
+    if (this._cache.geoListener) {
+      return this
+    }
+    this._cache.geoListener = (position) => {
+      if ([GeoControls.STATUS_PAUSED, GeoControls.STATUS_DISABLED].includes(this.status)) {
+        return
+      }
+      let pauseTime = this.pauseGeoLocation.timeEnd - this.pauseGeoLocation.timeStart
       if (pauseTime > 0) {
-        this.pauseTimeData.timeStart = 0
-        this.pauseTimeData.timeEnd = 0
+        this.pauseGeoLocation.timeStart = 0
+        this.pauseGeoLocation.timeEnd = 0
       } else {
         pauseTime = 0
       }
@@ -210,43 +258,86 @@ class Geo {
         accuracy: position.accuracy,
         altitude: position.altitude,
       })
-    })
-    return this
-  }
-
-  /**
-   *
-   * @returns {Geo}
-   */
-  start() {
-    if (this.pauseTimeData.timeStart > 0) {
-      this.pauseTimeData.timeEnd = Date.now()
     }
-    this.timer.start()
+    this.addGeoListener(this._cache.geoListener)
     this.geoLocation.start()
     return this
   }
 
   /**
+   * Остоновить геолокацию и удалить слушатель.
    *
-   * @returns {Geo}
+   * @returns {GeoControls}
    */
-  stop() {
-    this.pauseTimeData.timeStart = Date.now()
-    this.timer.stop()
-    this.geoLocation.pause()
+  disableGeoLocation() {
+    if (this._cache.geoListener) {
+      this.deleteGeoListener(this._cache.geoListener)
+      this.geoLocation.stop()
+    }
     return this
   }
 
   /**
    *
-   * @returns {Geo}
+   * @returns {boolean}
    */
-  clear() {
-    this.timer.clear()
-    this.geoLocation.stop()
-    this.distances.splice(0)
+  isDisabledGeoLocation() {
+    return this.geoLocation.isDisabled()
+  }
+
+  /**
+   * Запустить слушатель.
+   *
+   * @returns {GeoControls}
+   */
+  startGeoListener() {
+    if (this.isDisabledGeoLocation()) {
+      throw new Error('Before call "startGeoListener()" you should call the method startGeoLocation().')
+    }
+    this.status = GeoControls.STATUS_PROCESS
+    if (this.pauseGeoLocation.timeStart > 0) {
+      this.pauseGeoLocation.timeEnd = Date.now()
+    }
+    this.timer.start()
     return this
+  }
+
+  /**
+   * Остановить слушатель. (пауза)
+   *
+   * @returns {GeoControls}
+   */
+  stopGeoListener() {
+    if (this.isDisabledGeoLocation()) {
+      throw new Error('You should have enabled GeoLocation before call method "stopGeoListener".')
+    }
+    this.status = GeoControls.STATUS_PAUSED
+    this.pauseGeoLocation.timeStart = Date.now()
+    this.timer.stop()
+    return this
+  }
+
+  /**
+   * Остановить слушатель и сбросить в значения по умолчанию. При этом геолокация остается вкючена.
+   *
+   * @returns {GeoControls}
+   */
+  clearGeoListener() {
+    if (this.isDisabledGeoLocation()) {
+      throw new Error('You should have enabled GeoLocation before call method "clearGeoControls". ')
+    }
+    this.timer.clear()
+    this.distances.splice(0)
+    this.status = GeoControls.STATUS_DISABLED
+    return this
+  }
+
+  /**
+   *
+   * @returns {boolean}
+   */
+  isDisabledGeoListener() {
+    return this.status === GeoControls.STATUS_DISABLED
   }
 
   /**
@@ -264,6 +355,30 @@ class Geo {
       distances: distances,
     }
   }
+
+  /**
+   *
+   * @returns {string}
+   */
+  static get STATUS_PROCESS() {
+    return 'STATUS_PROCESS'
+  }
+
+  /**
+   *
+   * @returns {string}
+   */
+  static get STATUS_PAUSED() {
+    return 'STATUS_PAUSED'
+  }
+
+  /**
+   *
+   * @returns {string}
+   */
+  static get STATUS_DISABLED() {
+    return 'STATUS_DISABLED'
+  }
 }
 
-export default Geo
+export default GeoControls

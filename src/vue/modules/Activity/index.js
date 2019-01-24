@@ -6,7 +6,7 @@ import '@module/Spinner'
 import '@module/ActivityState'
 import '@module/ActivityControls'
 
-import Geo from '@lib/location/Geo'
+import GeoControls from '@lib/location/Geo'
 import Timer from '@lib/Timer'
 import Ajax from '@lib/Ajax'
 import Plugins from '@lib/cordova/Plugins'
@@ -23,9 +23,9 @@ export default Vue.component('Activity', {
   data: function () {
     return {
       /**
-       * @type {Geo}
+       * @type {GeoControls}
        */
-      geo: new Geo(this.debug),
+      geo: new GeoControls(this.debug),
       /**
        * @type {boolean}
        */
@@ -37,12 +37,23 @@ export default Vue.component('Activity', {
     }
   },
   mounted() {
-    this.geo.listen()
     this.geo.addEventListener('change-distance', (distance) => {
       if (distance.number > 0) {
-        Plugins.vibration.call([200, 100, 200, 100, 200, 100, 200, 100, 200])
+        Plugins.vibration.call([2000, 1000, 2000, 1000, 2000, 1000, 2000])
       }
     })
+  },
+  activated() {
+    // Если геолокация выключена то включить ее.
+    if (this.geo.isDisabledGeoLocation()) {
+      this.geo.enableGeoLocation()
+    }
+  },
+  deactivated() {
+    // Если слушатель выключен то выключить и геолокацию.
+    if (this.geo.isDisabledGeoListener()) {
+      this.geo.disableGeoLocation()
+    }
   },
   computed: {
     path: function () {
@@ -63,18 +74,18 @@ export default Vue.component('Activity', {
   },
   methods: {
     startRun: function () {
-      this.geo.start()
+      this.geo.startGeoListener()
     },
     stopRun: function () {
-      this.geo.stop()
+      this.geo.stopGeoListener()
       this.pause = true
     },
     nextRun: function () {
-      this.geo.start()
+      this.geo.startGeoListener()
       this.pause = false
     },
     endRun: function () {
-      this.geo.stop()
+      this.geo.stopGeoListener()
       this.pause = false
       this.loading = true
       Ajax.post(`activity/save`, { activity: this.geo.serialize() })
@@ -84,7 +95,7 @@ export default Vue.component('Activity', {
         .catch(() => {
           this.loading = false
         })
-      this.geo.clear()
+      this.geo.clearGeoListener()
     }
   },
   template: template

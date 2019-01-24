@@ -16,10 +16,9 @@ class GeoLocation {
 
     /**
      *
-     * @type {number}
-     * @private
+     * @type {string}
      */
-    this._status = GeoLocation.STATUS_DISABLED
+    this.status = GeoLocation.STATUS_DISABLED
 
     /**
      *
@@ -77,7 +76,7 @@ class GeoLocation {
    */
   _tick(position) {
     this._tickOptions.totalEventCount++
-    if (this._status === GeoLocation.STATUS_PAUSED) {
+    if (this.status === GeoLocation.STATUS_PAUSED) {
       return
     }
     // Ignore the first event unless it's the only one received because some devices seem to send a cached location even when maximumAge is set to zero.
@@ -133,21 +132,49 @@ class GeoLocation {
 
   /**
    *
+   * @param {string} eventName
+   * @param {Function} callback
+   * @returns {GeoLocation}
+   */
+  deleteEventListener(eventName, callback) {
+    let events = []
+    switch (eventName) {
+      case 'onTick':
+        events = this._eventListeners.onTick
+        break
+      case 'onError':
+        events = this._eventListeners.onError
+        break
+    }
+    for (let i = 0; i < events.length; i++) {
+      if (events[i] === callback) {
+        events.splice(i, 1)
+        break
+      }
+    }
+    return this
+  }
+
+  /**
+   *
    * @returns {GeoLocation}
    */
   start() {
-    switch (this._status) {
+    switch (this.status) {
       case GeoLocation.STATUS_DISABLED:
-        this._status = GeoLocation.STATUS_PROCESS
+        this.status = GeoLocation.STATUS_PROCESS
         break
       case GeoLocation.STATUS_PAUSED:
-        this._status = GeoLocation.STATUS_PROCESS
+        this.status = GeoLocation.STATUS_PROCESS
         if (this.geo.isEmulator) {
           this.geo.startMove()
         }
         return this
       default:
         return this
+    }
+    if (this._watchID) {
+      return this
     }
     this._watchID = this.geo.watchPosition(
       (position) => this._tick(position),
@@ -161,7 +188,7 @@ class GeoLocation {
    * @returns {GeoLocation}
    */
   pause() {
-    this._status = GeoLocation.STATUS_PAUSED
+    this.status = GeoLocation.STATUS_PAUSED
     if (this.geo.isEmulator) {
       this.geo.stopMove()
     }
@@ -173,33 +200,42 @@ class GeoLocation {
    * @returns {GeoLocation}
    */
   stop() {
-    this._status = GeoLocation.STATUS_DISABLED
+    this.status = GeoLocation.STATUS_DISABLED
     this.geo.clearWatch(this._watchID)
+    this._watchID = null
     return this
   }
 
   /**
    *
-   * @returns {number}
+   * @returns {boolean}
+   */
+  isDisabled() {
+    return this.status === GeoLocation.STATUS_DISABLED
+  }
+
+  /**
+   *
+   * @returns {string}
    */
   static get STATUS_PROCESS() {
-    return 1
+    return 'STATUS_PROCESS'
   }
 
   /**
    *
-   * @returns {number}
+   * @returns {string}
    */
   static get STATUS_PAUSED() {
-    return 2
+    return 'STATUS_PAUSED'
   }
 
   /**
    *
-   * @returns {number}
+   * @returns {string}
    */
   static get STATUS_DISABLED() {
-    return 0
+    return 'STATUS_DISABLED'
   }
 
   /**

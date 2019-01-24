@@ -39,7 +39,7 @@ export default Vue.component('Details', {
   },
   methods: {
     normalizedDistance(distance) {
-      return (distance / 1000).toFixed(2)
+      return (distance / 1000).toFixed(3)
     },
     /**
      *
