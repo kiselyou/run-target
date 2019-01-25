@@ -9,8 +9,6 @@ import '@vue/Layout'
 import '@vue/WrapCorner'
 import '@module/Timer'
 
-import Signal from '@lib/location/Signal'
-
 export default Vue.component('ActivityState', {
   props: {
     tempoLabel: {
@@ -59,15 +57,11 @@ export default Vue.component('ActivityState', {
     debug: {
       type: Boolean,
       default: false
+    },
+    signalValue: {
+      type: Number,
+      default: 0
     }
-  },
-  data: function () {
-    return {
-      signal: new Signal(this.debug)
-    }
-  },
-  beforeMount: function () {
-    this.signal.listen()
   },
   computed: {
     speedValue: function () {
@@ -81,9 +75,6 @@ export default Vue.component('ActivityState', {
     },
     pathPiece: function () {
       return this.path % 1000
-    },
-    signalValue: function () {
-      return this.signal.value
     },
     htmlClassControls: function () {
       return {

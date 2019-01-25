@@ -1,7 +1,6 @@
 import Timer from '../Timer'
 import Distance from './Distance'
 import GeoLocation from './GeoLocation'
-import GeoLocation from "@lib/location/GeoLocation";
 
 class GeoControls {
   /**
@@ -272,6 +271,7 @@ class GeoControls {
   disableGeoLocation() {
     if (this._cache.geoListener) {
       this.deleteGeoListener(this._cache.geoListener)
+      this._cache.geoListener = null
       this.geoLocation.stop()
     }
     return this

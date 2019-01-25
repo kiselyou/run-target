@@ -10,6 +10,7 @@ import GeoControls from '@lib/location/GeoControls'
 import Timer from '@lib/Timer'
 import Ajax from '@lib/Ajax'
 import Plugins from '@lib/cordova/Plugins'
+import Signal from '@lib/location/Signal'
 
 const timer = new Timer()
 
@@ -17,7 +18,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data: function () {
@@ -26,6 +27,10 @@ export default Vue.component('Activity', {
        * @type {GeoControls}
        */
       geo: new GeoControls(this.debug),
+      /**
+       * @type {Signal}
+       */
+      signal: new Signal(),
       /**
        * @type {boolean}
        */
@@ -41,6 +46,9 @@ export default Vue.component('Activity', {
       if (distance.number > 0) {
         Plugins.vibration.call([2000, 1000, 2000, 1000, 2000, 1000, 2000])
       }
+    })
+    this.geo.addGeoListener((position) => {
+      this.signal.update(position)
     })
   },
   activated() {
@@ -71,6 +79,9 @@ export default Vue.component('Activity', {
     time: function () {
       return this.geo.timer.toStringHours()
     },
+    signalValue: function () {
+      return this.signal.value
+    }
   },
   methods: {
     startRun: function () {
