@@ -18,7 +18,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: function () {
@@ -44,7 +44,7 @@ export default Vue.component('Activity', {
   mounted() {
     this.geo.addEventListener('change-distance', (distance) => {
       if (distance.number > 0) {
-        Plugins.vibration.call([2000, 1000, 2000, 1000, 2000, 1000, 2000])
+        Plugins.vibration.call([1500, 1000, 1500, 1000, 1500])
       }
     })
     this.geo.addGeoListener((position) => {
