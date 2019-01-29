@@ -71,6 +71,7 @@ const config = {
       '@vue': path.join(__dirname, 'src/vue/components'),
       '@page': path.join(__dirname, 'src/vue/pages'),
       '@module': path.join(__dirname, 'src/vue/modules'),
+      '@storage': path.join(__dirname, 'src/storage'),
       '@lib': path.join(__dirname, 'src/libs'),
       '@config': path.join(__dirname, 'src/config')
     },

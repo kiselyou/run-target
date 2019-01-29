@@ -6,6 +6,8 @@ import '@vue/Button'
 import '@vue/FieldInput'
 import '@vue/Grid/Row'
 import '@vue/Grid/Cell'
+import '@vue/FieldSelect'
+import { trainingTypes } from '@storage/training-types'
 
 export default Vue.component('TempoForm', {
   props: {
@@ -22,6 +24,9 @@ export default Vue.component('TempoForm', {
       timeStop: this.values.timeStop || null,
       pathLength: this.values.pathLength || null,
       elapsedTime: this.values.elapsedTime || null,
+      trainingItems: trainingTypes.map((item) => {
+        return { value: item.value, label: item.label }
+      })
     }
   },
   computed: {

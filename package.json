@@ -91,6 +91,7 @@
     "vue": "^2.5.17",
     "vue-loader": "^15.4.2",
     "vue-router": "^3.0.2",
+    "vue-search-select": "^2.8.2",
     "vue-spinner": "^1.0.3",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.4.1",

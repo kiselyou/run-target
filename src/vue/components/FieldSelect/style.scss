@@ -1,0 +1,37 @@
+.select {
+  padding: 4px 1px;
+
+  &_field {
+    font-family: inherit;
+    width: 100%;
+    background-clip: padding-box;
+    border: none !important;
+    border-radius: unset !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+    height: 32px;
+    font-size: .875rem;
+    background: transparent;
+    color: #666666;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &_label {
+    color: #999999;
+  }
+}
+
+/* override class of component vue-search-select */
+body .ui.dropdown .menu {
+  border: none !important;
+  border-radius: unset !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+}
+body .ui.dropdown .menu > .item.current,
+body .ui.dropdown .menu > .item:hover {
+  background: #1E6EBE !important;
+  color: #FFFFFF !important;
+}

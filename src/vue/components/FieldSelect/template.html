@@ -1,0 +1,14 @@
+
+<div class="select">
+  <label :for="inputId" class="select_label" v-if="label">{{ label }}</label>
+  <ModelListSelect
+    v-model="modelValue"
+    @change="onChangeEvent"
+    :name="name"
+    :id="inputId"
+    :list="items"
+    optionValue="value"
+    optionText="label"
+    class="select_field"
+  />
+</div>
