@@ -18,7 +18,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data: function () {
