@@ -8,6 +8,8 @@
     border: none !important;
     border-radius: unset !important;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.6em 2.1em 0.6em 1em !important;
+    min-height: unset !important;
     height: 32px;
     font-size: .875rem;
     background: transparent;
@@ -29,6 +31,9 @@ body .ui.dropdown .menu {
   border: none !important;
   border-radius: unset !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+}
+body .ui.dropdown .menu {
+  font-size: .875rem !important;
 }
 body .ui.dropdown .menu > .item.current,
 body .ui.dropdown .menu > .item:hover {

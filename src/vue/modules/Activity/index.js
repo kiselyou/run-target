@@ -18,7 +18,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data: function () {
@@ -100,11 +100,9 @@ export default Vue.component('Activity', {
       this.pause = false
       this.loading = true
       Ajax.post(`activity/save`, { activity: this.geo.serialize() })
-        .then(() => {
+        .finally(() => {
           this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
+          this.$emit('forceRerender')
         })
       this.geo.clearGeoListener()
     }
