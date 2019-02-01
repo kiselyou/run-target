@@ -20,11 +20,15 @@ export default Vue.component('CalendarRun', {
       type: Boolean,
       default: false
     },
+    date: {
+      type: Date,
+      default: new Date()
+    }
   },
   data: function () {
     return {
       calendar: new CalendarRun(),
-      selectedDate: new Date(),
+      selectedDate: this.date,
       month: null
     }
   },
@@ -37,6 +41,9 @@ export default Vue.component('CalendarRun', {
   methods: {
     updateMonth() {
       this.month = this.calendar.getMonth(this.selectedDate, (day) => {
+        if (!day.enabled) {
+          return
+        }
         const date = moment(day.date).format('YYYY-MM-DD')
         const resultDistance = objectPath.get(this.calendarActivity, [date, 'resultDistance'], null)
         if (resultDistance) {
@@ -51,12 +58,12 @@ export default Vue.component('CalendarRun', {
     next: function (month) {
       this.selectedDate = new Date(month.lastDay)
       this.selectedDate.setDate(this.selectedDate.getDate() + 1)
-      this.updateMonth()
+      this.$emit('changeMonth', this.selectedDate)
     },
     prev: function (month) {
       this.selectedDate = new Date(month.firstDay)
       this.selectedDate.setDate(this.selectedDate.getDate() - 1)
-      this.updateMonth()
+      this.$emit('changeMonth', this.selectedDate)
     },
     selectDay: function (day) {
       if (this.calendar.isDaySelected(day)) {

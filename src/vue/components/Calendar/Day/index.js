@@ -17,7 +17,9 @@ export default Vue.component('Day', {
   computed: {
     htmlClass: function () {
       if (this.head) {
-        return {}
+        return {
+          'day__head': true
+        }
       }
       return {
         'day__today': this.day.isNow,

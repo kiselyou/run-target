@@ -37,12 +37,12 @@ export default Vue.component('Calendar', {
     next: function (month) {
       this.selectedDate = new Date(month.lastDay)
       this.selectedDate.setDate(this.selectedDate.getDate() + 1)
-      this.updateMonth()
+      this.$emit('changeMonth', this.selectedDate)
     },
     prev: function (month) {
       this.selectedDate = new Date(month.firstDay)
       this.selectedDate.setDate(this.selectedDate.getDate() - 1)
-      this.updateMonth()
+      this.$emit('changeMonth', this.selectedDate)
     },
     selectDay: function (day) {
       if (this.calendar.isDaySelected(day)) {

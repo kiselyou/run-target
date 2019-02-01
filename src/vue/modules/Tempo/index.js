@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4'
 import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
@@ -49,15 +50,19 @@ export default Vue.component('Tempo', {
        */
       selectedActivity: null,
       /**
-       * Day from calendar.
+       * Date from calendar.
        *
-       * @type {Day}
+       * @type {Date}
        */
-      day: null,
+      selectedDate: new Date(),
       /**
-       * @type {Object|?}
+       * @type {Object}
        */
-      calendarActivity: null,
+      calendarActivity: {},
+      /**
+       * @type {string|?}
+       */
+      calendarActivityKey: null,
       /**
        * @type {boolean}
        */
@@ -73,7 +78,7 @@ export default Vue.component('Tempo', {
     }
   },
   beforeMount: function () {
-    this.loadCalendarActivity()
+    this.loadCalendarActivity(this.selectedDate)
   },
   computed: {
     isVisibleImgTooltip: function() {
@@ -85,10 +90,10 @@ export default Vue.component('Tempo', {
      * @returns {string|?}
      */
     activityEmpty: function () {
-      if (!this.day) {
+      if (!this.selectedDate) {
         return null
       }
-      return moment(this.day.date).locale('ru').format('DD MMMM')
+      return moment(this.selectedDate).locale('ru').format('DD MMMM')
     },
     isDisabledBtnMakeScreen() {
       return !Plugins.file.isPluginEnabled
@@ -108,7 +113,7 @@ export default Vue.component('Tempo', {
     viewTitleDescription() {
       switch (this.view) {
         case 'form-activity':
-          return this.day ? this.formatDate(this.day.date, 'DD MMMM') : null
+          return this.selectedDate ? this.formatDate(this.selectedDate, 'DD MMMM') : null
       }
       return null
     },
@@ -238,41 +243,36 @@ export default Vue.component('Tempo', {
       return this.minutesToStringTempo(this.avgTempoMinutes(activity))
     },
     /**
-     * @param {Day} day
+     * @param {Date|string|number} [date]
      */
-    loadCalendarActivity(day) {
-      const timestamp = day ? day.date.getTime() : Date.now()
+    loadCalendarActivity(date) {
+      const timestamp = new Date(date).getTime()
       Ajax.get(`/calendar/view/tempo/${timestamp}`)
         .then((data) => {
-          this.loading = false
-          this.calendarActivity = data
+          this.calendarActivity = Object.assign({}, this.calendarActivity, data)
+          this.calendarActivityKey = uuid()
+          this.loadActivities(date)
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     },
-    loadActivities(day) {
+
+    /**
+     *
+     * @param {Date} date
+     */
+    loadActivities(date) {
       this.loading = true
-      const timestamp = new Date(day.date).getTime()
+      const timestamp = new Date(date).getTime()
       Ajax.get(`activity/view/${timestamp}`)
         .then((activities) => {
-          this.loading = false
           this.activities = activities
           this.showViewListActivities()
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
-    },
-    /**
-     * CalendarRun.
-     * Метод дня устоновки текущего дня в календаре.
-     *
-     * @param day
-     */
-    activeDay: function (day) {
-      this.loadActivities(day)
-      this.day = day
     },
 
     /**
@@ -282,8 +282,8 @@ export default Vue.component('Tempo', {
      * @param day
      */
     selectDay: function (day) {
-      this.loadActivities(day)
-      this.day = day
+      this.selectedDate = day.date
+      this.loadActivities(this.selectedDate)
     },
     /**
      * Фарматирование даты.
@@ -493,13 +493,21 @@ export default Vue.component('Tempo', {
     saveActivity(formData) {
       this.loading = true
       const params = Object.assign({
-        dateTimeStart: joinDateAndTime(this.day.date, formData.timeStart),
-        dateTimeStop: joinDateAndTime(this.day.date, formData.timeStop)
+        dateTimeStart: joinDateAndTime(this.selectedDate, formData.timeStart),
+        dateTimeStop: joinDateAndTime(this.selectedDate, formData.timeStop)
       }, formData)
       Ajax.post(`activity/save/custom`, params)
         .finally(() => {
-          this.$emit('forceRerender', ['Tempo', 'Details'])
+          this.$emit('forceRerender')
         })
+    },
+    /**
+     *
+     * @param {Date} date
+     */
+    changeMonth(date) {
+      this.selectedDate = date
+      this.loadCalendarActivity(this.selectedDate)
     }
   },
   template: template

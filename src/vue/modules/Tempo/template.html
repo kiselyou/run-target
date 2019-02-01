@@ -24,7 +24,8 @@
       text="Вы уверены что хотите удалить активность?"
       :show="confirmRemoveEnable"
       @clickNo="cancelRemoveActivity"
-      @clickYes="confirmRemoveActivity" />
+      @clickYes="confirmRemoveActivity"
+    />
 
     <Spinner :loading="loading"/>
 
@@ -58,7 +59,7 @@
         </div>
       </div>
 
-      <div class="tempo_container tempo_container__column px-2" v-if="isViewVisible('list-activities')">
+      <div v-if="isViewVisible('list-activities')" class="tempo_container tempo_container__column px-2">
         <SquareArea alignHorizontal="center">
           <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
             <template slot="image">
@@ -75,7 +76,7 @@
       </div>
     </div>
 
-    <Row class="mt-2 mb-4" v-if="isViewVisible('details-activity')">
+    <Row v-if="isViewVisible('details-activity')" class="mt-2 mb-4">
       <Cell :alignContainer="true">
         <template slot="content">
           <Button skin="orange" text="Список астивностей" @click="closeActivity" />
@@ -83,19 +84,26 @@
       </Cell>
     </Row>
 
-    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('no-activities')">
+    <div v-if="isViewVisible('no-activities')" class="tempo_container tempo_container__column tempo_container__center">
       <Row>
         <Cell content="Нет активностей" :beforeContent="activityEmpty" :align="true" />
       </Row>
     </div>
 
-    <div class="tempo_container tempo_container__column tempo_container__center" v-if="isViewVisible('form-activity')">
+    <div v-if="isViewVisible('form-activity')" class="tempo_container tempo_container__column tempo_container__center">
       <TempoForm @save="saveActivity" @cancel="showPrevView" />
     </div>
 
   </template>
 
   <template slot="foot">
-    <CalendarRun v-if="calendarActivity" @activeDay="activeDay" @selectDay="selectDay" :calendarActivity="calendarActivity" />
+    <CalendarRun
+      v-if="calendarActivityKey"
+      :key="calendarActivityKey"
+      @selectDay="selectDay"
+      @changeMonth="changeMonth"
+      :calendarActivity="calendarActivity"
+      :date="selectedDate"
+    />
   </template>
 </Layout>
