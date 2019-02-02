@@ -22,6 +22,10 @@ export default Vue.component('Rate', {
     after: {
       type: [String, Number]
     },
+    skin: {
+      type: [String],
+      default: 'success'
+    }
   },
   computed: {
     percent: function () {
@@ -41,7 +45,10 @@ export default Vue.component('Rate', {
     },
     classProcess: function () {
       return {
-        'rate_cell__active': this.value > 0
+        'rate_cell__active': this.value > 0,
+        'rate_skin__success': this.skin === 'success',
+        'rate_skin__warning': this.skin === 'warning',
+        'rate_skin__disabled': this.skin === 'disabled'
       }
     },
 

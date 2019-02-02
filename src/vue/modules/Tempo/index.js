@@ -36,7 +36,7 @@ export default Vue.component('Tempo', {
       /**
        * @type {boolean}
        */
-      loading: true,
+      loading: false,
       /**
        * @type {string}
        */
@@ -171,11 +171,20 @@ export default Vue.component('Tempo', {
       let path = 0
       const distances = this.distances(activity)
       for (const distance of distances) {
+        if (this.isShortDistance(distance)) {
+          continue
+        }
         time += distance.elapsedTime
         path += distance.pathLength
       }
 
       return this.timeToMinutes(time / path * 1000)
+    },
+    isShortDistance(distance) {
+      return distance.pathLength < 500
+    },
+    distanceRateSkin(distance) {
+      return this.isShortDistance(distance) ? 'disabled' : 'success'
     },
     /**
      * Самый быстрый темп.
@@ -196,6 +205,9 @@ export default Vue.component('Tempo', {
       let upperTempo = + Infinity
       const distances = this.distances(activity)
       for (const distance of distances) {
+        if (this.isShortDistance(distance)) {
+          continue
+        }
         const tempo = this.distanceTempoTime(distance)
         if (tempo < upperTempo) {
           upperTempo = tempo
@@ -213,6 +225,9 @@ export default Vue.component('Tempo', {
       let lowerTempo = - Infinity
       const distances = this.distances(activity)
       for (const distance of distances) {
+        if (this.isShortDistance(distance)) {
+          continue
+        }
         const tempo = this.distanceTempoTime(distance)
         if (tempo > lowerTempo) {
           lowerTempo = tempo
@@ -252,6 +267,7 @@ export default Vue.component('Tempo', {
      * @param {Date|string|number} [date]
      */
     loadCalendarActivity(date) {
+      this.loading = true
       const timestamp = new Date(date).getTime()
       Ajax.get(`/calendar/view/tempo/${timestamp}`)
         .then((data) => {

@@ -46,4 +46,16 @@
       z-index: 3;
     }
   }
+
+  &_skin {
+    &__success {
+      background: #7CCE67;
+    }
+    &__warning {
+      background: #EB9B00;
+    }
+    &__disabled {
+      background: #999999;
+    }
+  }
 }

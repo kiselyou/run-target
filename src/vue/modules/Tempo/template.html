@@ -51,7 +51,15 @@
         </Row>
 
         <div class="mt-4">
-          <Rate :value="distanceTempoTime(distance)" :key="key" v-for="(distance, key) of distances(selectedActivity)" :min="0" :max="maxTempo(selectedActivity)" class="my-3">
+          <Rate
+            v-for="(distance, key) of distances(selectedActivity)"
+            :value="distanceTempoTime(distance)"
+            :skin="distanceRateSkin(distance)"
+            :key="key"
+            :min="0"
+            :max="maxTempo(selectedActivity)"
+            class="my-3"
+          >
             <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
             <template slot="center">{{ distanceToTempoString(distance) }}</template>
             <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
