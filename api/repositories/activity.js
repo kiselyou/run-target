@@ -9,8 +9,14 @@ export const TYPE_USER_FORM = 2
  * @returns {Promise.<number>}
  */
 export const saveActivity = (db, deviceId, options) => {
-  const params = [new Date(options.dateTimeStart), new Date(options.dateTimeStop), deviceId, options.type]
-  return db.query(`INSERT INTO activity (dateTimeStart, dateTimeStop, deviceId, type) VALUES (?, ?, ?, ?)`, params)
+  const params = [
+    new Date(options.dateTimeStart),
+    new Date(options.dateTimeStart),
+    new Date(options.dateTimeStop),
+    deviceId,
+    options.type
+  ]
+  return db.query(`INSERT INTO activity (date, dateTimeStart, dateTimeStop, deviceId, type) VALUES (?, ?, ?, ?, ?)`, params)
     .then(results => results.insertId)
 }
 

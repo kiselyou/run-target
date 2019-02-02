@@ -108,6 +108,7 @@
     <CalendarRun
       v-if="calendarActivityKey"
       :key="calendarActivityKey"
+      @activeDay="activeDay"
       @selectDay="selectDay"
       @changeMonth="changeMonth"
       :calendarActivity="calendarActivity"

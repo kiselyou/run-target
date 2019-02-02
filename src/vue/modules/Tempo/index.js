@@ -171,14 +171,15 @@ export default Vue.component('Tempo', {
       let path = 0
       const distances = this.distances(activity)
       for (const distance of distances) {
-        if (this.isShortDistance(distance)) {
+        if (this.isShortDistance(distance) && distances.length > 1) {
           continue
         }
+
         time += distance.elapsedTime
         path += distance.pathLength
       }
 
-      return this.timeToMinutes(time / path * 1000)
+      return path > 0 ? this.timeToMinutes(time / path * 1000) : 0
     },
     isShortDistance(distance) {
       return distance.pathLength < 500
@@ -205,7 +206,7 @@ export default Vue.component('Tempo', {
       let upperTempo = + Infinity
       const distances = this.distances(activity)
       for (const distance of distances) {
-        if (this.isShortDistance(distance)) {
+        if (this.isShortDistance(distance) && distances.length > 1) {
           continue
         }
         const tempo = this.distanceTempoTime(distance)
@@ -219,13 +220,13 @@ export default Vue.component('Tempo', {
      * Самый медленый темп.
      *
      * @param {Object|?} activity
-     * @returns {string}
+     * @returns {number}
      */
     lowerTempoMinutes(activity) {
       let lowerTempo = - Infinity
       const distances = this.distances(activity)
       for (const distance of distances) {
-        if (this.isShortDistance(distance)) {
+        if (this.isShortDistance(distance) && distances.length > 1) {
           continue
         }
         const tempo = this.distanceTempoTime(distance)
@@ -233,7 +234,7 @@ export default Vue.component('Tempo', {
           lowerTempo = tempo
         }
       }
-      return (lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2)
+      return Number((lowerTempo === - Infinity ? 0 : lowerTempo).toFixed(2))
     },
     /**
      * Самый медленый темп.
@@ -295,7 +296,16 @@ export default Vue.component('Tempo', {
           this.loading = false
         })
     },
-
+    /**
+     * CalendarRun.
+     * Метод дня устоновки текущего дня в календаре.
+     *
+     * @param day
+     */
+    activeDay: function (day) {
+      this.selectedDate = day.date
+      this.loadActivities(this.selectedDate)
+    },
     /**
      * CalendarRun.
      * Метод дня устоновки выбранного дня в календаре.
