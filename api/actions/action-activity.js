@@ -1,7 +1,6 @@
-import moment from 'moment'
 import objectPath from 'object-path'
 import { TYPE_GPS_LOCATION, TYPE_USER_FORM } from './../repositories/activity'
-import { saveActivity, getActivitiesByDateStart, removeActivityById } from './../repositories/activity'
+import { saveActivity, getActivitiesByDate, removeActivityById } from './../repositories/activity'
 import { saveDistance, getDistances, removeDistancesByActivityId } from './../repositories/distance'
 import { savePoints, removePointsByActivityId } from './../repositories/point'
 import { saveKeyAndGetDeviceId } from './../repositories/device'
@@ -92,7 +91,7 @@ export async function viewActivitiesAction({ req, res, db }) {
   const date = new Date()
   date.setTime(timestamp)
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
-  const activities = await getActivitiesByDateStart(db, deviceId, date)
+  const activities = await getActivitiesByDate(db, deviceId, date)
   for (const activity of activities) {
     activity['distances'] = await getDistances(db, activity.id)
   }

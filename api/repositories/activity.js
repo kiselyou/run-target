@@ -18,11 +18,11 @@ export const saveActivity = (db, deviceId, options) => {
  *
  * @param {MySQL} db
  * @param {number} deviceId
- * @param {Date} dateStart
+ * @param {Date} date
  * @returns {Promise<Array>}
  */
-export const getActivitiesByDateStart = (db, deviceId, dateStart) => {
-  return db.query(`SELECT * FROM activity WHERE DATE(dateTimeStart) = DATE(?) AND deviceId = ?`, [dateStart, deviceId])
+export const getActivitiesByDate = (db, deviceId, date) => {
+  return db.query(`SELECT * FROM activity WHERE date = DATE(?) AND deviceId = ?`, [date, deviceId])
 }
 
 /**

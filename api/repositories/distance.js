@@ -43,13 +43,13 @@ export const getTotalDistances = (db, deviceId, date) => {
         SELECT ROUND(SUM(dst.pathLength))
           FROM activity as act
                INNER JOIN distance as dst ON dst.activityId = act.id
-         WHERE deviceId = ? AND dateTimeStart >= DATE_FORMAT(? ,'%Y-%m-01')
+         WHERE deviceId = ? AND date >= DATE_FORMAT(? ,'%Y-%m-01')
       ) AS totalMonthDistance,
       (
         SELECT ROUND(SUM(dst.pathLength))
           FROM activity as act
                INNER JOIN distance as dst ON dst.activityId = act.id
-         WHERE deviceId = ? AND dateTimeStart >= SUBDATE(DATE(?), WEEKDAY(?))
+         WHERE deviceId = ? AND date >= SUBDATE(DATE(?), WEEKDAY(?))
       ) AS totalWeekDistance
   `, [deviceId, deviceId, date, deviceId, date, date])
 }
@@ -66,11 +66,11 @@ export const getDistancesPathLength = (db, deviceId, timestamp) => {
   date.setTime(Number(timestamp))
   return db.query(`
     SELECT SUM(d.pathLength) AS pathLength,
-           DATE(a.dateTimeStart) AS date
+           date
       FROM activity AS a
            INNER JOIN distance AS d on a.id = d.activityId
      WHERE a.deviceId = ?
-       AND DATE(a.dateTimeStart) BETWEEN DATE_FORMAT(? ,'%Y-%m-01') AND LAST_DAY(?)
+       AND date BETWEEN DATE_FORMAT(? ,'%Y-%m-01') AND LAST_DAY(?)
      GROUP BY date
   `, [deviceId, date, date])
 }
