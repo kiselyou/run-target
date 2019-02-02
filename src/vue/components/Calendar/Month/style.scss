@@ -7,7 +7,6 @@
   &_skin {
 
     &__dark {
-      border: solid 1px #555555;
       background-color: #000000;
     }
   }
@@ -18,15 +17,18 @@
     align-content: space-between;
     justify-content: center;
     align-items: center;
-    padding: 10px;
 
-    &__left {
-      width: 20px;
-      text-align: center;
+    &__swith {
+      width: 40px;
       cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+
     &__center {
-      width: calc(100% - 60px);
+      width: calc(100% - 80px);
       display: flex;
       flex-wrap: wrap;
       align-content: space-between;
@@ -41,11 +43,6 @@
     &__month {
       text-align: center;
       width: 50%;
-    }
-    &__right {
-      width: 20px;
-      text-align: center;
-      cursor: pointer;
     }
   }
 

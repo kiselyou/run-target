@@ -50,11 +50,17 @@ export default Vue.component('Tempo', {
        */
       selectedActivity: null,
       /**
-       * Date from calendar.
+       * Selected date from calendar.
        *
        * @type {Date}
        */
       selectedDate: new Date(),
+      /**
+       * Selected date month from calendar.
+       *
+       * @type {Date}
+       */
+      selectedMonthDate: new Date(),
       /**
        * @type {Object}
        */
@@ -251,7 +257,6 @@ export default Vue.component('Tempo', {
         .then((data) => {
           this.calendarActivity = Object.assign({}, this.calendarActivity, data)
           this.calendarActivityKey = uuid()
-          this.loadActivities(date)
         })
         .finally(() => {
           this.loading = false
@@ -506,8 +511,8 @@ export default Vue.component('Tempo', {
      * @param {Date} date
      */
     changeMonth(date) {
-      this.selectedDate = date
-      this.loadCalendarActivity(this.selectedDate)
+      this.selectedMonthDate = date
+      this.loadCalendarActivity(this.selectedMonthDate)
     }
   },
   template: template

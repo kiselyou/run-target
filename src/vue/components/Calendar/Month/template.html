@@ -2,14 +2,14 @@
 <div class="month month_skin__dark" :class="htmlClass">
 
   <div class="month_head">
-    <div class="month_head__left" v-if="showArrow" @click="prev(month)">
+    <div class="month_head__swith" v-if="showArrow" @click="prev(month)">
       <VueIcon color="#CCCCCC" name="chevron-left" />
     </div>
     <div class="month_head__center">
       <div class="month_head__month">{{ month.getName(locale) }}</div>
       <div class="month_head__year">{{ month.year }}</div>
     </div>
-    <div class="month_head__right" v-if="showArrow" @click="next(month)">
+    <div class="month_head__swith" v-if="showArrow" @click="next(month)">
       <VueIcon color="#CCCCCC" name="chevron-right" />
     </div>
   </div>

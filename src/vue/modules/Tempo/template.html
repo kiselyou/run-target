@@ -2,6 +2,8 @@
 <Layout :showCorner="true" :showFoot="!isViewVisible('details-activity')">
   <template slot="body">
 
+    <Spinner :loading="loading"/>
+
     <WrapCorner v-if="isViewVisible(['list-activities', 'no-activities'])">
       <Tooltip content="Добавить активность" placement="bottom">
         <Button size="30px" icon="plus" shape="square" @click="showViewFormActivity"/>
@@ -26,8 +28,6 @@
       @clickNo="cancelRemoveActivity"
       @clickYes="confirmRemoveActivity"
     />
-
-    <Spinner :loading="loading"/>
 
     <div id="tempo-background" class="tempo_background">
       <Title :description="viewTitleDescription">
@@ -103,7 +103,7 @@
       @selectDay="selectDay"
       @changeMonth="changeMonth"
       :calendarActivity="calendarActivity"
-      :date="selectedDate"
+      :monthDate="selectedMonthDate"
     />
   </template>
 </Layout>
