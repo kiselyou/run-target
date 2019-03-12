@@ -1,0 +1,60 @@
+
+<Layout :showCorner="true">
+  <template slot="body">
+
+    <div class="settings">
+
+      <div class="settings_container">
+
+        <Spinner :loading="processing" />
+
+        <Row class="mt-2">
+          <Cell beforeContent="Список устройств">
+            <FieldSelect name="device" :options="modelsList" :value="selectedModels" @onSelect="onSelectModel"/>
+          </Cell>
+        </Row>
+
+        <Row class="mt-1">
+          <Cell>
+            <Button skin="green" @click="detectDevice" :disabled="buttonIsDisabled" width="100%">Подключить устройство</Button>
+          </Cell>
+        </Row>
+
+        <Row class="mt-3" v-if="errorMessage">
+          <Cell size="xs" :underline="true" :align="true" :beforeContent="errorMessage" />
+        </Row>
+
+        <Row class="mt-3" v-if="successMessage">
+          <Cell size="xs" :underline="true" :align="true" :beforeContent="successMessage" />
+        </Row>
+
+        <Row class="mt-3" v-if="failureMessage">
+          <Cell size="xs" :underline="true" :align="true" :beforeContent="failureMessage" />
+        </Row>
+
+        <Row class="mt-1" v-if="device && isTestRunning === false">
+          <Cell>
+            <Button skin="green" @click="runHRM" :disabled="buttonIsDisabled" width="100%">Запустить тест HRM</Button>
+          </Cell>
+        </Row>
+      </div>
+    </div>
+
+  </template>
+
+  <template slot="foot">
+
+    <div class="settings">
+
+      <div class="settings_hrm" v-if="!device">
+        <span>Устройство не подключено</span>
+      </div>
+      <div class="settings_hrm" v-if="device">
+        <div class="settings_hrm__value">{{ hrm }}</div>
+        <VueIcon name="heart" color="#ffffff" size="30px" class="settings_hrm__heart" />
+      </div>
+
+    </div>
+
+  </template>
+</Layout>

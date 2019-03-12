@@ -1,8 +1,8 @@
 import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
-import { ModelListSelect } from 'vue-search-select'
-Vue.component('ModelListSelect', ModelListSelect)
+import { ModelSelect } from 'vue-search-select'
+Vue.component('ModelSelect', ModelSelect)
 
 export default Vue.component('FieldSelect', {
   props: {
@@ -15,7 +15,7 @@ export default Vue.component('FieldSelect', {
     id: {
       type: String,
     },
-    items: {
+    options: {
       type: Array,
       default: () => []
     },
@@ -29,13 +29,13 @@ export default Vue.component('FieldSelect', {
     }
   },
   computed: {
-    inputId: function () {
+    fieldId: function () {
       return this.id || this.name
-    }
+    },
   },
   methods: {
-    onChangeEvent: function (event) {
-      this.$emit('onChange', this.modelValue,  event)
+    onSelect: function (event) {
+      this.$emit('onSelect', this.modelValue || null,  event)
     },
   },
   template: template

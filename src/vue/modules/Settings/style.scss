@@ -1,0 +1,37 @@
+.settings {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+
+  &_container {
+    margin: 8px;
+  }
+
+  &_hrm {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &__value {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    &__heart {
+      animation: bit  0.5s infinite alternate-reverse ease-in;
+
+      @keyframes bit {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+}

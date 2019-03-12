@@ -33,6 +33,8 @@
   }
 
   &__disabled {
+    border: solid 1px #000 !important;
+    background: #000 !important;
     opacity: 0.2 !important;
 
     &:hover {
