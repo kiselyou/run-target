@@ -12,6 +12,8 @@ import '@module/Spinner'
 
 import BluetoothModels from '@lib/cordova/bluetooth/BluetoothModels'
 
+import { mapGetters, mapState } from 'vuex'
+
 export default Vue.component('Settings', {
   props: {
 
@@ -19,14 +21,12 @@ export default Vue.component('Settings', {
   data: function () {
     return {
       bluetooth: new BluetoothModels(),
-      selectedModels: null,
       errorMessage: null,
       successMessage: null,
       failureMessage: null,
       processing: false,
-      device: null,
       hrm: null,
-      isTestRunning: false
+      isTestRunning: false,
     }
   },
   mounted() {
@@ -39,7 +39,25 @@ export default Vue.component('Settings', {
 
   },
   computed: {
-    modelsList() {
+    ...mapState({
+      /**
+       *
+       * @param {Object} state
+       * @returns {Object|?}
+       */
+      bluetoothDevice: (state) => {
+        return state.settings.bluetoothDevice.device
+      },
+      /**
+       *
+       * @param {Object} state
+       * @returns {number|?}
+       */
+      bluetoothDeviceKey: (state) => {
+        return state.settings.bluetoothDevice.deviceKey
+      }
+    }),
+    bluetoothDeviceSList() {
       const options = []
       const list = this.bluetooth.modelsList
       for (const key in list) {
@@ -51,13 +69,13 @@ export default Vue.component('Settings', {
       return options
     },
     buttonIsDisabled() {
-      return this.selectedModels === null
+      return this.bluetoothDeviceKey === null
     },
   },
   methods: {
-    onSelectModel(value) {
+    onSelectDevice(value) {
       this.clearMessages()
-      this.selectedModels = value || null
+      this.$store.dispatch('settings/rememberBluetoothDeviceKey', value || null)
     },
     detectDevice() {
       if (this.processing) {
@@ -65,11 +83,11 @@ export default Vue.component('Settings', {
       }
       this.clearMessages()
       this.processing = true
-      this.bluetooth.detectDevice(this.selectedModels)
+      this.bluetooth.detectDevice(this.bluetoothDeviceKey)
         .then((device) => {
           if (device) {
+            this.$store.dispatch('settings/rememberBluetoothDeviceKey', device)
             this.successMessage = 'Устройство успешно подключено.'
-            this.device = device
           } else {
             this.failureMessage = 'Ошибка подключения. Попробуйте еще раз.'
           }
@@ -86,12 +104,12 @@ export default Vue.component('Settings', {
         return
       }
       this.isTestRunning = true
-      this.bluetooth.connect(this.selectedModels, this.device)
+      this.bluetooth.connect(this.bluetoothDeviceKey, this.bluetoothDevice)
         .then((deviceData) => {
-          this.bluetooth.auth(this.selectedModels, deviceData)
+          this.bluetooth.auth(this.bluetoothDeviceKey, deviceData)
             .then((isAuth) => {
               if (isAuth) {
-                this.bluetooth.startListenHRM(this.selectedModels, deviceData, (rate) => {
+                this.bluetooth.startListenHRM(this.bluetoothDeviceKey, deviceData, (rate) => {
                   this.hrm = rate
                 })
               }

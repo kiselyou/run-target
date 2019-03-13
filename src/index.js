@@ -1,15 +1,20 @@
 import './scss/index.scss'
 import Vue from 'vue'
+import Vuex from 'vuex'
+import store from './store'
 import crypto from 'browserify-aes'
 import BluetoothMiBand from '@lib/cordova/bluetooth/BluetoothMiBand'
 
 import arrayBufferToString from 'arraybuffer-to-string'
+
+Vue.use(Vuex)
 
 import './vue/layouts/Mobile'
 // import './vue/layouts/Watch'
 
 const renderView = () => {
   new Vue({
+    store,
     el: '#app-container',
     template: `<Mobile/>`
     // template: `<Watch/>`

@@ -10,7 +10,7 @@
 
         <Row class="mt-2">
           <Cell beforeContent="Список устройств">
-            <FieldSelect name="device" :options="modelsList" :value="selectedModels" @onSelect="onSelectModel"/>
+            <FieldSelect name="device" :options="bluetoothDeviceSList" :value="bluetoothDeviceKey" @onSelect="onSelectDevice"/>
           </Cell>
         </Row>
 
@@ -32,7 +32,7 @@
           <Cell size="xs" :underline="true" :align="true" :beforeContent="failureMessage" />
         </Row>
 
-        <Row class="mt-1" v-if="device && isTestRunning === false">
+        <Row class="mt-1" v-if="bluetoothDevice && isTestRunning === false">
           <Cell>
             <Button skin="green" @click="runHRM" :disabled="buttonIsDisabled" width="100%">Запустить тест HRM</Button>
           </Cell>
@@ -46,10 +46,10 @@
 
     <div class="settings">
 
-      <div class="settings_hrm" v-if="!device">
+      <div class="settings_hrm" v-if="!bluetoothDevice">
         <span>Устройство не подключено</span>
       </div>
-      <div class="settings_hrm" v-if="device">
+      <div class="settings_hrm" v-if="bluetoothDevice">
         <div class="settings_hrm__value">{{ hrm }}</div>
         <VueIcon name="heart" color="#ffffff" size="30px" class="settings_hrm__heart" />
       </div>

@@ -19,11 +19,11 @@ class BluetoothModels {
 
   /**
    *
-   * @param {number} modelKey
+   * @param {number} deviceKey
    * @returns {Promise<Object|?>}
    */
-  async detectDevice(modelKey) {
-    switch (Number(modelKey)) {
+  async detectDevice(deviceKey) {
+    switch (Number(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.detectDevice(this.miBand.name)
       default:
@@ -33,12 +33,12 @@ class BluetoothModels {
 
   /**
    *
-   * @param {number} modelKey
+   * @param {number} deviceKey
    * @param {Object} device
    * @returns {Promise<Object>}
    */
-  async connect(modelKey, device) {
-    switch (Number(modelKey)) {
+  async connect(deviceKey, device) {
+    switch (Number(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.connect(device)
       default:
@@ -47,12 +47,12 @@ class BluetoothModels {
   }
 
   /**
-   * @param {number} modelKey
+   * @param {number} deviceKey
    * @param {Object} device
    * @returns {Promise<boolean>}
    */
-  async auth(modelKey, device) {
-    switch (Number(modelKey)) {
+  async auth(deviceKey, device) {
+    switch (Number(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.auth(device)
       default:
@@ -61,14 +61,14 @@ class BluetoothModels {
   }
 
   /**
-   * @param {number} modelKey
+   * @param {number} deviceKey
    * @param {Object} device
    * @param {Function} onSuccess
    * @param {Function} [onError]
    * @returns {void}
    */
-  startListenHRM(modelKey, device, onSuccess, onError) {
-    switch (Number(modelKey)) {
+  startListenHRM(deviceKey, device, onSuccess, onError) {
+    switch (Number(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         this.miBand.startListenHRM(device, onSuccess, onError)
         break
