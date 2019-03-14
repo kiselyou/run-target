@@ -7,6 +7,14 @@
     margin: 8px;
   }
 
+  &_panel {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    z-index: 1;
+  }
+
   &_hrm {
     height: 100%;
     width: 100%;

@@ -32,16 +32,6 @@
     margin: 0 10px;
   }
 
-  &__disabled {
-    border: solid 1px #000 !important;
-    background: #000 !important;
-    opacity: 0.2 !important;
-
-    &:hover {
-      cursor: not-allowed;
-    }
-  }
-
   &__white {
     background: #FFFFFF;
     border: solid 1px #7CCE67;
@@ -101,6 +91,17 @@
     &__square {
       padding: 0;
       width: 40px;
+    }
+  }
+
+  &__disabled {
+    border: solid 1px #000 !important;
+    background: #000 !important;
+    opacity: 0.2 !important;
+    color: #FFFFFF;
+
+    &:hover {
+      cursor: not-allowed;
     }
   }
 }

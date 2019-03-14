@@ -22,11 +22,9 @@ export default Vue.component('Settings', {
     return {
       bluetooth: new BluetoothModels(),
       errorMessage: null,
-      successMessage: null,
-      failureMessage: null,
       processing: false,
-      hrm: null,
-      isTestRunning: false,
+      hrmIsActive: false,
+      hrm: 0,
     }
   },
   mounted() {
@@ -51,7 +49,7 @@ export default Vue.component('Settings', {
       /**
        *
        * @param {Object} state
-       * @returns {number|?}
+       * @returns {string|?}
        */
       bluetoothDeviceKey: (state) => {
         return state.settings.bluetoothDevice.deviceKey
@@ -71,25 +69,30 @@ export default Vue.component('Settings', {
     buttonIsDisabled() {
       return this.bluetoothDeviceKey === null
     },
+    heartClass() {
+      return {
+        settings_hrm__heart: this.bluetoothDevice && this.hrmIsActive
+      }
+    }
   },
   methods: {
     onSelectDevice(value) {
-      this.clearMessages()
+      this.errorMessage = null
       this.$store.dispatch('settings/rememberBluetoothDeviceKey', value || null)
     },
     detectDevice() {
       if (this.processing) {
         return
       }
-      this.clearMessages()
       this.processing = true
+      this.errorMessage = null
       this.bluetooth.detectDevice(this.bluetoothDeviceKey)
         .then((device) => {
           if (device) {
-            this.$store.dispatch('settings/rememberBluetoothDeviceKey', device)
-            this.successMessage = 'Устройство успешно подключено.'
+            this.$store.dispatch('settings/rememberBluetoothDevice', device)
+            this.errorMessage = 'Устройство успешно подключено.'
           } else {
-            this.failureMessage = 'Ошибка подключения. Попробуйте еще раз.'
+            this.errorMessage = 'Ошибка подключения. Попробуйте еще раз.'
           }
         })
         .catch((error) => {
@@ -99,27 +102,44 @@ export default Vue.component('Settings', {
           this.processing = false
         })
     },
-    runHRM() {
-      if (this.isTestRunning) {
+    /**
+     * Connect to device and start HRM listener.
+     */
+    startHRM() {
+      console.log(1)
+      if (this.hrmIsActive) {
         return
       }
-      this.isTestRunning = true
+      this.hrmIsActive = true
+      console.log(2)
       this.bluetooth.connect(this.bluetoothDeviceKey, this.bluetoothDevice)
         .then((deviceData) => {
+          console.log(3)
           this.bluetooth.auth(this.bluetoothDeviceKey, deviceData)
             .then((isAuth) => {
+              console.log(4)
               if (isAuth) {
+                console.log(5)
                 this.bluetooth.startListenHRM(this.bluetoothDeviceKey, deviceData, (rate) => {
+                  console.log(6)
                   this.hrm = rate
                 })
               }
             })
         })
     },
-    clearMessages() {
-      this.successMessage = null
-      this.failureMessage = null
-      this.errorMessage = null
+    /**
+     * Strop HRM listener and disconnect device.
+     */
+    stopHRM() {
+      if (!this.hrmIsActive) {
+        return
+      }
+      this.bluetooth.stopListenHRM(this.bluetoothDeviceKey, this.bluetoothDevice, () => {
+        this.bluetooth.disconnect(this.bluetoothDevice).then(() => {
+          this.hrmIsActive = false
+        })
+      })
     }
   },
   template: template

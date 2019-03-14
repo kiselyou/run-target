@@ -22,12 +22,12 @@ const config = {
   devtool: 'source-map',
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        use: {
-          loader: 'babel-loader'
-        }
-      },
+      // {
+      //   test: /\.js$/,
+      //   use: {
+      //     loader: 'babel-loader'
+      //   }
+      // },
       {
         test: [
           /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,

@@ -209,6 +209,17 @@ console.log(1111)
   /**
    *
    * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} [onError]
+   * @returns {void}
+   */
+  stoptListenHRM(device, onSuccess, onError) {
+    this.stopNotification(device).then(onSuccess).catch(onError)
+  }
+
+  /**
+   *
+   * @param {Object} device
    * @returns {Promise<void>}
    * @private
    */

@@ -8,15 +8,15 @@
 
         <Spinner :loading="processing" />
 
-        <Row class="mt-2">
-          <Cell beforeContent="Список устройств">
+        <Row class="my-3">
+          <Cell beforeContent="Список устройств" class="mx-2">
             <FieldSelect name="device" :options="bluetoothDeviceSList" :value="bluetoothDeviceKey" @onSelect="onSelectDevice"/>
           </Cell>
         </Row>
 
-        <Row class="mt-1">
-          <Cell>
-            <Button skin="green" @click="detectDevice" :disabled="buttonIsDisabled" width="100%">Подключить устройство</Button>
+        <Row>
+          <Cell class="mx-2">
+            <Button skin="green" @click="detectDevice" :disabled="buttonIsDisabled" width="100%">Подключить</Button>
           </Cell>
         </Row>
 
@@ -24,19 +24,6 @@
           <Cell size="xs" :underline="true" :align="true" :beforeContent="errorMessage" />
         </Row>
 
-        <Row class="mt-3" v-if="successMessage">
-          <Cell size="xs" :underline="true" :align="true" :beforeContent="successMessage" />
-        </Row>
-
-        <Row class="mt-3" v-if="failureMessage">
-          <Cell size="xs" :underline="true" :align="true" :beforeContent="failureMessage" />
-        </Row>
-
-        <Row class="mt-1" v-if="bluetoothDevice && isTestRunning === false">
-          <Cell>
-            <Button skin="green" @click="runHRM" :disabled="buttonIsDisabled" width="100%">Запустить тест HRM</Button>
-          </Cell>
-        </Row>
       </div>
     </div>
 
@@ -46,14 +33,19 @@
 
     <div class="settings">
 
-      <div class="settings_hrm" v-if="!bluetoothDevice">
-        <span>Устройство не подключено</span>
-      </div>
-      <div class="settings_hrm" v-if="bluetoothDevice">
-        <div class="settings_hrm__value">{{ hrm }}</div>
-        <VueIcon name="heart" color="#ffffff" size="30px" class="settings_hrm__heart" />
+      <Row class="my-4" v-if="!bluetoothDevice">
+        <Cell class="mx-3" beforeContent="Устройство не подключено" align="center" />
+      </Row>
+
+      <div class="settings_panel" v-if="bluetoothDevice">
+        <Button skin="white" @click="startHRM" v-if="!hrmIsActive" class="my-3 mx-3">HRM старт</Button>
+        <Button skin="white" @click="stopHRM" v-if="hrmIsActive" class="my-3 mx-3">HRM стоп</Button>
       </div>
 
+      <div class="settings_hrm">
+        <div class="settings_hrm__value">{{ hrm }}</div>
+        <VueIcon name="heart" color="#ffffff" size="30px" :class="heartClass" />
+      </div>
     </div>
 
   </template>

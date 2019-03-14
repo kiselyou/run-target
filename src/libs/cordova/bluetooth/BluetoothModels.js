@@ -19,11 +19,11 @@ class BluetoothModels {
 
   /**
    *
-   * @param {number} deviceKey
+   * @param {string} deviceKey
    * @returns {Promise<Object|?>}
    */
   async detectDevice(deviceKey) {
-    switch (Number(deviceKey)) {
+    switch (String(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.detectDevice(this.miBand.name)
       default:
@@ -33,12 +33,12 @@ class BluetoothModels {
 
   /**
    *
-   * @param {number} deviceKey
+   * @param {string} deviceKey
    * @param {Object} device
    * @returns {Promise<Object>}
    */
   async connect(deviceKey, device) {
-    switch (Number(deviceKey)) {
+    switch (String(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.connect(device)
       default:
@@ -47,12 +47,27 @@ class BluetoothModels {
   }
 
   /**
-   * @param {number} deviceKey
+   *
+   * @param {string} deviceKey
+   * @param {Object} device
+   * @returns {Promise<Object>}
+   */
+  async disconnect(deviceKey, device) {
+    switch (String(deviceKey)) {
+      case BluetoothModels.KEY_MI_BAND:
+        return this.miBand.disconnect(device)
+      default:
+        throw new Error('Model is not supported')
+    }
+  }
+
+  /**
+   * @param {string} deviceKey
    * @param {Object} device
    * @returns {Promise<boolean>}
    */
   async auth(deviceKey, device) {
-    switch (Number(deviceKey)) {
+    switch (String(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         return this.miBand.auth(device)
       default:
@@ -61,14 +76,14 @@ class BluetoothModels {
   }
 
   /**
-   * @param {number} deviceKey
+   * @param {string} deviceKey
    * @param {Object} device
    * @param {Function} onSuccess
    * @param {Function} [onError]
    * @returns {void}
    */
   startListenHRM(deviceKey, device, onSuccess, onError) {
-    switch (Number(deviceKey)) {
+    switch (String(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
         this.miBand.startListenHRM(device, onSuccess, onError)
         break
@@ -77,8 +92,25 @@ class BluetoothModels {
     }
   }
 
+  /**
+   * @param {string} deviceKey
+   * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} [onError]
+   * @returns {void}
+   */
+  stopListenHRM(deviceKey, device, onSuccess, onError) {
+    switch (String(deviceKey)) {
+      case BluetoothModels.KEY_MI_BAND:
+        this.miBand.stoptListenHRM(device, onSuccess, onError)
+        break
+      default:
+        throw new Error('Model is not supported')
+    }
+  }
+
   static get KEY_MI_BAND() {
-    return 1
+    return 'mi_band_2'
   }
 }
 

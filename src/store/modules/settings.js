@@ -1,10 +1,11 @@
+import Storage from '@lib/Storage'
 
 export default {
   namespaced: true,
   state: {
     bluetoothDevice: {
-      deviceKey: null,
-      device: null
+      deviceKey: Storage.getStorageItem('bluetoothDeviceKey') || null,
+      device: Storage.decodeStorageItem('bluetoothDevice') || {a: ''}
     }
   },
   getters: {
@@ -38,6 +39,7 @@ export default {
      */
     rememberBluetoothDevice({ commit }, device) {
       commit('rememberBluetoothDevice', device)
+      Storage.encodeStorageItem('bluetoothDevice', device)
     },
     /**
      *
@@ -46,6 +48,7 @@ export default {
      */
     rememberBluetoothDeviceKey({ commit }, deviceKey) {
       commit('rememberBluetoothDeviceKey', deviceKey)
+      Storage.setStorageItem('bluetoothDeviceKey', deviceKey)
     },
   }
 }
