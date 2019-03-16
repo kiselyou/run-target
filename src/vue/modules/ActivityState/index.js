@@ -38,6 +38,13 @@ export default Vue.component('ActivityState', {
     time: {
       type: String
     },
+    hrm: {
+      type: [String, Number]
+    },
+    hrmLabel: {
+      type: String,
+      default: 'пульс'
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -66,6 +73,9 @@ export default Vue.component('ActivityState', {
   computed: {
     speedValue: function () {
       return (this.speed).toFixed(2)
+    },
+    hrmValue: function () {
+      return this.hrm
     },
     tempoValue: function () {
       return (this.tempo).toFixed(2)

@@ -66,18 +66,6 @@ export default Vue.component('Settings', {
 
       return selectedKey === this.bluetoothDeviceKey
     },
-    renderButtonName() {
-      const device = this.bluetoothDevice
-      const selectedKey = this.selectedDeviceKey
-      if (selectedKey === null && device) {
-        return device.name
-      }
-
-      if (selectedKey === this.bluetoothDeviceKey && device) {
-        return device.name
-      }
-      return 'Подключить устройство'
-    },
     title() {
       return this.bluetoothDevice ? this.bluetoothDevice.name : 'Устройство не подключено'
     },

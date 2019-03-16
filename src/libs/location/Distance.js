@@ -60,6 +60,48 @@ class Distance {
   }
 
   /**
+   * Average hrm for last 10 points.
+   *
+   * @returns {number}
+   */
+  get avgHRM() {
+    return this.getAvgSpeed(10)
+  }
+
+  /**
+   * Average hrm for all points on distance.
+   *
+   * @returns {number}
+   */
+  get totalAvgHRM() {
+    return this.getAvgSpeed(this.points.length - 1)
+  }
+
+  /**
+   * Average hrm for (n) points.
+   *
+   * @param {number} pointsCount - Count points to calculate avg hrm.
+   */
+  getAvgHRM(pointsCount) {
+    const key = `hrm-${pointsCount}-${this.points.length}`
+    if (this._cache.hasOwnProperty(key)) {
+      return this._cache[key]
+    }
+    const avg = { hrm: 0, count: 0 }
+    const points = this.findLastPoints(pointsCount)
+    for (const point of points) {
+      if (!point.prevPoint) {
+        continue
+      }
+      avg.hrm += point.hrm
+      avg.count++
+    }
+
+    this._cache[key] = avg.count > 0 ? avg.hrm / avg.count : 0
+    return this._cache[key]
+  }
+
+  /**
    * Average speed for last 10 points.
    *
    * @returns {number}
@@ -69,7 +111,7 @@ class Distance {
   }
 
   /**
-   * Average speed for last 10 points.
+   * Average speed for all points on distance.
    *
    * @returns {number}
    */
@@ -83,7 +125,7 @@ class Distance {
    * @param {number} pointsCount - Count points to calculate avg speed.
    */
   getAvgSpeed(pointsCount) {
-    const key = `${pointsCount}-${this.points.length}`
+    const key = `speed-${pointsCount}-${this.points.length}`
     if (this._cache.hasOwnProperty(key)) {
       return this._cache[key]
     }
@@ -191,6 +233,7 @@ class Distance {
       id: this.id,
       uKey: this.uKey,
       number: this.number,
+      avgHRM: this.totalAvgHRM,
       avgSpeed: this.totalAvgSpeed,
       pathLength: this.pathLength,
       elapsedTime: this.elapsedTime,

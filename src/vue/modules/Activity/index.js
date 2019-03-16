@@ -12,17 +12,24 @@ import Ajax from '@lib/Ajax'
 import Plugins from '@lib/cordova/Plugins'
 import Signal from '@lib/location/Signal'
 
+import BluetoothModels from '@lib/cordova/bluetooth/BluetoothModels'
+import { mapGetters, mapState } from 'vuex'
+
 const timer = new Timer()
 
 export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: false
+      default: false,
     }
   },
   data: function () {
     return {
+      /**
+       * @type {BluetoothModels}
+       */
+      bluetooth: new BluetoothModels(),
       /**
        * @type {GeoControls}
        */
@@ -39,6 +46,14 @@ export default Vue.component('Activity', {
        * @type {boolean}
        */
       loading: false,
+      /**
+       * @type {boolean}
+       */
+      hrmIsActive: false,
+      /**
+       * @type {number}
+       */
+      hrm: 0
     }
   },
   mounted() {
@@ -64,6 +79,24 @@ export default Vue.component('Activity', {
     }
   },
   computed: {
+    ...mapState({
+      /**
+       *
+       * @param {Object} state
+       * @returns {Object|?}
+       */
+      bluetoothDevice: (state) => {
+        return state.settings.bluetoothDevice.device
+      },
+      /**
+       *
+       * @param {Object} state
+       * @returns {string|?}
+       */
+      bluetoothDeviceKey: (state) => {
+        return state.settings.bluetoothDevice.deviceKey
+      }
+    }),
     path: function () {
       return this.geo.getPathLength()
     },
@@ -85,9 +118,11 @@ export default Vue.component('Activity', {
   },
   methods: {
     startRun: function () {
+      this.startHRM()
       this.geo.startGeoListener()
     },
     stopRun: function () {
+      this.stopHRM()
       this.geo.stopGeoListener()
       this.pause = true
     },
@@ -105,6 +140,48 @@ export default Vue.component('Activity', {
           this.$emit('forceRerender')
         })
       this.geo.clearGeoListener()
+    },
+    /**
+     * Connect to device and start HRM listener.
+     */
+    startHRM() {
+      if (this.hrmIsActive) {
+        return
+      }
+
+      this.hrmIsActive = true
+      this.bluetooth.connectAndStartListenHRM(
+        this.bluetoothDeviceKey,
+        this.bluetoothDevice,
+        (rate) => {
+          this.hrm = rate
+          this.setHRMValue(rate)
+        },
+        () => {
+          this.hrmIsActive = false
+        }
+      )
+    },
+    /**
+     * Strop HRM listener and disconnect device.
+     */
+    stopHRM() {
+      if (!this.hrmIsActive) {
+        return
+      }
+
+      this.bluetooth.disconnectAndStopListenHRM(
+        this.bluetoothDeviceKey,
+        this.bluetoothDevice,
+        () => {
+          this.hrm = 0
+          this.hrmIsActive = false
+        },
+        () => {
+          this.hrm = 0
+          this.hrmIsActive = false
+        }
+      )
     }
   },
   template: template

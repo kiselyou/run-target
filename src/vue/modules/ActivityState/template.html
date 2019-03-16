@@ -13,10 +13,14 @@
         <Cell afterContent="сохранение" :align="true" />
       </Row>
 
-      <Timer :disabled="disabled" :pause="pause" :time="time" class="mt-4"/>
+      <Timer :disabled="disabled" :pause="pause" :time="time" class="mt-2"/>
 
-      <Row class="mt-2">
+      <Row class="mt-1">
+        <Cell :content="hrmValue" :afterContent="hrmLabel" :bold="true" :align="true" size="xlg" />
         <Cell :content="tempoValue" :afterContent="tempoLabel" :bold="true" :align="true" size="xlg" />
+      </Row>
+
+      <Row class="mt-1">
         <Cell :content="pathValue" :afterContent="pathLabel" :bold="true" :align="true" size="xlg" />
         <Cell :content="speedValue" :afterContent="speedLabel" :bold="true" :align="true" size="xlg" />
       </Row>

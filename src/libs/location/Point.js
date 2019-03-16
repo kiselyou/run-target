@@ -43,6 +43,7 @@ class Point {
       uKey: this.uKey,
       time: this.time,
       speed: this.speed,
+      hrm: this.position.hrm,
       distance: this.distance,
       position: this.position.asArray(),
       prevUKey: this.prevPoint ? this.prevPoint.uKey : null,

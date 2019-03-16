@@ -17,6 +17,7 @@ class PointPosition {
       this.store.push(position['accuracy'])
       this.store.push(position['altitude'])
       this.store.push(position['pauseTime'] || 0)
+      this.store.push(position['hrm'])
     }
   }
 
@@ -105,6 +106,14 @@ class PointPosition {
    */
   get pauseTime() {
     return this.store[5] || 0
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get hrm() {
+    return this.store[6] || null
   }
 
   /**

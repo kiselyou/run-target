@@ -64,6 +64,23 @@ class GeoControls {
      * @private
      */
     this._cache = { geoListener: null }
+
+    /**
+     *
+     * @type {number}
+     * @private
+     */
+    this._hrm = 0
+  }
+
+  /**
+   *
+   * @param {number} rate
+   * @returns {GeoControls}
+   */
+  setHRMValue(rate) {
+    this._hrm = rate
+    return this
   }
 
   /**
@@ -250,6 +267,7 @@ class GeoControls {
         pauseTime = 0
       }
       this.addPosition({
+        hrm: this._hrm,
         pauseTime: pauseTime,
         time: position.time,
         latitude: position.latitude,
