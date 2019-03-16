@@ -25,6 +25,7 @@ import '@module/Confirm'
 import '@module/Spinner'
 import '@module/Rating'
 import '@module/TempoForm'
+import '@module/HRMChart'
 
 import domToImage from 'dom-to-image'
 
@@ -157,6 +158,23 @@ export default Vue.component('Tempo', {
      * @param {Object|?} activity
      * @returns {Array}
      */
+    hrmPoints(activity) {
+      const distances = this.distances(activity)
+      const points = []
+      const timeStart = new Date(activity.dateTimeStart).getTime()
+      for (const distance of distances) {
+
+      }
+      console.log(activity, activity.dateTimeStart, distances)
+      return []
+
+    },
+    /**
+     * Массив всех дистанций.
+     *
+     * @param {Object|?} activity
+     * @returns {Array}
+     */
     distances(activity) {
       return activity ? activity.distances : []
     },
@@ -186,6 +204,9 @@ export default Vue.component('Tempo', {
     },
     distanceRateSkin(distance) {
       return this.isShortDistance(distance) ? 'disabled' : 'success'
+    },
+    avgHRM(distance) {
+      return `Пульс ${ distance.avgHRM || 0 } (уд/м)`
     },
     /**
      * Самый быстрый темп.

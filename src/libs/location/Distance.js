@@ -65,7 +65,7 @@ class Distance {
    * @returns {number}
    */
   get avgHRM() {
-    return this.getAvgSpeed(10)
+    return this.getAvgHRM(10)
   }
 
   /**
@@ -74,7 +74,7 @@ class Distance {
    * @returns {number}
    */
   get totalAvgHRM() {
-    return this.getAvgSpeed(this.points.length - 1)
+    return this.getAvgHRM(this.points.length - 1)
   }
 
   /**
@@ -91,6 +91,9 @@ class Distance {
     const points = this.findLastPoints(pointsCount)
     for (const point of points) {
       if (!point.prevPoint) {
+        continue
+      }
+      if (!point.hrm || point.hrm <= 0) {
         continue
       }
       avg.hrm += point.hrm

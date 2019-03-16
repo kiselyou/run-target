@@ -2,7 +2,7 @@ import objectPath from 'object-path'
 import { TYPE_GPS_LOCATION, TYPE_USER_FORM } from './../repositories/activity'
 import { saveActivity, getActivitiesByDate, removeActivityById } from './../repositories/activity'
 import { saveDistance, getDistances, removeDistancesByActivityId } from './../repositories/distance'
-import { savePoints, removePointsByActivityId } from './../repositories/point'
+import { savePoints, getPoints, removePointsByActivityId } from './../repositories/point'
 import { saveKeyAndGetDeviceId } from './../repositories/device'
 
 /**
@@ -94,7 +94,11 @@ export async function viewActivitiesAction({ req, res, db }) {
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
   const activities = await getActivitiesByDate(db, deviceId, date)
   for (const activity of activities) {
-    activity['distances'] = await getDistances(db, activity.id)
+    const distances = await getDistances(db, activity.id)
+    for (const distance of distances) {
+      distances['points'] = await getPoints(db, distance.id)
+    }
+    activity['distances'] = distances
   }
   return res.send(activities)
 }

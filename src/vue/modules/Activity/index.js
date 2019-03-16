@@ -155,7 +155,7 @@ export default Vue.component('Activity', {
         this.bluetoothDevice,
         (rate) => {
           this.hrm = rate
-          this.setHRMValue(rate)
+          this.geo.setHRMValue(rate)
         },
         () => {
           this.hrmIsActive = false

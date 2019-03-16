@@ -50,20 +50,28 @@
           <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
         </Row>
 
-        <div class="mt-4">
-          <Rate
-            v-for="(distance, key) of distances(selectedActivity)"
-            :value="distanceTempoTime(distance)"
-            :skin="distanceRateSkin(distance)"
-            :key="key"
-            :min="0"
-            :max="maxTempo(selectedActivity)"
-            class="my-3"
-          >
-            <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
-            <template slot="center">{{ distanceToTempoString(distance) }}</template>
-            <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
-          </Rate>
+        <div class="mt-4 mx-2">
+          <Row v-for="(distance, key) of distances(selectedActivity)" :key="key" class="my-1">
+            <Cell :beforeContent="avgHRM(distance)">
+              <Rate
+                :value="distanceTempoTime(distance)"
+                :skin="distanceRateSkin(distance)"
+                :min="0"
+                :max="maxTempo(selectedActivity)"
+              >
+                <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
+                <template slot="center">{{ distanceToTempoString(distance) }}</template>
+                <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
+              </Rate>
+            </Cell>
+          </Row>
+        </div>
+
+        <div class="mt-4 mr-4">
+          <Row>
+            <Cell beforeContent="Частота пульса (уд/м)" :align="true" />
+          </Row>
+          <HRMChart :points="hrmPoints(selectedActivity)" />
         </div>
       </div>
 

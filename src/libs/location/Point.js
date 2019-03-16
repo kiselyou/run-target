@@ -41,13 +41,21 @@ class Point {
     return {
       id: this.id,
       uKey: this.uKey,
+      hrm: this.hrm,
       time: this.time,
       speed: this.speed,
-      hrm: this.position.hrm,
       distance: this.distance,
       position: this.position.asArray(),
       prevUKey: this.prevPoint ? this.prevPoint.uKey : null,
     }
+  }
+
+  /**
+   *
+   * @returns {number}
+   */
+  get hrm() {
+    return this.position.hrm
   }
 
   /**
