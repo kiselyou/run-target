@@ -96,7 +96,7 @@ export async function viewActivitiesAction({ req, res, db }) {
   for (const activity of activities) {
     const distances = await getDistances(db, activity.id)
     for (const distance of distances) {
-      distances['points'] = await getPoints(db, distance.id)
+      distance['points'] = await getPoints(db, distance.id)
     }
     activity['distances'] = distances
   }
