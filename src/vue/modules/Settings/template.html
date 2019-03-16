@@ -16,12 +16,12 @@
 
         <Row>
           <Cell class="mx-2">
-            <Button skin="green" @click="detectDevice" :disabled="buttonIsDisabled" width="100%">Подключить</Button>
+            <Button skin="green" @click="detectDevice" :disabled="disableDetectButton" width="100%">{{ renderButtonName }}</Button>
           </Cell>
         </Row>
 
-        <Row class="mt-3" v-if="errorMessage">
-          <Cell size="xs" :underline="true" :align="true" :beforeContent="errorMessage" />
+        <Row v-if="message" class="mx-2">
+          <Cell size="xs" :beforeContent="message" />
         </Row>
 
       </div>
@@ -33,13 +33,16 @@
 
     <div class="settings">
 
-      <Row class="my-4" v-if="!bluetoothDevice">
-        <Cell class="mx-3" beforeContent="Устройство не подключено" align="center" />
-      </Row>
+      <div class="settings_panel">
 
-      <div class="settings_panel" v-if="bluetoothDevice">
-        <Button skin="white" @click="startHRM" v-if="!hrmIsActive" class="my-3 mx-3">HRM старт</Button>
-        <Button skin="white" @click="stopHRM" v-if="hrmIsActive" class="my-3 mx-3">HRM стоп</Button>
+        <Row class="my-2">
+          <Cell :beforeContent="title" align="center" />
+
+          <Cell v-if="bluetoothDevice" alignContainer="center">
+            <Button skin="orange" @click="startHRM" v-if="!hrmIsActive" :disabled="processing" class="my-3 mx-3">HRM старт</Button>
+            <Button skin="orange" @click="stopHRM" v-if="hrmIsActive" :disabled="processing" class="my-3 mx-3">HRM стоп</Button>
+          </Cell>
+        </Row>
       </div>
 
       <div class="settings_hrm">

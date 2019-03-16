@@ -5,7 +5,7 @@ export default {
   state: {
     bluetoothDevice: {
       deviceKey: Storage.getStorageItem('bluetoothDeviceKey') || null,
-      device: Storage.decodeStorageItem('bluetoothDevice') || {a: ''}
+      device: Storage.decodeStorageItem('bluetoothDevice') || null
     }
   },
   getters: {

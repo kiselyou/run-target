@@ -102,7 +102,41 @@ class BluetoothModels {
   stopListenHRM(deviceKey, device, onSuccess, onError) {
     switch (String(deviceKey)) {
       case BluetoothModels.KEY_MI_BAND:
-        this.miBand.stoptListenHRM(device, onSuccess, onError)
+        this.miBand.stopListenHRM(device, onSuccess, onError)
+        break
+      default:
+        throw new Error('Model is not supported')
+    }
+  }
+
+  /**
+   * @param {string} deviceKey
+   * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} [onError]
+   * @returns {void}
+   */
+  connectAndStartListenHRM(deviceKey, device, onSuccess, onError) {
+    switch (String(deviceKey)) {
+      case BluetoothModels.KEY_MI_BAND:
+        this.miBand.connectAndStartListenHRM(device, onSuccess, onError)
+        break
+      default:
+        throw new Error('Model is not supported')
+    }
+  }
+
+  /**
+   * @param {string} deviceKey
+   * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} [onError]
+   * @returns {void}
+   */
+  disconnectAndStopListenHRM(deviceKey, device, onSuccess, onError) {
+    switch (String(deviceKey)) {
+      case BluetoothModels.KEY_MI_BAND:
+        this.miBand.disconnectAndStopListenHRM(device, onSuccess, onError)
         break
       default:
         throw new Error('Model is not supported')

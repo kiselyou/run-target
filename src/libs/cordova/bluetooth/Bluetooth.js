@@ -55,7 +55,16 @@ class Bluetooth {
    */
   disconnect(device) {
     return new Promise((resolve, reject) => {
-      window.ble.disconnect(device.id, resolve, reject)
+      window.ble.disconnect(
+        device.id,
+        (data) => {
+          this.isConnected = false
+          resolve(data)
+        },
+        (error) => {
+          this.isConnected = false
+          reject(error)
+        })
     })
   }
 
@@ -138,11 +147,13 @@ class Bluetooth {
   /**
    *
    * @param {Object} device
+   * @param {string} serviceId
+   * @param {string} charId
    * @returns {Promise<any>}
    */
-  stopNotification(device) {
+  stopNotification(device, serviceId, charId) {
     return new Promise((resolve, reject) => {
-      window.ble.stopNotification(device.id, resolve, reject)
+      window.ble.stopNotification(device.id, serviceId, charId, resolve, reject)
     })
   }
 }

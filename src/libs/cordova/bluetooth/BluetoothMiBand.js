@@ -115,7 +115,6 @@ class BluetoothMiBand extends Bluetooth {
         async (buffer) => {
           const value = Buffer.from(buffer)
           const cmd = value.slice(0, 3).toString('hex')
-          console.log('----', cmd)
           switch (cmd) {
             case '100101':
               resolve(true)
@@ -157,7 +156,6 @@ class BluetoothMiBand extends Bluetooth {
         (buffer) => {
           const value = Buffer.from(buffer)
           const cmd = value.slice(0,3).toString('hex')
-          console.log('++++', cmd)
           switch (cmd) {
             case '100201':
               let rdn = value.slice(3)
@@ -179,10 +177,9 @@ class BluetoothMiBand extends Bluetooth {
         },
         reject
       )
-console.log(1111)
+
       this.writeWithoutResponse(device, 'fee1', this.uuidBase('0009'), this.toArrayBuffer([0x02, 0x08]))
         .catch(reject)
-      console.log(2222)
     })
   }
 
@@ -213,8 +210,51 @@ console.log(1111)
    * @param {Function} [onError]
    * @returns {void}
    */
-  stoptListenHRM(device, onSuccess, onError) {
-    this.stopNotification(device).then(onSuccess).catch(onError)
+  stopListenHRM(device, onSuccess, onError) {
+    this.stopNotification(device, '180d', '2a37').then(onSuccess).catch(onError)
+  }
+
+  /**
+   *
+   * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} onError
+   */
+  connectAndStartListenHRM(device, onSuccess, onError) {
+    if (this.isConnected) {
+      onError(new Error('Device has already connected.'))
+      return
+    }
+    this.connect(device).then((deviceData) => {
+      this.auth(deviceData).then((isAuth) => {
+        if (isAuth) {
+          this.startListenHRM(deviceData, onSuccess, onError)
+        } else {
+          onError(new Error('Device is not authorised.'))
+        }
+      })
+      .catch(onError)
+    })
+    .catch(onError)
+  }
+
+  /**
+   *
+   * @param {Object} device
+   * @param {Function} onSuccess
+   * @param {Function} onError
+   */
+  disconnectAndStopListenHRM(device, onSuccess, onError) {
+    if (!this.isConnected) {
+      onError(new Error('Device has already disconnected.'))
+      return
+    }
+    this.stopListenHRM(device,
+      () => {
+        this.disconnect(device).then(onSuccess).catch(onError)
+      },
+      onError
+    )
   }
 
   /**
