@@ -20,20 +20,8 @@
     width: 100%;
     border-radius: 2px;
 
-    &__pxs {
-      padding: 2px 4px;
-    }
-
-    &__psm {
-      padding: 4px 8px;
-    }
-
-    &__pmd {
-      padding: 6px 12px;
-    }
-
-    &__plg {
-      padding: 8px 16px;
+    &__shadow {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
     }
 
     &__hover {

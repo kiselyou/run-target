@@ -66,17 +66,30 @@ export default Vue.component('AltitudeChart', {
           style: 'hollow',
         },
         yaxis: {
+          min: this.minYPoint(),
+          max: this.maxYPoint(),
           labels: {
             maxWidth: 30
           }
         },
         xaxis: {
           type: 'datetime',
-          min: this.minPoint(),
-          max: this.maxPoint(),
-          tickAmount: 2,
+          min: this.minXPoint(),
+          max: this.maxXPoint(),
+          tickAmount: 5,
           labels: {
-            format: 'hh:mm'
+            formatter: function(value, timestamp, index) {
+              const date = new Date(timestamp)
+              let hours = date.getHours()
+              if (hours < 10) {
+                hours = `0${hours}`
+              }
+              let minutes = date.getMinutes()
+              if (minutes < 10) {
+                minutes = `0${minutes}`
+              }
+              return `${hours}:${minutes}`
+            }
           }
         },
         tooltip: {
@@ -85,7 +98,7 @@ export default Vue.component('AltitudeChart', {
           }
         },
         stroke: {
-          width: 0.5,
+          width: 0.4,
           curve: 'smooth'
         },
         fill: {
@@ -101,10 +114,31 @@ export default Vue.component('AltitudeChart', {
     }
   },
   methods: {
-    minPoint() {
+    minYPoint() {
+      let min = Infinity
+      for (const point of this.points) {
+        if (point.y && point.y < min) {
+          min = point.y
+        }
+      }
+      return min === Infinity ? 0 : min - 10
+    },
+    maxYPoint() {
+      let max = - Infinity
+      for (const point of this.points) {
+        if (point.y && point.y > max) {
+          max = point.y
+        }
+      }
+      if (max <= 100) {
+        return 100
+      }
+      return max + 10
+    },
+    minXPoint() {
       return this.points.length > 0 ? this.points[0]['x'] : 0
     },
-    maxPoint() {
+    maxXPoint() {
       return this.points.length > 0 ? this.points[this.points.length - 1]['x'] : 0
     },
   },

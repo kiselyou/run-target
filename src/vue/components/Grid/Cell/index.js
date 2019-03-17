@@ -37,8 +37,21 @@ export default Vue.component('Cell', {
       type: [Boolean, String],
       default: null
     },
-    padding: {
+    py: {
       type: String,
+    },
+    px: {
+      type: String,
+    },
+    my: {
+      type: String,
+    },
+    mx: {
+      type: String,
+    },
+    shadow: {
+      type: Boolean,
+      default: false
     },
     hover: {
       type: Boolean,
@@ -64,10 +77,31 @@ export default Vue.component('Cell', {
     },
     htmlClassContainer: function () {
       return {
-        'grid-cell_container__pxs': this.padding === 'xs',
-        'grid-cell_container__psm': this.padding === 'sm',
-        'grid-cell_container__pmd': this.padding === 'md',
-        'grid-cell_container__plg': this.padding === 'lg',
+        'py-1': this.py === 'xsm',
+        'py-2': this.py === 'xs',
+        'py-3': this.py === 'sm',
+        'py-4': this.py === 'md',
+        'py-5': this.py === 'lg',
+
+        'px-1': this.px === 'xsm',
+        'px-2': this.px === 'xs',
+        'px-3': this.px === 'sm',
+        'px-4': this.px === 'md',
+        'px-5': this.px === 'lg',
+
+        'my-1': this.my === 'xsm',
+        'my-2': this.my === 'xs',
+        'my-3': this.my === 'sm',
+        'my-4': this.my === 'md',
+        'my-5': this.my === 'lg',
+
+        'mx-1': this.mx === 'xsm',
+        'mx-2': this.mx === 'xs',
+        'mx-3': this.mx === 'sm',
+        'mx-4': this.mx === 'md',
+        'mx-5': this.mx === 'lg',
+
+        'grid-cell_container__shadow': this.shadow,
         'grid-cell_container__hover': this.hover,
         'grid-cell__center': this.alignContainer === true || this.alignContainer === 'center',
       }

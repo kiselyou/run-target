@@ -35,22 +35,20 @@
       </Title>
 
       <div v-if="isViewVisible('details-activity')" class="mx-2">
+
         <Row class="my-2">
-          <Cell align="center" :bold="true" size="xlg" class="tempo_distance">
-            <template slot="content">
-              <span>{{ activityPathLength(selectedActivity) }}</span>
-              <span class="tempo_distance__label">км</span>
-            </template>
-          </Cell>
+          <Cell afterContent="Длительность" :content="totalTime(selectedActivity)" align="center" :bold="true" size="md" py="xs" :shadow="true" />
+          <Cell afterContent="Средняя ЧСС" :content="avgHRM(selectedActivity)" align="center" :bold="true" size="md" mx="xsm" py="xs" :shadow="true" />
+          <Cell afterContent="Дистанция" :content="activityPathLength(selectedActivity)" align="center" :bold="true" size="md" py="xs" :shadow="true" />
         </Row>
 
-        <Row>
-          <Cell afterContent="Самый быстрый" :content="upperTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
-          <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
-          <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
+        <Row class="my-2">
+          <Cell afterContent="Макс. темп" :content="upperTempoString(selectedActivity)" align="center" :bold="true" size="md" py="xs" :shadow="true" />
+          <Cell afterContent="Средний темп" :content="avgTempoString(selectedActivity)" align="center" :bold="true" size="md" mx="xsm" py="xs" :shadow="true" />
+          <Cell afterContent="Мин. темп" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="md" py="xs" :shadow="true" />
         </Row>
 
-        <div class="mt-4 mb-2">
+        <div class="mt-3 mb-2">
           <PanelCollapse title="Темп" :open="true">
             <div class="my-2 mx-2">
               <Row v-for="(distance, key) of distances(selectedActivity)" :key="key" class="my-3">
@@ -69,7 +67,7 @@
                       </div>
                       <div class="tempo_rate">
                         <VueIcon name="heart" color="#FFFFFF" />
-                        <span class="tempo_rate__text">{{ avgHRM(distance) }}</span>
+                        <span class="tempo_rate__text">{{ avgHRMonDistance(distance) }}</span>
                       </div>
                     </template>
                     <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>

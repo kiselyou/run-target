@@ -164,16 +164,12 @@ export default Vue.component('Tempo', {
       const distances = this.distances(activity)
       const points = []
       let prevTimestamp = null
-      let firstPointTime = null
       for (const distance of distances) {
-        if (!firstPointTime && distance.points.length > 0) {
-          firstPointTime = distance.points[0][0]
-        }
         for (const point of distance.points) {
           const hrm = point.position[6] || 0
           const timestamp = point.position[0]
 
-          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 16000) {
+          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 8000) {
             continue
           }
           prevTimestamp = timestamp
@@ -193,17 +189,15 @@ export default Vue.component('Tempo', {
       const points = []
 
       let prevTimestamp = null
-      let firstPointTime = null
       for (const distance of distances) {
-        if (!firstPointTime && distance.points.length > 0) {
-          firstPointTime = distance.points[0]['position'][0]
-          console.log(firstPointTime)
-        }
         for (const point of distance.points) {
           const altitude = point.position[4]
+          if (!altitude) {
+            continue
+          }
           const timestamp = point.position[0]
 
-          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 16000) {
+          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 4000) {
             continue
           }
           prevTimestamp = timestamp
@@ -248,8 +242,17 @@ export default Vue.component('Tempo', {
     distanceRateSkin(distance) {
       return this.isShortDistance(distance) ? 'disabled' : 'success'
     },
-    avgHRM(distance) {
+    avgHRMonDistance(distance) {
       return distance.avgHRM || 0
+    },
+    avgHRM(activity) {
+      const cache = { rate: 0, count: 0 }
+      const distances = this.distances(activity)
+      for (const distance of distances) {
+        cache.rate += this.avgHRMonDistance(distance)
+        cache.count++
+      }
+      return cache.count > 0 ? Math.round(cache.rate / cache.count) : 0
     },
     /**
      * Самый быстрый темп.
@@ -469,6 +472,14 @@ export default Vue.component('Tempo', {
         less = `<`;
       }
       return `${less} ${distance.number + 1}`;
+    },
+    totalTime(activity) {
+      const distances = this.distances(activity)
+      let elapsedTime = 0
+      for (const dist of distances) {
+        elapsedTime += dist.elapsedTime
+      }
+      return timer.setTime(elapsedTime).toStringHours()
     },
     /**
      * Время на дистанции.

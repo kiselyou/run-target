@@ -75,9 +75,20 @@ export default Vue.component('HRMChart', {
           type: 'datetime',
           min: this.minXPoint(),
           max: this.maxXPoint(),
-          tickAmount: 2,
+          tickAmount: 5,
           labels: {
-            format: 'hh:mm'
+            formatter: function(value, timestamp, index) {
+              const date = new Date(timestamp)
+              let hours = date.getHours()
+              if (hours < 10) {
+                hours = `0${hours}`
+              }
+              let minutes = date.getMinutes()
+              if (minutes < 10) {
+                minutes = `0${minutes}`
+              }
+              return `${hours}:${minutes}`
+            }
           }
         },
         tooltip: {
@@ -86,7 +97,7 @@ export default Vue.component('HRMChart', {
           }
         },
         stroke: {
-          width: 1,
+          width: .4,
           curve: 'smooth'
         },
         fill: {
@@ -105,7 +116,7 @@ export default Vue.component('HRMChart', {
     minYPoint() {
       let min = Infinity
       for (const point of this.points) {
-        if (point.y < min) {
+        if (point.y && point.y < min) {
           min = point.y
         }
       }
@@ -117,7 +128,7 @@ export default Vue.component('HRMChart', {
     maxYPoint() {
       let max = - Infinity
       for (const point of this.points) {
-        if (point.y > max) {
+        if (point.y && point.y > max) {
           max = point.y
         }
       }
