@@ -42,13 +42,26 @@ export default Vue.component('HRMChart', {
               download: false,
               selection: true,
               zoom: true,
-              zoomin: false,
-              zoomout: false,
+              zoomin: true,
+              zoomout: true,
               pan: true,
               reset: true,
             },
           },
         },
+        responsive: [{
+          breakpoint: 1000,
+          options: {
+            chart: {
+              zoom: {
+                enabled: false,
+              },
+              toolbar: {
+                show: false,
+              },
+            },
+          },
+        }],
         dataLabels: {
           enabled: false
         },
@@ -93,7 +106,7 @@ export default Vue.component('HRMChart', {
         },
         tooltip: {
           x: {
-            format: 'hh:mm:ss'
+            format: 'HH:mm:ss'
           }
         },
         stroke: {

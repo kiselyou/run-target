@@ -77,25 +77,25 @@ export default Vue.component('Cell', {
     },
     htmlClassContainer: function () {
       return {
-        'py-1': this.py === 'xsm',
+        'py-1': this.py === 'xxs',
         'py-2': this.py === 'xs',
         'py-3': this.py === 'sm',
         'py-4': this.py === 'md',
         'py-5': this.py === 'lg',
 
-        'px-1': this.px === 'xsm',
+        'px-1': this.px === 'xxs',
         'px-2': this.px === 'xs',
         'px-3': this.px === 'sm',
         'px-4': this.px === 'md',
         'px-5': this.px === 'lg',
 
-        'my-1': this.my === 'xsm',
+        'my-1': this.my === 'xxs',
         'my-2': this.my === 'xs',
         'my-3': this.my === 'sm',
         'my-4': this.my === 'md',
         'my-5': this.my === 'lg',
 
-        'mx-1': this.mx === 'xsm',
+        'mx-1': this.mx === 'xxs',
         'mx-2': this.mx === 'xs',
         'mx-3': this.mx === 'sm',
         'mx-4': this.mx === 'md',

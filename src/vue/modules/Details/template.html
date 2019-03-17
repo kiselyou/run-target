@@ -3,11 +3,11 @@
   <template slot="body">
     <Spinner :loading="loading" />
 
-    <div class="details">
+    <div class="details mx-2">
       <Row>
-        <Cell :content="totalPath" afterContent="всего (км)" :bold="true" :align="true" size="lg" />
-        <Cell :content="totalMonthPath" afterContent="за месяц (км)" :bold="true" :align="true" size="lg" />
-        <Cell :content="totalWeekPath" afterContent="за неделю (км)" :bold="true" :align="true" size="lg" />
+        <Cell :content="totalPath" afterContent="всего (км)" :bold="true" :align="true" size="md" :shadow="true" py="sm" />
+        <Cell :content="totalMonthPath" afterContent="за месяц (км)" :bold="true" :align="true" size="md" :shadow="true" py="sm" mx="xs" />
+        <Cell :content="totalWeekPath" afterContent="за неделю (км)" :bold="true" :align="true" size="md" :shadow="true" py="sm" />
       </Row>
     </div>
   </template>
