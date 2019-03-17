@@ -122,7 +122,6 @@ export default Vue.component('Activity', {
       this.geo.startGeoListener()
     },
     stopRun: function () {
-      this.stopHRM()
       this.geo.stopGeoListener()
       this.pause = true
     },
@@ -131,6 +130,7 @@ export default Vue.component('Activity', {
       this.pause = false
     },
     endRun: function () {
+      this.stopHRM()
       this.geo.stopGeoListener()
       this.pause = false
       this.loading = true

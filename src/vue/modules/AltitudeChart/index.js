@@ -3,13 +3,17 @@ import './style.scss'
 import Vue from 'vue'
 import VueApexCharts from 'vue-apexcharts'
 
+import '@vue/Button'
+import '@vue/Grid/Row'
+import '@vue/Grid/Cell'
+
 Vue.use(VueApexCharts)
 Vue.component('ApexChart', VueApexCharts)
 
 /**
  * https://apexcharts.com/vue-chart-demos/area-charts/github-style/
  */
-export default Vue.component('HRMChart', {
+export default Vue.component('AltitudeChart', {
   props: {
     points: {
       type: Array,
@@ -21,14 +25,11 @@ export default Vue.component('HRMChart', {
       selection: null,
       series: [
         {
-          name: 'Пульс (уд.м.)',
+          name: 'Набор высоты (м)',
           data: this.points
         }
       ],
       chartOptions: {
-        annotations: {
-          yaxis: this.getYAxis(),
-        },
         chart: {
           animations: {
             enabled: false,
@@ -55,7 +56,7 @@ export default Vue.component('HRMChart', {
         grid: {
           show: true,
           yaxis: {
-            lines: {
+              lines: {
               show: false,
             }
           },
@@ -65,16 +66,14 @@ export default Vue.component('HRMChart', {
           style: 'hollow',
         },
         yaxis: {
-          min: this.minYPoint(),
-          max: this.maxYPoint(),
           labels: {
             maxWidth: 30
           }
         },
         xaxis: {
           type: 'datetime',
-          min: this.minXPoint(),
-          max: this.maxXPoint(),
+          min: this.minPoint(),
+          max: this.maxPoint(),
           tickAmount: 2,
           labels: {
             format: 'hh:mm'
@@ -86,7 +85,7 @@ export default Vue.component('HRMChart', {
           }
         },
         stroke: {
-          width: 1,
+          width: 0.5,
           curve: 'smooth'
         },
         fill: {
@@ -102,66 +101,12 @@ export default Vue.component('HRMChart', {
     }
   },
   methods: {
-    minYPoint() {
-      let min = Infinity
-      for (const point of this.points) {
-        if (point.y < min) {
-          min = point.y
-        }
-      }
-      if (min === Infinity) {
-        return 20
-      }
-      return min < 20 ? 20 : min
-    },
-    maxYPoint() {
-      let max = - Infinity
-      for (const point of this.points) {
-        if (point.y > max) {
-          max = point.y
-        }
-      }
-      if (max <= 20) {
-        return 100
-      }
-      return max + 5
-    },
-    minXPoint() {
+    minPoint() {
       return this.points.length > 0 ? this.points[0]['x'] : 0
     },
-    maxXPoint() {
+    maxPoint() {
       return this.points.length > 0 ? this.points[this.points.length - 1]['x'] : 0
     },
-    avgPoints() {
-      const cache = { sum: 0, count: 0 }
-      for (const point of this.points) {
-        if (!point.y || point.y < 20) {
-          continue
-        }
-        cache.sum += point.y
-        cache.count++
-      }
-      return cache.sum > 0 ? Math.round(cache.sum / cache.count) : 0
-    },
-    getYAxis() {
-      const avg = this.avgPoints()
-      if (avg === 0) {
-        return []
-      }
-      return [
-        {
-          y: avg,
-          borderColor: '#999999',
-          label: {
-            text: `Средняя частота пульса ${avg} (уд.м.)`,
-            style: {
-              color: '#FFFFFF',
-              background: '#00E396'
-            }
-          }
-        }
-      ]
-    }
   },
   template: template
 })

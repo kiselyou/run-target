@@ -34,7 +34,7 @@
         {{ viewTitle }}
       </Title>
 
-      <div v-if="isViewVisible('details-activity')">
+      <div v-if="isViewVisible('details-activity')" class="mx-2">
         <Row class="my-2">
           <Cell align="center" :bold="true" size="xlg" class="tempo_distance">
             <template slot="content">
@@ -50,29 +50,52 @@
           <Cell afterContent="Самый медленный" :content="lowerTempoString(selectedActivity)" align="center" :bold="true" size="lg" />
         </Row>
 
-        <div class="mt-4 mx-2">
-          <Row v-for="(distance, key) of distances(selectedActivity)" :key="key" class="my-1">
-            <Cell :beforeContent="avgHRM(distance)">
-              <Rate
-                :value="distanceTempoTime(distance)"
-                :skin="distanceRateSkin(distance)"
-                :min="0"
-                :max="maxTempo(selectedActivity)"
-              >
-                <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
-                <template slot="center">{{ distanceToTempoString(distance) }}</template>
-                <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
-              </Rate>
-            </Cell>
-          </Row>
+        <div class="mt-4 mb-2">
+          <PanelCollapse title="Темп" :open="true">
+            <div class="my-2 mx-2">
+              <Row v-for="(distance, key) of distances(selectedActivity)" :key="key" class="my-3">
+                <Cell>
+                  <Rate
+                    :value="distanceTempoTime(distance)"
+                    :skin="distanceRateSkin(distance)"
+                    :min="0"
+                    :max="maxTempo(selectedActivity)"
+                  >
+                    <template slot="before">{{ distanceNumber(selectedActivity, distance) }}</template>
+                    <template slot="center">
+                      <div class="tempo_rate">
+                        <VueIcon name="clock" color="#FFFFFF" />
+                        <span class="tempo_rate__text">{{ distanceToTempoString(distance) }}</span>
+                      </div>
+                      <div class="tempo_rate">
+                        <VueIcon name="heart" color="#FFFFFF" />
+                        <span class="tempo_rate__text">{{ avgHRM(distance) }}</span>
+                      </div>
+                    </template>
+                    <template slot="after">{{ distanceTime(selectedActivity, distance) }}</template>
+                  </Rate>
+                </Cell>
+              </Row>
+            </div>
+          </PanelCollapse>
         </div>
 
-        <div class="mt-4 mr-4">
-          <Row>
-            <Cell beforeContent="Частота пульса (уд/м)" :align="true" />
-          </Row>
-          <HRMChart :points="hrmPoints(selectedActivity)" />
+        <div class="my-2">
+          <PanelCollapse title="Частота пульса (уд/м)">
+            <div class="mt-3">
+              <HRMChart :points="hrmChartPoints(selectedActivity)" />
+            </div>
+          </PanelCollapse>
         </div>
+
+        <div class="my-2">
+          <PanelCollapse title="Набор высоты (м)">
+            <div class="mt-3">
+              <AltitudeChart :points="altitudeChartPoints(selectedActivity)" />
+            </div>
+          </PanelCollapse>
+        </div>
+
       </div>
 
       <div v-if="isViewVisible('list-activities')" class="tempo_container tempo_container__column px-2">

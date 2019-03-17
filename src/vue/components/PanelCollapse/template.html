@@ -1,0 +1,15 @@
+
+<div class="panel-collapse">
+  <div class="panel-collapse_head" @click="toggle">
+    <div class="panel-collapse_title">
+      {{ title }}
+    </div>
+    <div class="panel-collapse_toggle">
+      <div class="panel-collapse_arrow panel-collapse_arrow__up" v-if="!isOpened"></div>
+      <div class="panel-collapse_arrow panel-collapse_arrow__down" v-if="isOpened"></div>
+    </div>
+  </div>
+  <div class="panel-collapse_body" v-if="isOpened">
+    <slot></slot>
+  </div>
+</div>

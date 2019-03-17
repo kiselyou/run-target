@@ -20,12 +20,14 @@ import '@vue/RunProcess'
 import '@vue/WrapCorner'
 import '@vue/SquareArea'
 import '@vue/SquareItem'
+import '@vue/PanelCollapse'
 import '@module/CalendarRun'
 import '@module/Confirm'
 import '@module/Spinner'
 import '@module/Rating'
 import '@module/TempoForm'
 import '@module/HRMChart'
+import '@module/AltitudeChart'
 
 import domToImage from 'dom-to-image'
 
@@ -153,21 +155,62 @@ export default Vue.component('Tempo', {
       this.prevView = null
     },
     /**
-     * Массив всех дистанций.
+     * Массив точек для построения графика пульса.
      *
      * @param {Object|?} activity
      * @returns {Array}
      */
-    hrmPoints(activity) {
+    hrmChartPoints(activity) {
       const distances = this.distances(activity)
       const points = []
-      const timeStart = new Date(activity.dateTimeStart).getTime()
+      let prevTimestamp = null
+      let firstPointTime = null
       for (const distance of distances) {
+        if (!firstPointTime && distance.points.length > 0) {
+          firstPointTime = distance.points[0][0]
+        }
+        for (const point of distance.points) {
+          const hrm = point.position[6] || 0
+          const timestamp = point.position[0]
 
+          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 16000) {
+            continue
+          }
+          prevTimestamp = timestamp
+          points.push({ x: timestamp, y: hrm })
+        }
       }
-      console.log(activity, activity.dateTimeStart, distances)
-      return []
+      return points
+    },
+    /**
+     * Массив построения графика набора высоты.
+     *
+     * @param {Object|?} activity
+     * @returns {Array}
+     */
+    altitudeChartPoints(activity) {
+      const distances = this.distances(activity)
+      const points = []
 
+      let prevTimestamp = null
+      let firstPointTime = null
+      for (const distance of distances) {
+        if (!firstPointTime && distance.points.length > 0) {
+          firstPointTime = distance.points[0]['position'][0]
+          console.log(firstPointTime)
+        }
+        for (const point of distance.points) {
+          const altitude = point.position[4]
+          const timestamp = point.position[0]
+
+          if (prevTimestamp && distance.points.length > 100 && (timestamp - prevTimestamp) < 16000) {
+            continue
+          }
+          prevTimestamp = timestamp
+          points.push({ x: timestamp, y: altitude })
+        }
+      }
+      return points
     },
     /**
      * Массив всех дистанций.
@@ -206,7 +249,7 @@ export default Vue.component('Tempo', {
       return this.isShortDistance(distance) ? 'disabled' : 'success'
     },
     avgHRM(distance) {
-      return `Пульс ${ distance.avgHRM || 0 } (уд/м)`
+      return distance.avgHRM || 0
     },
     /**
      * Самый быстрый темп.
