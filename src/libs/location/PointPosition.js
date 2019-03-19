@@ -35,7 +35,7 @@ class PointPosition {
    * @returns {PointPosition}
    */
   fromArray(value) {
-    if (value.length !== 6) {
+    if (value.length !== 7) {
       throw new Error(`Expected seven items but got ${value.length} in method "fromArray"`)
     }
     this.store = value

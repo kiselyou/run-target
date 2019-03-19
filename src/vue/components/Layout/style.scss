@@ -2,6 +2,7 @@
   height: 100%;
   &_body {
     min-height: 250px;
+    background: #FFFFFF;
   }
   &_foot {
     min-height: calc(100% - 250px);

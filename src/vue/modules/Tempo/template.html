@@ -11,6 +11,9 @@
     </WrapCorner>
 
     <WrapCorner v-if="isViewVisible('details-activity')">
+      <Tooltip content="Карта" placement="bottom">
+        <Button size="30px" icon="map" skin="green" shape="square" @click="showMap(selectedActivity)"/>
+      </Tooltip>
       <Tooltip v-if="selectedActivity.type === 1" class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
         <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="isDisabledBtnMakeScreen"/>
       </Tooltip>

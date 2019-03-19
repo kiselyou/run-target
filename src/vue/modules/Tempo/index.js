@@ -481,6 +481,18 @@ export default Vue.component('Tempo', {
       }
       return timer.setTime(elapsedTime).toStringHours()
     },
+    showMap(activity) {
+      const distances = this.distances(activity)
+      const points = []
+      for (const distance of distances) {
+        for (const point of distance.points) {
+          points.push({ lat: point.position[1], lng: point.position[2] })
+        }
+      }
+
+      this.$store.commit('map/setPoints', points)
+      this.$store.commit('map/show')
+    },
     /**
      * Время на дистанции.
      *
