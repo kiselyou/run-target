@@ -8,55 +8,32 @@ import '@vue/Grid/Cell'
 import '@vue/Layout'
 import '@vue/Button'
 import '@module/Spinner'
-import Ajax from '@lib/Ajax'
+
+import { mapGetters, mapState } from 'vuex'
 
 export default Vue.component('Details', {
   data: function () {
     return {
-      /**
-       * @type {boolean}
-       */
-      loading: true,
-      /**
-       * @type {Object|?}
-       */
-      details: null
+
     }
   },
   mounted() {
-    this.loadDetails()
+    if (this.totalPath === 0) {
+      this.$store.dispatch('details/update')
+    }
   },
   computed: {
-    totalPath: function () {
-      return this.details ? this.normalizedDistance(this.details['totalDistance']) : 0
-    },
-    totalMonthPath: function () {
-      return this.details ? this.normalizedDistance(this.details['totalMonthDistance']) : 0
-    },
-    totalWeekPath: function () {
-      return this.details ? this.normalizedDistance(this.details['totalWeekDistance']) : 0
-    },
-  },
-  methods: {
-    normalizedDistance(distance) {
-      return (distance / 1000).toFixed(3)
-    },
-    /**
-     *
-     * @param {Date|?} [date]
-     */
-    loadDetails(date) {
-      this.loading = true
-      const timestamp = date ? date.getTime() : 0
-      Ajax.post(`details/view/${timestamp}`)
-        .then((details) => {
-          this.details = details
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    }
+    ...mapGetters('details', [ 'totalPath', 'totalWeekPath', 'totalMonthPath' ]),
+    ...mapState({
+      /**
+       *
+       * @param {Object} state
+       * @returns {string|?}
+       */
+      loading: (state) => {
+        return state.details.loading
+      }
+    }),
   },
   template: template
 })

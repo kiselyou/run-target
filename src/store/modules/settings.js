@@ -1,4 +1,5 @@
 import Storage from '@lib/Storage'
+import Ajax from '@lib/Ajax'
 
 export default {
   namespaced: true,

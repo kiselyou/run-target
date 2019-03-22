@@ -8,7 +8,6 @@ import '@module/ActivityControls'
 
 import GeoControls from '@lib/location/GeoControls'
 import Timer from '@lib/Timer'
-import Ajax from '@lib/Ajax'
 import Plugins from '@lib/cordova/Plugins'
 import Signal from '@lib/location/Signal'
 
@@ -21,7 +20,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: false,
+      default: true,
     }
   },
   data: function () {
@@ -133,12 +132,7 @@ export default Vue.component('Activity', {
       this.stopHRM()
       this.geo.stopGeoListener()
       this.pause = false
-      this.loading = true
-      Ajax.post(`activity/save`, { activity: this.geo.serialize() })
-        .finally(() => {
-          this.loading = false
-          this.$emit('forceRerender')
-        })
+      this.$store.dispatch('activity/save', { activity: this.geo.serialize() })
       this.geo.clearGeoListener()
     },
     /**

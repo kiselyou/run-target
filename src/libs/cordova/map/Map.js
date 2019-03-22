@@ -1,8 +1,4 @@
 import objectPath from 'object-path'
-import  GoogleMapsLoader from 'google-maps'
-
-GoogleMapsLoader.KEY = 'AIzaSyBY3Wr3MxAnfliwiCm04zklKpabpz5weoI'
-GoogleMapsLoader.VERSION = '3.36'
 
 class Map {
   constructor(elementId) {
