@@ -3,6 +3,7 @@ import Vue from 'vue'
 import template from './template.html'
 import '@vue/Calendar/Month'
 import '../DayRun'
+import Day from '@vue/Calendar/api/Day'
 
 export default Vue.component('MonthRun', {
   props: {
@@ -21,9 +22,16 @@ export default Vue.component('MonthRun', {
     disabled: {
       type: Boolean,
       default: false
-    }
+    },
+    selectedDay: {
+      type: [Day, null],
+      default: null
+    },
   },
   methods: {
+    isSelected(day) {
+      return this.selectedDay && this.selectedDay.date === day.date
+    },
     next: function (date) {
       if (this.disabled) {
         return

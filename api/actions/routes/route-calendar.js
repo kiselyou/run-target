@@ -9,7 +9,7 @@ import {
 export default [
   {
     method: 'get',
-    path: '/calendar/view/tempo/:timestamp',
+    path: '/calendar/view/tempo',
     action: viewCalendarTempoAction
   },
   {

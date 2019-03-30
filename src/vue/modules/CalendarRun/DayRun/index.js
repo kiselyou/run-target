@@ -14,11 +14,15 @@ export default Vue.component('DayRun', {
     unit: {
       type: String,
       default: 'км'
+    },
+    isSelected: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
-    resultDistance() {
-      return this.day.getNumberOption('resultDistance').toFixed(3)
+    totalDistance() {
+      return this.day.getNumberOption('totalDistance').toFixed(3)
     },
     expectDistance() {
       return this.day.getNumberOption('expectDistance').toFixed(3)

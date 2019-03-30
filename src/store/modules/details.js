@@ -71,11 +71,9 @@ export default {
      */
     update({ commit }) {
       commit('startLoading')
-      console.log('++++')
       const timestamp = new Date().getTime()
       Ajax.post(`details/view/${timestamp}`)
         .then((details) => {
-          console.log('++++++')
           const totalDistance = details['totalDistance']
           commit('setTotalDistance', totalDistance)
           Storage.encodeStorageItem('totalDistance', totalDistance)

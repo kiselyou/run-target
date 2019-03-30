@@ -2,7 +2,8 @@ import {
   removeActivitiesAction,
   saveActivityAction,
   saveCustomActivityAction,
-  viewActivitiesAction
+  dayActivitiesAction,
+  allActivitiesAction
 } from '../action-activity'
 
 export default [
@@ -23,7 +24,12 @@ export default [
   },
   {
     method: 'get',
-    path: '/activity/view/:timestamp',
-    action: viewActivitiesAction
+    path: '/activity/day/:timestamp',
+    action: dayActivitiesAction
+  },
+  {
+    method: 'get',
+    path: '/activity/all',
+    action: allActivitiesAction
   },
 ]

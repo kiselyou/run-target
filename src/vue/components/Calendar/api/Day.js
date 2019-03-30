@@ -22,7 +22,8 @@ class Day {
      *
      * @type {Date}
      */
-    this.date = date
+    this.date = new Date(date)
+    this.date.setHours(0, 0, 0, 0)
 
     /**
      *

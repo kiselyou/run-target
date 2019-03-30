@@ -5,19 +5,22 @@
     <Spinner :loading="loading"/>
 
     <WrapCorner v-if="isViewVisible(['list-activities', 'no-activities'])">
-      <Tooltip content="Добавить активность" placement="bottom">
+      <Tooltip content="Добавить активность" placement="bottom" class="mx-1">
         <Button size="30px" icon="plus" shape="square" @click="showViewFormActivity"/>
+      </Tooltip>
+      <Tooltip content="Синхронизировать данные c сервером" placement="bottom" class="mx-1">
+        <Button size="30px" icon="loop-circular" shape="square"  :disabled="synchronizeProcess" :animate="synchronizeProcess" @click="synchronizeActivities"/>
       </Tooltip>
     </WrapCorner>
 
     <WrapCorner v-if="isViewVisible('details-activity')">
-      <Tooltip content="Карта" placement="bottom">
+      <Tooltip content="Карта" placement="bottom" class="mx-1">
         <Button size="30px" icon="map" skin="green" shape="square" @click="showMap(selectedActivity)"/>
       </Tooltip>
       <Tooltip v-if="selectedActivity.type === 1" class="mx-1" :content="imgTooltip" :show="isVisibleImgTooltip" trigger="manual" placement="bottom">
         <Button size="30px" icon="image" shape="square" @click="makeScreen" :disabled="isDisabledBtnMakeScreen"/>
       </Tooltip>
-      <Tooltip content="Удалить активность" placement="bottom">
+      <Tooltip content="Удалить активность" placement="bottom" class="mx-1">
         <Button size="30px" icon="trash" skin="gray" shape="square" @click="showConfirmRemoveActivity"/>
       </Tooltip>
     </WrapCorner>
@@ -101,7 +104,7 @@
 
       <div v-if="isViewVisible('list-activities')" class="tempo_container tempo_container__column px-2">
         <SquareArea alignHorizontal="center">
-          <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of activities">
+          <SquareItem @click="openActivity(activity)" :key="key" v-for="(activity, key) of dayActivities">
             <template slot="image">
               <Rating :label="activityPathLength(activity) + ' км'" />
             </template>
@@ -137,14 +140,8 @@
   </template>
 
   <template slot="foot">
-    <CalendarRun
-      v-if="calendarActivityKey"
-      :key="calendarActivityKey"
-      @activeDay="activeDay"
-      @selectDay="selectDay"
-      @changeMonth="changeMonth"
-      :calendarActivity="calendarActivity"
-      :monthDate="selectedMonthDate"
-    />
+
+    <CalendarRun @activeDay="activeDay" @selectDay="selectDay"/>
+
   </template>
 </Layout>

@@ -12,19 +12,29 @@
     fill: #FFFFFF;
   }
 
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    opacity: 0.9;
-    cursor: pointer;
-  }
-
   &__icon {
     font-size: 20px;
     width: 4vw;
     height: 4vw;
+  }
+
+  &_animate {
+    animation-name: Circle;
+
+    &__round {
+      animation-duration: 1.5s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes Circle {
+      0% {
+        transform: rotate(360deg);
+      }
+      100% {
+        transform: rotate(0);
+      }
+    }
   }
 
   &__text {
@@ -95,13 +105,29 @@
   }
 
   &__disabled {
-    border: solid 1px #000 !important;
-    background: #000 !important;
-    opacity: 0.2 !important;
+    border: solid 1px #CCCCCC !important;
+    background: #CCCCCC !important;
     color: #FFFFFF;
+
+    & svg {
+      fill: #FFFFFF;
+    }
 
     &:hover {
       cursor: not-allowed;
     }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+
+  &:active {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 }

@@ -79,12 +79,11 @@ export async function viewCalendarTempoAction({ req, res, db }) {
     return res.status(403).send('Device key is required.')
   }
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
-  const timestamp = objectPath.get(req, ['params', 'timestamp'])
-  const distancesPath = await getDistancesPathLength(db, deviceId, timestamp)
+  const distancesPath = await getDistancesPathLength(db, deviceId)
   const resultDistances = {}
   for (const item of distancesPath) {
-    const date = moment(item.date).format('YYYY-MM-DD')
-    resultDistances[date] = { resultDistance: item.pathLength }
+    const timestamp = new Date(item.date).getTime()
+    resultDistances[timestamp] = { totalDistance: Number(item.pathLength.toFixed(2)) }
   }
   return res.send(resultDistances)
 }

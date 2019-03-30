@@ -44,6 +44,14 @@ export default Vue.component('Button', {
     },
     shape: {
       type: String,
+    },
+    animate: {
+      type: Boolean,
+      default: false
+    },
+    animateType: {
+      type: String,
+      default: 'round'
     }
   },
   computed: {
@@ -74,6 +82,12 @@ export default Vue.component('Button', {
         'button__disabled': this.disabled,
         'button_shape__round': this.shape === 'round',
         'button_shape__square': this.shape === 'square',
+      }
+    },
+    htmlClassIcon: function () {
+      return {
+        'button_animate': this.animate,
+        'button_animate__round': this.animate && this.animateType === 'round'
       }
     }
   },

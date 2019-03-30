@@ -2,7 +2,13 @@
 <Month :month="month" :locale="locale" :showArrow="showArrow" @nextMonth="next" @prevMonth="prev" :disabled="disabled">
   <template slot="week">
     <template v-for="(weeks, weekIndex) of month.weeks">
-      <DayRun :key="`${weekIndex}.${dayIndex}`" :day="day" v-for="(day, dayIndex) of weeks.days" @onClick="selectDay" />
+      <DayRun
+        v-for="(day, dayIndex) of weeks.days"
+        :key="`${weekIndex}.${dayIndex}`"
+        :day="day"
+        :isSelected="isSelected(day)"
+        @onClick="selectDay"
+      />
     </template>
   </template>
 </Month>

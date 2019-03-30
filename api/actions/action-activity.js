@@ -1,6 +1,6 @@
 import objectPath from 'object-path'
 import { TYPE_GPS_LOCATION, TYPE_USER_FORM } from './../repositories/activity'
-import { saveActivity, getActivitiesByDate, removeActivityById } from './../repositories/activity'
+import { saveActivity, getActivitiesByDate, getActivityDates, removeActivityById } from './../repositories/activity'
 import { saveDistance, getDistances, removeDistancesByActivityId } from './../repositories/distance'
 import { savePoints, getPoints, removePointsByActivityId } from './../repositories/point'
 import { saveKeyAndGetDeviceId } from './../repositories/device'
@@ -84,7 +84,7 @@ export async function saveCustomActivityAction({ req, res, db }) {
  * @param {MySQL} db
  * @returns {Promise<void>}
  */
-export async function viewActivitiesAction({ req, res, db }) {
+export async function dayActivitiesAction({ req, res, db }) {
   if (!req.deviceKey) {
     return res.status(403).send('Device key is required.')
   }
@@ -93,14 +93,48 @@ export async function viewActivitiesAction({ req, res, db }) {
   date.setTime(timestamp)
   const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
   const activities = await getActivitiesByDate(db, deviceId, date)
+  return res.send(await prepareDayActivities(db, activities))
+}
+
+/**
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {MySQL} db
+ * @returns {Promise<void>}
+ */
+export async function allActivitiesAction({ req, res, db }) {
+  if (!req.deviceKey) {
+    return res.status(403).send('Device key is required.')
+  }
+
+  const result = []
+  const deviceId = await saveKeyAndGetDeviceId(db, req.deviceKey)
+  const dates = await getActivityDates(db, deviceId)
+  for (const date of dates) {
+    const activities = await getActivitiesByDate(db, deviceId, date)
+    result.push(await prepareDayActivities(db, activities))
+  }
+
+  return res.send(result)
+}
+
+/**
+ *
+ * @param {MySQL} db
+ * @param {Array} activities
+ * @returns {Promise<Array>}
+ */
+async function prepareDayActivities(db, activities) {
+  const prepared = []
   for (const activity of activities) {
     const distances = await getDistances(db, activity.id)
     for (const distance of distances) {
       distance['points'] = await getPoints(db, distance.id)
     }
-    activity['distances'] = distances
+    prepared.push(Object.assign({}, activity, { distances }))
   }
-  return res.send(activities)
+  return prepared
 }
 
 /**

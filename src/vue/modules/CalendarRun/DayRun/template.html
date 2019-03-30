@@ -1,9 +1,9 @@
 
-<Day :day="day" @onClick="onClick">
+<Day :day="day" @onClick="onClick" :isSelected="isSelected">
   <template slot="body">
 
-    <div class="day-run day-run_result" v-if="resultDistance > 0">
-      {{ resultDistance }} {{ unit }}
+    <div class="day-run day-run_result" v-if="totalDistance > 0">
+      {{ totalDistance }} {{ unit }}
     </div>
 
     <span>{{ day.number }}</span>

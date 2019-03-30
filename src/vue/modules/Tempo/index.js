@@ -29,6 +29,8 @@ import '@module/TempoForm'
 import '@module/HRMChart'
 import '@module/AltitudeChart'
 
+import { mapGetters, mapState } from 'vuex'
+
 import domToImage from 'dom-to-image'
 
 const timer = new Timer()
@@ -41,13 +43,13 @@ export default Vue.component('Tempo', {
        */
       loading: false,
       /**
+       * @type {boolean}
+       */
+      synchronizeProcess: false,
+      /**
        * @type {string}
        */
       imgTooltip: '',
-      /**
-       * @type {Array.<Object>}
-       */
-      activities: [],
       /**
        * @type {Object}
        */
@@ -58,20 +60,7 @@ export default Vue.component('Tempo', {
        * @type {Date}
        */
       selectedDate: new Date(),
-      /**
-       * Selected date month from calendar.
-       *
-       * @type {Date}
-       */
-      selectedMonthDate: new Date(),
-      /**
-       * @type {Object}
-       */
-      calendarActivity: {},
-      /**
-       * @type {string|?}
-       */
-      calendarActivityKey: null,
+
       /**
        * @type {boolean}
        */
@@ -86,10 +75,12 @@ export default Vue.component('Tempo', {
       prevView: null
     }
   },
-  beforeMount: function () {
-    this.loadCalendarActivity(this.selectedDate)
-  },
   computed: {
+    ...mapState({
+      dayActivities: (state) => {
+        return state.activity.dayActivities
+      }
+    }),
     isVisibleImgTooltip: function() {
       return Boolean(this.imgTooltip)
     },
@@ -144,7 +135,7 @@ export default Vue.component('Tempo', {
     },
     showViewListActivities() {
       this.prevView = this.view
-      this.view = this.activities.length > 0 ? 'list-activities' : 'no-activities'
+      this.view = this.dayActivities.length > 0 ? 'list-activities' : 'no-activities'
     },
     showViewDetailsActivity() {
       this.prevView = this.view
@@ -332,35 +323,23 @@ export default Vue.component('Tempo', {
       return this.minutesToStringTempo(this.avgTempoMinutes(activity))
     },
     /**
-     * @param {Date|string|number} [date]
-     */
-    loadCalendarActivity(date) {
-      this.loading = true
-      const timestamp = new Date(date).getTime()
-      Ajax.get(`/calendar/view/tempo/${timestamp}`)
-        .then((data) => {
-          this.calendarActivity = Object.assign({}, this.calendarActivity, data)
-          this.calendarActivityKey = uuid()
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
-
-    /**
      *
      * @param {Date} date
      */
     loadActivities(date) {
-      this.loading = true
-      const timestamp = new Date(date).getTime()
-      Ajax.get(`activity/view/${timestamp}`)
-        .then((activities) => {
-          this.activities = activities
+      this.$store.dispatch('activity/load', date)
+        .then(() => {
           this.showViewListActivities()
         })
-        .finally(() => {
-          this.loading = false
+    },
+    synchronizeActivities() {
+      if (this.synchronizeProcess) {
+        return
+      }
+      this.synchronizeProcess = true
+      this.$store.dispatch('activity/synchronize')
+        .then(() => {
+          this.synchronizeProcess = false
         })
     },
     /**
@@ -619,14 +598,6 @@ export default Vue.component('Tempo', {
           this.$emit('forceRerender')
         })
     },
-    /**
-     *
-     * @param {Date} date
-     */
-    changeMonth(date) {
-      this.selectedMonthDate = date
-      this.loadCalendarActivity(this.selectedMonthDate)
-    }
   },
   template: template
 })

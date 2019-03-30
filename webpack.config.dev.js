@@ -73,7 +73,8 @@ const config = {
       '@module': path.join(__dirname, 'src/vue/modules'),
       '@storage': path.join(__dirname, 'src/storage'),
       '@lib': path.join(__dirname, 'src/libs'),
-      '@config': path.join(__dirname, 'src/config')
+      '@config': path.join(__dirname, 'src/config'),
+      '@api': path.join(__dirname, 'src/api')
     },
   },
   plugins:[
