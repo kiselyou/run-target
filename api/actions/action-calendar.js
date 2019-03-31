@@ -2,9 +2,8 @@ import objectPath from 'object-path'
 import { getDevice, saveKeyAndGetDeviceId } from './../repositories/device'
 import { saveTarget, getTargetById } from './../repositories/target'
 import { saveCalendarDays, getCalendarDaysByTargetId } from './../repositories/calendar'
-import { savePoints, getPoints } from './../repositories/point'
+import { getPoints } from './../repositories/point'
 import { getDistancesPathLength } from './../repositories/distance'
-import moment from 'moment'
 
 /**
  * TODO: deprecated
@@ -82,7 +81,9 @@ export async function viewCalendarTempoAction({ req, res, db }) {
   const distancesPath = await getDistancesPathLength(db, deviceId)
   const resultDistances = {}
   for (const item of distancesPath) {
-    const timestamp = new Date(item.date).getTime()
+    const dayDate = new Date(item.date)
+    dayDate.setHours(0, 0, 0, 0)
+    const timestamp = dayDate.getTime()
     resultDistances[timestamp] = { totalDistance: Number(item.pathLength.toFixed(2)) }
   }
   return res.send(resultDistances)

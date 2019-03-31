@@ -5,6 +5,7 @@ import template from './template.html'
 import CalendarRun from './api/CalendarRun'
 import objectPath from 'object-path'
 import { mapState } from 'vuex'
+import { dayTimestamp } from '@lib/helpers/date-helper'
 
 export default Vue.component('CalendarRun', {
   props: {
@@ -53,7 +54,7 @@ export default Vue.component('CalendarRun', {
           if (!day.enabled) {
             continue
           }
-          const timestamp = new Date(day.date).getTime()
+          const timestamp = dayTimestamp(day.date)
           const totalDistance = objectPath.get(this.calendarActivity, [timestamp, 'totalDistance'], null)
           if (totalDistance) {
             day.addOption('totalDistance', totalDistance / 1000)
