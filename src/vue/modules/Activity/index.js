@@ -20,7 +20,7 @@ export default Vue.component('Activity', {
   props: {
     debug: {
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
   data: function () {
@@ -132,7 +132,13 @@ export default Vue.component('Activity', {
       this.stopHRM()
       this.geo.stopGeoListener()
       this.pause = false
-      this.$store.dispatch('activity/save', { activity: this.geo.serialize() })
+      const activity = this.geo.serialize()
+      this.$store.dispatch('activity/save', { activity })
+        .then(() => {
+          this.$store.dispatch('details/update')
+          this.$store.dispatch('calendar/update')
+          this.$store.dispatch('activity/update', activity.dateTimeStart)
+        })
       this.geo.clearGeoListener()
     },
     /**

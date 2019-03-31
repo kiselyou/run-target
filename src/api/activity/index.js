@@ -1,6 +1,7 @@
 import Ajax from '@lib/Ajax'
 import Activity from './Activity'
 import IndexedDB from '@lib/IndexedDB'
+import { dayTimestamp } from '@lib/helpers/date-helper'
 
 const indexes = [
   { indexName: 'index_timestamp', column: 'timestamp', unique: true }
@@ -11,7 +12,7 @@ export const updateAllActivitiesInDB = async () => {
   // Загрузить информацию c API о всех активностях.
   const data = await Ajax.get(`activity/all`)
   for (const activities of data) {
-    const timestamp = new Date(activities[0]['date']).getTime()
+    const timestamp = dayTimestamp(activities[0]['date'])
     await saveOrUpdateActivitiesInDB(activities, timestamp)
   }
 }
@@ -23,7 +24,7 @@ export const updateAllActivitiesInDB = async () => {
  */
 export const updateDayActivitiesInDB = async (date) => {
   // Загрузить информацию c API об активностях за день.
-  const timestamp = new Date(date).getTime()
+  const timestamp = dayTimestamp(date)
   const activities = await Ajax.get(`activity/day/${timestamp}`)
   await saveOrUpdateActivitiesInDB(activities, timestamp)
 }
@@ -34,7 +35,7 @@ export const updateDayActivitiesInDB = async (date) => {
  * @returns {Promise<Array.<Object>>}
  */
 export const loadDayActivitiesFromDB = async (date) => {
-  const timestamp = new Date(date).getTime()
+  const timestamp = dayTimestamp(date)
   const results = await idb.getOneByIndex('activity', 'index_timestamp', timestamp)
   if (!results) {
     return []

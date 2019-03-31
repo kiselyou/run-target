@@ -17,11 +17,6 @@ export default Vue.component('Details', {
 
     }
   },
-  mounted() {
-    if (this.totalPath === 0) {
-      this.$store.dispatch('details/update')
-    }
-  },
   computed: {
     ...mapGetters('details', [ 'totalPath', 'totalWeekPath', 'totalMonthPath' ]),
     ...mapState({

@@ -41,10 +41,6 @@ export default Vue.component('Tempo', {
       /**
        * @type {boolean}
        */
-      loading: false,
-      /**
-       * @type {boolean}
-       */
       synchronizeProcess: false,
       /**
        * @type {string}
@@ -54,13 +50,6 @@ export default Vue.component('Tempo', {
        * @type {Object}
        */
       selectedActivity: null,
-      /**
-       * Selected date from calendar.
-       *
-       * @type {Date}
-       */
-      selectedDate: new Date(),
-
       /**
        * @type {boolean}
        */
@@ -79,6 +68,22 @@ export default Vue.component('Tempo', {
     ...mapState({
       dayActivities: (state) => {
         return state.activity.dayActivities
+      },
+      /**
+       * Selected day from calendar.
+       *
+       * @returns {Day|?}
+       */
+      selectedDay: (state) => {
+        return state.calendar.selectedDay
+      },
+      /**
+       *
+       * @param {Object} state
+       * @returns {boolean}
+       */
+      loading: (state) => {
+        return state.activity.loading
       }
     }),
     isVisibleImgTooltip: function() {
@@ -90,10 +95,10 @@ export default Vue.component('Tempo', {
      * @returns {string|?}
      */
     activityEmpty: function () {
-      if (!this.selectedDate) {
+      if (!this.selectedDay) {
         return null
       }
-      return moment(this.selectedDate).locale('ru').format('DD MMMM')
+      return moment(this.selectedDay.date).locale('ru').format('DD MMMM')
     },
     isDisabledBtnMakeScreen() {
       return !Plugins.file.isPluginEnabled
@@ -113,7 +118,7 @@ export default Vue.component('Tempo', {
     viewTitleDescription() {
       switch (this.view) {
         case 'form-activity':
-          return this.selectedDate ? this.formatDate(this.selectedDate, 'DD MMMM') : null
+          return this.selectedDay ? this.formatDate(this.selectedDay.date, 'DD MMMM') : null
       }
       return null
     },
@@ -337,6 +342,8 @@ export default Vue.component('Tempo', {
         return
       }
       this.synchronizeProcess = true
+      this.$store.dispatch('details/update')
+      this.$store.dispatch('calendar/update')
       this.$store.dispatch('activity/synchronize')
         .then(() => {
           this.synchronizeProcess = false
@@ -349,8 +356,7 @@ export default Vue.component('Tempo', {
      * @param day
      */
     activeDay: function (day) {
-      this.selectedDate = day.date
-      this.loadActivities(this.selectedDate)
+      this.loadActivities(this.selectedDay.date)
     },
     /**
      * CalendarRun.
@@ -359,8 +365,7 @@ export default Vue.component('Tempo', {
      * @param day
      */
     selectDay: function (day) {
-      this.selectedDate = day.date
-      this.loadActivities(this.selectedDate)
+      this.loadActivities(this.selectedDay.date)
     },
     /**
      * Фарматирование даты.
@@ -529,24 +534,24 @@ export default Vue.component('Tempo', {
       if (!Plugins.file.isPluginEnabled) {
         return
       }
-      this.loading = true
+      this.$store.dispatch('activity/startLoading')
       const node = document.getElementById('tempo-background')
       domToImage.toPng(node)
         .then((dataUrl) => {
           Plugins.file.write(
             dataUrl,
             () => {
-              this.loading = false
               this.showImgTooltip('Изображение сохранено в галерее.').autoHideImgTooltip()
             },
             () => {
-              this.loading = false
               this.showImgTooltip('Не могу сохранить файл.').autoHideImgTooltip()
             })
         })
         .catch(() => {
-          this.loading = false
           this.showImgTooltip('Изображение не доступно.').autoHideImgTooltip()
+        })
+        .finally(() => {
+          this.$store.dispatch('activity/stopLoading')
         })
     },
     /**
@@ -574,11 +579,14 @@ export default Vue.component('Tempo', {
      */
     confirmRemoveActivity() {
       this.cancelRemoveActivity()
-      this.showPrevView()
-      this.loading = true
-      Ajax.post(`activity/remove`, { activityId: this.selectedActivity.id})
-        .finally(() => {
-          this.$emit('forceRerender')
+      const { date, id } = this.selectedActivity
+      this.$store.dispatch('activity/remove', id)
+        .then(async () => {
+          await this.$store.dispatch('details/update')
+          await this.$store.dispatch('calendar/update')
+          await this.$store.dispatch('activity/update', date)
+          await this.$store.dispatch('activity/load', date)
+          this.showViewListActivities()
         })
     },
     /**
@@ -588,14 +596,19 @@ export default Vue.component('Tempo', {
      * @returns {void}
      */
     saveActivity(formData) {
-      this.loading = true
-      const params = Object.assign({
-        dateTimeStart: joinDateAndTime(this.selectedDate, formData.timeStart),
-        dateTimeStop: joinDateAndTime(this.selectedDate, formData.timeStop)
+      const { date } = this.selectedDay
+      const activity = Object.assign({
+        dateTimeStart: joinDateAndTime(date, formData.timeStart),
+        dateTimeStop: joinDateAndTime(date, formData.timeStop)
       }, formData)
-      Ajax.post(`activity/save/custom`, params)
-        .finally(() => {
-          this.$emit('forceRerender')
+
+      this.$store.dispatch('activity/saveCustom', activity)
+        .then(async () => {
+          await this.$store.dispatch('details/update')
+          await this.$store.dispatch('calendar/update')
+          await this.$store.dispatch('activity/update', date)
+          await this.$store.dispatch('activity/load', date)
+          this.showViewListActivities()
         })
     },
   },

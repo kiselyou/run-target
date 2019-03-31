@@ -113,7 +113,9 @@ export async function allActivitiesAction({ req, res, db }) {
   const dates = await getActivityDates(db, deviceId)
   for (const date of dates) {
     const activities = await getActivitiesByDate(db, deviceId, date)
-    result.push(await prepareDayActivities(db, activities))
+    if (activities.length > 0) {
+      result.push(await prepareDayActivities(db, activities))
+    }
   }
 
   return res.send(result)
@@ -152,7 +154,7 @@ export async function removeActivitiesAction({ req, res, db }) {
   let status = true
   const activityId = objectPath.get(req, ['body', 'activityId'], null)
   try {
-    await db.beginTransaction()
+    db = await db.beginTransaction()
     await removePointsByActivityId(db, activityId)
     await removeDistancesByActivityId(db, activityId)
     await removeActivityById(db, activityId)

@@ -35,49 +35,76 @@ export default {
     },
   },
   actions: {
-    save({ dispatch, commit }, data) {
+    /**
+     *
+     * @param {Function} commit
+     * @param {Object} data
+     * @returns {Promise<void>}
+     */
+    async save({ commit }, data) {
       commit('startLoading')
-      Ajax.post(`activity/save`, data)
-        .finally(() => {
-          dispatch('details/update', null, { root: true })
-          commit('stopLoading')
-        })
+      return Ajax.post(`activity/save`, data)
+        .finally(() => commit('stopLoading'))
+    },
+    /**
+     *
+     * @param {Function} commit
+     * @param {Object} data
+     * @returns {Promise<void>}
+     */
+    async saveCustom({ commit }, data) {
+      commit('startLoading')
+      return Ajax.post(`activity/save/custom`, data)
+        .finally(() => commit('stopLoading'))
+    },
+    /**
+     *
+     * @param {Function} commit
+     * @param {number} activityId
+     * @returns {Promise<void>}
+     */
+    async remove({ commit }, activityId) {
+      commit('startLoading')
+      return Ajax.post(`activity/remove`, { activityId })
+        .finally(() => commit('stopLoading'))
     },
 
     /**
      *
-     * @param {Object} state
+     * @param {Function} commit
      * @param {Date|string|number} date
-     * @returns {void}
+     * @returns {Promise.<void>}
      */
     async update({ commit }, date) {
       commit('startLoading')
-      await updateDayActivitiesInDB(date)
-      commit('stopLoading')
+      return updateDayActivitiesInDB(date)
+        .finally(() => commit('stopLoading'))
     },
 
     /**
      *
-     * @param {Object} state
+     * @param {Function} commit
      * @param {Date|string|number} date
-     * @returns {Array.<Object>}
+     * @returns {Promise.<void>}
      */
     async load({ commit }, date) {
       commit('startLoading')
-      const activities = await loadDayActivitiesFromDB(date)
-      commit('setDayActivities', activities)
-      commit('stopLoading')
+      return loadDayActivitiesFromDB(date)
+        .then((activities) => {
+          commit('setDayActivities', activities)
+        })
+        .finally(() => commit('stopLoading'))
     },
 
     /**
      *
-     * @param {Object} state
-     * @returns {void}
+     * @param {Function} commit
+     * @returns {Promise.<void>}
      */
     async synchronize({ commit }) {
       commit('startLoading')
-      await updateAllActivitiesInDB()
-      commit('stopLoading')
+      return updateAllActivitiesInDB()
+        .finally(() => commit('stopLoading'))
     },
   }
 }

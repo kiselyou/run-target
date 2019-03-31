@@ -12,3 +12,14 @@ export function joinDateAndTime(date, time) {
   dateMoment.set({hour: timeMoment.get('hour'), minute: timeMoment.get('minute'), second: timeMoment.get('second')})
   return dateMoment
 }
+
+/**
+ *
+ * @param {string|Date} date
+ * @returns {number}
+ */
+export function dayTimestamp(date) {
+  const dayDate = new Date(date)
+  dayDate.setHours(0, 0, 0, 0)
+  return dayDate.getTime()
+}

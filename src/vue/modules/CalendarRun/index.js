@@ -21,17 +21,12 @@ export default Vue.component('CalendarRun', {
     return {
       calendar: new CalendarRun(),
       monthTimestamp: new Date().getTime(),
-      selectedDay: null
     }
   },
   mounted: function () {
     if (this.calendar.currentDay) {
+      this.$store.commit('calendar/setSelectedDay', this.calendar.currentDay)
       this.$emit('activeDay', this.calendar.currentDay)
-    }
-  },
-  beforeMount: function () {
-    if (Object.keys(this.calendarActivity).length === 0) {
-      this.$store.dispatch('calendar/updateCalendarActivity')
     }
   },
   computed: {
@@ -43,6 +38,13 @@ export default Vue.component('CalendarRun', {
       calendarActivity: (state) => {
         return state.calendar.calendarActivity
       },
+      /**
+       *
+       * @returns {Day|?}
+       */
+      selectedDay: (state) => {
+        return state.calendar.selectedDay
+      }
     }),
     month() {
       const month = this.calendar.getMonth(new Date(this.monthTimestamp))
@@ -77,7 +79,7 @@ export default Vue.component('CalendarRun', {
       this.monthTimestamp = prev.getTime()
     },
     selectDay: function (day) {
-      this.selectedDay = day
+      this.$store.commit('calendar/setSelectedDay', day)
       this.$emit('selectDay', day)
     },
   },

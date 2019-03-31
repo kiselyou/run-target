@@ -1,10 +1,12 @@
 import Storage from '@lib/Storage'
 import Ajax from '@lib/Ajax'
+import { dayTimestamp } from '@lib/helpers/date-helper'
 
 export default {
   namespaced: true,
   state: {
     loading: false,
+    selectedDay: null,
     calendarActivity: Storage.decodeStorageItem('calendarActivity') || {}
   },
   getters: {
@@ -31,15 +33,25 @@ export default {
      * @param {Object} data
      */
     addCalendarActivity(state, data) {
-      state.calendarActivity = Object.assign({}, this.calendarActivity, data)
+      state.calendarActivity = data
       Storage.encodeStorageItem('calendarActivity', state.calendarActivity)
     },
+    /**
+     *
+     * @param {Object} state
+     * @param {Day} day
+     */
+    setSelectedDay(state, day) {
+      state.selectedDay = day
+    }
   },
   actions: {
     /**
+     * TODO: put on IndexedDB
+     *
      * @param {Object} state
      */
-    updateCalendarActivity({ commit }) {
+    update({ commit }) {
       commit('startLoading')
       Ajax.get(`/calendar/view/tempo`)
         .then((data) => {
