@@ -27,7 +27,7 @@ export const saveActivity = (db, deviceId, options) => {
  * @returns {Promise<Array>}
  */
 export const getActivityDates = (db, deviceId) => {
-  return db.query(`SELECT date FROM activity WHERE deviceId = ? GROUP BY date;`, [deviceId])
+  return db.query(`SELECT date FROM activity WHERE deviceId = ? GROUP BY date`, [deviceId])
     .then((result) => {
       return result.map((item) => item.date)
     })
