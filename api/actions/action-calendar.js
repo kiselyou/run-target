@@ -81,10 +81,8 @@ export async function viewCalendarTempoAction({ req, res, db }) {
   const distancesPath = await getDistancesPathLength(db, deviceId)
   const resultDistances = {}
   for (const item of distancesPath) {
-    const dayDate = new Date(item.date)
-    dayDate.setHours(0, 0, 0, 0)
-    const timestamp = dayDate.getTime()
-    resultDistances[timestamp] = { totalDistance: Number(item.pathLength.toFixed(2)) }
+    const date = new Date(item.date).toISOString()
+    resultDistances[date] = { totalDistance: Number(item.pathLength.toFixed(2)) }
   }
   return res.send(resultDistances)
 }

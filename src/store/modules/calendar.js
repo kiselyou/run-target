@@ -54,8 +54,19 @@ export default {
     update({ commit }) {
       commit('startLoading')
       Ajax.get(`/calendar/view/tempo`)
-        .then((data) => {
-          commit('addCalendarActivity', data)
+        .then((activities) => {
+          if (!activities) {
+            return
+          }
+          const activitiesData ={}
+          for (const date in activities) {
+            if (!activities.hasOwnProperty(date)) {
+              continue
+            }
+            const timestamp = new Date(date).getTime()
+            activitiesData[timestamp] = activities[date]
+          }
+          commit('addCalendarActivity', activitiesData)
         })
         .finally(() => {
           commit('stopLoading')
