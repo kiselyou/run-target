@@ -54,12 +54,14 @@ export default Vue.component('CalendarRun', {
           if (!day.enabled) {
             continue
           }
-          const date = new Date(day.date).toUTCString()
-          const totalDistance = objectPath.get(this.calendarActivity, [date, 'totalDistance'], null)
+
+          const date = new Date(day.date)
+          const strDate = date.toDateString()
+          const totalDistance = objectPath.get(this.calendarActivity, [strDate, 'totalDistance'], null)
           if (totalDistance) {
             day.addOption('totalDistance', totalDistance / 1000)
           }
-          const expectDistance = objectPath.get(this.calendarActivity, [date, 'expectDistance'], null)
+          const expectDistance = objectPath.get(this.calendarActivity, [strDate, 'expectDistance'], null)
           if (expectDistance) {
             day.addOption('expectDistance', expectDistance / 1000)
           }
