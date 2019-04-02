@@ -58,15 +58,7 @@ export default {
           if (!activities) {
             return
           }
-          const activitiesData ={}
-          for (const date in activities) {
-            if (!activities.hasOwnProperty(date)) {
-              continue
-            }
-            const timestamp = new Date(date).getTime()
-            activitiesData[timestamp] = activities[date]
-          }
-          commit('addCalendarActivity', activitiesData)
+          commit('addCalendarActivity', activities)
         })
         .finally(() => {
           commit('stopLoading')
