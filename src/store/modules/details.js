@@ -76,15 +76,15 @@ export default {
         .then((details) => {
           const totalDistance = details['totalDistance']
           commit('setTotalDistance', totalDistance)
-          Storage.encodeStorageItem('totalDistance', totalDistance)
+          Storage.setStorageItem('totalDistance', totalDistance)
 
           const totalWeekDistance = details['totalWeekDistance']
           commit('setTotalWeekDistance', totalWeekDistance)
-          Storage.encodeStorageItem('totalWeekDistance', totalWeekDistance)
+          Storage.setStorageItem('totalWeekDistance', totalWeekDistance)
 
           const totalMonthDistance = details['totalMonthDistance']
           commit('setTotalMonthDistance', totalMonthDistance)
-          Storage.encodeStorageItem('totalMonthDistance', totalMonthDistance)
+          Storage.setStorageItem('totalMonthDistance', totalMonthDistance)
         })
         .finally(() => {
           commit('stopLoading')

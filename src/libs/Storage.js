@@ -11,20 +11,20 @@ class Storage {
   /**
    *
    * @param {string} name
-   * @returns {string}
+   * @returns {string|?}
    */
   static getStorageItem(name) {
-    return localStorage.getItem(name)
+    return localStorage.getItem(name) || null
   }
 
   /**
    *
    * @param {string} name
-   * @param {Object} value
+   * @param {string|number} value
    * @returns {void}
    */
   static setStorageItem(name, value) {
-    localStorage.setItem(name, value)
+    localStorage.setItem(name, value || '')
   }
 
   /**
