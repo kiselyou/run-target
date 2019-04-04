@@ -177,7 +177,7 @@ export default Vue.component('HRMChart', {
           y: avg,
           borderColor: '#999999',
           label: {
-            text: `Средняя частота пульса ${avg} (уд.м.)`,
+            text: `Средняя ${avg}`,
             style: {
               color: '#FFFFFF',
               background: '#00E396'

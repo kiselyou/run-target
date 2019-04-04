@@ -134,10 +134,11 @@ export default Vue.component('Activity', {
       this.pause = false
       const activity = this.geo.serialize()
       this.$store.dispatch('activity/save', { activity })
-        .then(() => {
-          this.$store.dispatch('details/update')
-          this.$store.dispatch('calendar/update')
-          this.$store.dispatch('activity/update', activity.dateTimeStart)
+        .then(async () => {
+          await this.$store.dispatch('details/update')
+          await this.$store.dispatch('calendar/update')
+          await this.$store.dispatch('activity/update', activity.dateTimeStart)
+          await this.$store.dispatch('activity/load', activity.dateTimeStart)
         })
       this.geo.clearGeoListener()
     },

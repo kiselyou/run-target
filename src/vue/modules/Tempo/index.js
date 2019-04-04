@@ -1,8 +1,6 @@
-import uuid from 'uuid/v4'
 import './style.scss'
 import Vue from 'vue'
 import template from './template.html'
-import Ajax from '@lib/Ajax'
 import Timer from '@lib/Timer'
 import moment from 'moment'
 import Plugins from '@lib/cordova/Plugins'
@@ -29,7 +27,7 @@ import '@module/TempoForm'
 import '@module/HRMChart'
 import '@module/AltitudeChart'
 
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 import domToImage from 'dom-to-image'
 

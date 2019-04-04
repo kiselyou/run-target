@@ -1,6 +1,7 @@
 import Storage from '@lib/Storage'
 import Ajax from '@lib/Ajax'
 import { dayTimestamp } from '@lib/helpers/date-helper'
+import {updateDayActivitiesInDB} from "@api/activity";
 
 export default {
   namespaced: true,
@@ -51,18 +52,16 @@ export default {
      *
      * @param {Object} state
      */
-    update({ commit }) {
+    async update({ commit }) {
       commit('startLoading')
-      Ajax.get(`/calendar/view/tempo`)
+      return Ajax.get(`/calendar/view/tempo`)
         .then((activities) => {
           if (!activities) {
             return
           }
           commit('addCalendarActivity', activities)
         })
-        .finally(() => {
-          commit('stopLoading')
-        })
+        .finally(() => commit('stopLoading'))
     },
   }
 }
