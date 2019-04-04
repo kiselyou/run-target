@@ -1,7 +1,5 @@
 import Storage from '@lib/Storage'
 import Ajax from '@lib/Ajax'
-import { dayTimestamp } from '@lib/helpers/date-helper'
-import {updateDayActivitiesInDB} from "@api/activity";
 
 export default {
   namespaced: true,
