@@ -5,12 +5,13 @@ import '@vue/DotLoader'
 import '@vue/PulseLoader'
 import '@vue/RingLoader'
 import '@vue/BounceLoader'
+import '@vue/WaveLoader'
 
 export default Vue.component('Spinner', {
   props: {
     name: {
       type: String,
-      default: 'PulseLoader'
+      default: 'WaveLoader'
     },
     loading: {
       type: Boolean,

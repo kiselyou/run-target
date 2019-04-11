@@ -4,4 +4,5 @@
   <RingLoader v-if="name === 'RingLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />
   <PulseLoader v-if="name === 'PulseLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />
   <BounceLoader v-if="name === 'BounceLoader'" :loading="loading" :color="color" :size="size" :margin="margin" :radius="radius" htmlClass="target-spinner_z-index" />
+  <WaveLoader :show="name === 'WaveLoader'" />
 </div>

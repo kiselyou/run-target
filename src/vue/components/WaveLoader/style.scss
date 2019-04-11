@@ -1,0 +1,40 @@
+.wave-loader {
+  width: 100%;
+  height: 2px;
+  top: 0;
+  position: absolute;
+
+  &_flask {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  &_indicator {
+    width: 0;
+    height: 100%;
+    background-color: #000000;
+    animation-name: wave;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-timing-function: linear;
+    animation-delay: .5s;
+    position: absolute;
+    left: 50%;
+    top: 0;
+
+    @keyframes wave {
+      0% {
+        left: 50%;
+        width: 0;
+        opacity: 1;
+      }
+      100% {
+        width: 100%;
+        left: 0;
+        opacity: 0.2;
+      }
+    }
+  }
+}

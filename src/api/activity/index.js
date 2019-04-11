@@ -8,6 +8,10 @@ const indexes = [
 ]
 const idb = new IndexedDB().createTable('activity', true, null, indexes)
 
+/**
+ *
+ * @returns {Promise<void>}
+ */
 export const updateAllActivitiesInDB = async () => {
   // Загрузить информацию c API о всех активностях.
   const data = await Ajax.get(`activity/all`)
@@ -20,13 +24,13 @@ export const updateAllActivitiesInDB = async () => {
 /**
  *
  * @param {Date|string|number} date
- * @returns {Promise.<void>}
+ * @returns {Promise.<number>} The number of saved activity in indexedDB.
  */
 export const updateDayActivitiesInDB = async (date) => {
   // Загрузить информацию c API об активностях за день.
   const timestamp = dayTimestamp(date)
   const activities = await Ajax.get(`activity/day/${timestamp}`)
-  await saveOrUpdateActivitiesInDB(activities, timestamp)
+  return saveOrUpdateActivitiesInDB(activities, timestamp)
 }
 
 /**
@@ -54,7 +58,7 @@ export const loadDayActivitiesFromDB = async (date) => {
  *
  * @param {Array.<Object>} activities - массив активностей загруженных с API.
  * @param {number} timestamp - метка времени начала дня.
- * @returns {Promise<void>}
+ * @returns {Promise<number>} - The number of saved activity in indexedDB.
  */
 async function saveOrUpdateActivitiesInDB(activities, timestamp) {
   const result = []
@@ -65,5 +69,5 @@ async function saveOrUpdateActivitiesInDB(activities, timestamp) {
 
   // Обновить информацию об активностях за день в IndexedDB.
   await idb.removeByIndex('activity', 'index_timestamp', timestamp)
-  await idb.saveOne('activity', { timestamp, data: result })
+  return idb.saveOne('activity', { timestamp, data: result })
 }
